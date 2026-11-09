@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PC Tutorial - Unit 02: 2nd/3rd Law &amp; Chemical Equilibrium</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {output: 'html', delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen pb-16">
+
+  <!-- Top Navigation & Banner -->
+  <header class="bg-indigo-950 text-white shadow-lg border-b-4 border-amber-500">
+    <div class="max-w-4xl mx-auto px-6 py-6">
+      <div class="flex flex-wrap justify-between items-center gap-2">
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="text-xs bg-indigo-800 hover:bg-indigo-700 text-indigo-100 px-3 py-1 rounded-lg font-semibold transition">
+            &larr; Course Hub
+          </a>
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-400">IMC Krems &bull; Physical Chemistry Tutorial</span>
+        </div>
+        <span class="text-xs bg-indigo-900 px-3 py-1 rounded-full text-indigo-200 font-mono">Topics: L03 (2nd/3rd Law) &amp; L04 (Combination)</span>
+      </div>
+
+      <h1 class="text-2xl md:text-3xl font-extrabold mt-3">Unit 02: Entropy, Gibbs Energy &amp; Chemical Equilibrium</h1>
+      <p class="text-indigo-200 text-sm mt-1">
+        Part 1: In-Class Guided Modeling &bull; Part 2: Individualized Exercise Worksheet (saved automatically in your browser).
+      </p>
+
+      <!-- Student ID Bar -->
+      <div class="mt-5 flex flex-wrap items-center gap-3 bg-indigo-900/70 p-4 rounded-xl border border-indigo-800">
+        <label for="studentIdInput" class="text-xs font-bold uppercase tracking-wider text-indigo-200">Student ID:</label>
+        <input id="studentIdInput" type="text" placeholder="e.g. 2510456012" 
+               class="px-3.5 py-2 rounded-lg text-slate-900 font-mono text-sm w-48 focus:outline-none focus:ring-2 focus:ring-amber-400">
+        <button onclick="initWorksheet(false)" 
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm transition shadow">
+          Load My Worksheet
+        </button>
+        <button onclick="resetProgress()" 
+                class="text-xs text-indigo-300 hover:text-white underline ml-auto">
+          Reset Saved Inputs
+        </button>
+      </div>
+      <div id="statusBanner" class="mt-2 text-xs font-mono text-amber-300 hidden"></div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 mt-6 space-y-6">
+
+    <!-- ================= 1. FORMULA & CONSTANTS SHEET ================= -->
+    <details class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <summary class="px-6 py-4 font-bold text-slate-800 cursor-pointer hover:bg-slate-50 flex justify-between items-center select-none">
+        <span>📋 Formula Sheet, Constants &amp; Unit Rules for L03 &amp; L04 (Click to expand)</span>
+        <span class="text-xs font-normal text-slate-500">Matches Lecture &amp; Exam Notation</span>
+      </summary>
+      <div class="px-6 pb-5 pt-2 border-t border-slate-100 text-sm space-y-4 bg-slate-50/60">
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs text-amber-950">
+          <strong>⚠️ The #1 Unit Trap in Chemical Thermodynamics:</strong><br>
+          Enthalpies (\(\Delta_r H^\circ\)) and Gibbs energies (\(\Delta_r G^\circ\)) are almost always tabulated in <strong>\(\text{kJ mol}^{-1}\)</strong>, whereas entropies (\(\Delta_r S^\circ\)), heat capacities (\(\Delta_r C_p\)), and the gas constant \(R = 8.314\) are in <strong>\(\text{J mol}^{-1}\text{K}^{-1}\)</strong>! Always convert to the same energy unit (\(\text{J}\) or \(\text{kJ}\)) before adding or taking \(\exp(-\Delta_r G^\circ / RT)\).
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 mb-2">2nd &amp; 3rd Law (L03 Slide 24 &amp; L06 Slide 6)</h4>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              <li><strong>Boltzmann Entropy:</strong> \(S = k \cdot \ln W\) &nbsp;(\(k = 1.3806 \cdot 10^{-23}\text{ J K}^{-1}\))</li>
+              <li><strong>Isothermal Volume/Pressure Change:</strong> \(\Delta S_{\text{sys}} = nR\ln\frac{V_f}{V_i} = nR\ln\frac{p_i}{p_f}\)</li>
+              <li><strong>Temperature Change:</strong> \(\Delta S = n C_{p,m}\ln\frac{T_f}{T_i}\) (at const. \(p\)) or \(n C_{V,m}\ln\frac{T_f}{T_i}\) (at const. \(V\))</li>
+              <li><strong>Reversible vs. Vacuum Expansion:</strong> Reversible: \(\Delta S_{\text{tot}} = 0 \implies \Delta S_{\text{sur}} = -\Delta S_{\text{sys}}\). Irreversible (\(p_{\text{ex}}=0\)): \(\Delta S_{\text{sur}} = 0 \implies \Delta S_{\text{tot}} = \Delta S_{\text{sys}}\).</li>
+              <li><strong>Ideal Gas Mixing:</strong> \(\Delta_{\text{mix}}S = -n_{\text{tot}} R \sum x_i \ln x_i &gt; 0\) &nbsp;|&nbsp; \(\Delta_{\text{mix}}G = -T \cdot \Delta_{\text{mix}}S &lt; 0\)</li>
+            </ul>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 mb-2">Kirchhoff, Gibbs &amp; Equilibrium (L04 Slide 30)</h4>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              <li><strong>Kirchhoff's Laws (\(\Delta_r C_p = \text{const.}\)):</strong><br>
+                \(\Delta_r H^\circ(T_2) = \Delta_r H^\circ(T_1) + \Delta_r C_p \cdot (T_2 - T_1)\)<br>
+                \(\Delta_r S^\circ(T_2) = \Delta_r S^\circ(T_1) + \Delta_r C_p \cdot \ln\left(\frac{T_2}{T_1}\right)\)
+              </li>
+              <li><strong>Gibbs-Helmholtz Equation:</strong> \(\Delta_r G^\circ = \Delta_r H^\circ - T \cdot \Delta_r S^\circ\)</li>
+              <li><strong>Equilibrium Constant:</strong> \(\Delta_r G^\circ = -RT\ln K_p^{\text{th}} \implies K_p^{\text{th}} = \exp\left(-\frac{\Delta_r G^\circ}{RT}\right)\)</li>
+              <li><strong>Non-Equilibrium (\(\Delta_r G\)):</strong> \(\Delta_r G = \Delta_r G^\circ + RT\ln Q = RT\ln\left(\frac{Q}{K_p^{\text{th}}}\right)\)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- ================= 2. IN-CLASS GUIDED MODELING (VORRECHENBEISPIELE) ================= -->
+    <details id="modelingDetails" class="bg-white rounded-xl shadow-sm border-2 border-indigo-200 overflow-hidden" open>
+      <summary class="px-6 py-4 font-bold text-indigo-950 bg-indigo-50/70 cursor-pointer hover:bg-indigo-100/60 flex flex-wrap justify-between items-center gap-2 select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">👨‍🏫</span>
+          <span>Part 1: In-Class Guided Modeling (Worked Benchmark Examples)</span>
+        </div>
+        <span class="text-xs font-semibold bg-indigo-200 text-indigo-900 px-2.5 py-1 rounded-full">Step-by-Step Projector View</span>
+      </summary>
+
+      <div class="p-6 space-y-6 border-t border-indigo-100">
+        <div class="flex flex-wrap justify-between items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs">
+          <span class="text-slate-600">
+            💡 <strong>Study Tip:</strong> Click through the steps below to review the exact calculation strategy and unit checks before starting your personal worksheet.
+          </span>
+          <button onclick="toggleChalkboardScript()" id="btnChalkboard"
+                  class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-3 py-1.5 rounded transition">
+            🎙️ Show Spoken Explanation Hints
+          </button>
+        </div>
+
+        <!-- MODELING EXAMPLE A -->
+        <div class="border border-slate-200 rounded-xl p-5 space-y-4 bg-white">
+          <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase text-amber-600 tracking-wider">Modeling Example A &bull; Entropy &amp; Gibbs Energy of Mixing</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">Mixing of Oxygen and Nitrogen: \(\Delta_{\text{mix}}S\) and \(\Delta_{\text{mix}}G\)</h3>
+            </div>
+            <span class="text-xs bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded font-mono">
+              Ref: Try-Test 1 (Q5) &bull; L06 Slides 6–7
+            </span>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-amber-500 text-sm text-slate-700 leading-relaxed">
+            <strong>Problem:</strong> \(n(\text{O}_2) = 2.00\text{ mol}\) of Oxygen and \(n(\text{N}_2) = 8.00\text{ mol}\) of Nitrogen are mixed isothermally at \(\vartheta = 27\text{ }^\circ\text{C}\) (\(T = 300.15\text{ K}\)) and constant total pressure. Assume both gases behave ideally.<br>
+            <strong>a)</strong> Determine the total amount of gas \(n_{\text{tot}}\) and the mole fractions \(x(\text{O}_2)\) and \(x(\text{N}_2)\).<br>
+            <strong>b)</strong> Calculate the entropy of mixing \(\Delta_{\text{mix}}S\) (in \(\text{J K}^{-1}\)).<br>
+            <strong>c)</strong> Calculate the Gibbs energy of mixing \(\Delta_{\text{mix}}G\) (in \(\text{kJ}\)) and comment on the signs.
+          </div>
+
+          <!-- Lecturer Chalkboard Script A -->
+          <div class="chalkboard-box hidden bg-amber-50/80 border border-amber-300 p-3.5 rounded-lg text-xs text-amber-950 space-y-1.5">
+            <div class="font-bold uppercase tracking-wider text-amber-800">🎙️ Spoken Board Moderation (English Phrases):</div>
+            <p>&bull; <em>"When two ideal gases mix at constant temperature, there is no enthalpy of mixing (\(\Delta_{\text{mix}}H = 0\)) because ideal gas particles do not interact."</em></p>
+            <p>&bull; <em>"The driving force is purely entropic: Since mole fractions \(x_i\) are always smaller than 1, their natural logarithms \(\ln x_i\) are negative. Combined with the minus sign in front of the formula, \(\Delta_{\text{mix}}S\) is ALWAYS positive!"</em></p>
+            <p>&bull; <em>"Then, from \(\Delta_{\text{mix}}G = \Delta_{\text{mix}}H - T\Delta_{\text{mix}}S = -T\Delta_{\text{mix}}S\), we immediately get a negative Gibbs energy of mixing — proving that gases mix spontaneously."</em></p>
+          </div>
+
+          <!-- Interactive Step Buttons A -->
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="toggleModelStep('mA_1')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step a: Mole Fractions \(x_i\)
+            </button>
+            <button onclick="toggleModelStep('mA_2')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step b: Mixing Entropy \(\Delta_{\text{mix}}S\)
+            </button>
+            <button onclick="toggleModelStep('mA_3')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step c: Mixing Gibbs Energy \(\Delta_{\text{mix}}G\)
+            </button>
+            <button onclick="showAllModelSteps('mA', 3)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition ml-auto">
+              Show / Hide All
+            </button>
+          </div>
+
+          <!-- Step Contents A -->
+          <div class="space-y-3 text-sm">
+            <div id="mA_1" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step a: Total Amount &amp; Mole Fractions</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(n_{\text{tot}} = 2.00\text{ mol} + 8.00\text{ mol} = 10.0\text{ mol}\)<br>
+                \(x(\text{O}_2) = \frac{2.00}{10.0} = \mathbf{0.200}\) &nbsp;|&nbsp; \(x(\text{N}_2) = \frac{8.00}{10.0} = \mathbf{0.800}\)
+              </p>
+            </div>
+
+            <div id="mA_2" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step b: Entropy of Mixing \(\Delta_{\text{mix}}S\)</div>
+              <p class="text-slate-700">Watch the negative values of \(\ln(0.200) = -1.6094\) and \(\ln(0.800) = -0.2231\):</p>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(\Delta_{\text{mix}}S = -n_{\text{tot}} \cdot R \cdot \left(x_{\text{O}_2}\ln x_{\text{O}_2} + x_{\text{N}_2}\ln x_{\text{N}_2}\right)\)<br>
+                \(\Delta_{\text{mix}}S = -10.0\text{ mol} \cdot 8.314\text{ J mol}^{-1}\text{K}^{-1} \cdot \left(0.200 \cdot (-1.6094) + 0.800 \cdot (-0.2231)\right)\)<br>
+                \(\Delta_{\text{mix}}S = -83.14\text{ J K}^{-1} \cdot (-0.5004) = \mathbf{+41.6\text{ J K}^{-1}}\)
+              </p>
+            </div>
+
+            <div id="mA_3" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step c: Gibbs Energy of Mixing \(\Delta_{\text{mix}}G\) at \(T = 300.15\text{ K}\)</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(\Delta_{\text{mix}}G = -T \cdot \Delta_{\text{mix}}S = -300.15\text{ K} \cdot 41.60\text{ J K}^{-1} = -12486\text{ J} = \mathbf{-12.5\text{ kJ}}\)
+              </p>
+              <p class="text-xs text-slate-700 pt-1">
+                <strong>Check:</strong> Mixing is always spontaneous (\(\Delta_{\text{mix}}G &lt; 0\)) and increases disorder (\(\Delta_{\text{mix}}S &gt; 0\)).
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODELING EXAMPLE B -->
+        <div class="border border-slate-200 rounded-xl p-5 space-y-4 bg-white">
+          <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase text-amber-600 tracking-wider">Modeling Example B &bull; Chemical Equilibrium &amp; Reaction Quotient \(Q\)</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">Water-Gas Shift Equilibrium: \(\Delta_r G^\circ\), \(K_p^{\text{th}}\) and Direction of Reaction</h3>
+            </div>
+            <span class="text-xs bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded font-mono">
+              Ref: L04 Slides 13–15, 26 &bull; Try-Test 1 Q8
+            </span>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-amber-500 text-sm text-slate-700 leading-relaxed">
+            <strong>Problem:</strong> Consider the gas-phase reaction \(\text{CO}(g) + \text{H}_2\text{O}(g) \rightleftharpoons \text{CO}_2(g) + \text{H}_2(g)\) at \(T = 700\text{ K}\).<br>
+            At \(700\text{ K}\), the thermochemical data are \(\Delta_r H^\circ_{700} = -37.8\text{ kJ mol}^{-1}\) and \(\Delta_r S^\circ_{700} = -35.2\text{ J mol}^{-1}\text{K}^{-1}\).<br>
+            <strong>a)</strong> Calculate the standard molar Gibbs energy \(\Delta_r G^\circ_{700}\) (in \(\text{kJ mol}^{-1}\)).<br>
+            <strong>b)</strong> Calculate the thermodynamic equilibrium constant \(K_p^{\text{th}}\) at \(700\text{ K}\).<br>
+            <strong>c)</strong> A reactor at \(700\text{ K}\) contains partial pressures \(p(\text{CO}_2) = 2.0\text{ bar}\), \(p(\text{H}_2) = 2.0\text{ bar}\), \(p(\text{CO}) = 0.20\text{ bar}\), and \(p(\text{H}_2\text{O}) = 0.10\text{ bar}\). Calculate \(Q\), \(\Delta_r G\), and state the direction of reaction.
+          </div>
+
+          <!-- Lecturer Chalkboard Script B -->
+          <div class="chalkboard-box hidden bg-amber-50/80 border border-amber-300 p-3.5 rounded-lg text-xs text-amber-950 space-y-1.5">
+            <div class="font-bold uppercase tracking-wider text-amber-800">🎙️ Spoken Board Moderation (English Phrases):</div>
+            <p>&bull; <em>"Here is the classic exam trap twice in one problem: In Step a, \(\Delta_r H^\circ\) is in kilojoules, while \(\Delta_r S^\circ\) is in Joules per Kelvin. Divide \(\Delta_r S^\circ\) by 1000 before subtracting!"</em></p>
+            <p>&bull; <em>"In Step b, when we plug \(\Delta_r G^\circ\) into the exponential \(K_p = \exp(-\Delta_r G^\circ / RT)\), we must convert \(\Delta_r G^\circ\) back to Joules per mole because \(R = 8.314\) is in Joules!"</em></p>
+            <p>&bull; <em>"In Step c, we compare the reaction quotient \(Q\) with \(K_p\). Since \(Q = 200\) is larger than \(K_p = 9.59\), we have too many products, so \(\Delta_r G &gt; 0\) and the reaction proceeds backwards (from right to left)."</em></p>
+          </div>
+
+          <!-- Interactive Step Buttons B -->
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="toggleModelStep('mB_1')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step a: \(\Delta_r G^\circ_{700}\) (Unit Check!)
+            </button>
+            <button onclick="toggleModelStep('mB_2')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step b: Equilibrium Constant \(K_p^{\text{th}}\)
+            </button>
+            <button onclick="toggleModelStep('mB_3')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step c: Quotient \(Q\) &amp; \(\Delta_r G\)
+            </button>
+            <button onclick="showAllModelSteps('mB', 3)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition ml-auto">
+              Show / Hide All
+            </button>
+          </div>
+
+          <!-- Step Contents B -->
+          <div class="space-y-3 text-sm">
+            <div id="mB_1" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step a: Standard Gibbs Energy \(\Delta_r G^\circ_{700}\) (\(\text{J} \to \text{kJ}\))</div>
+              <p class="text-slate-700">Convert \(\Delta_r S^\circ_{700} = -35.2\text{ J mol}^{-1}\text{K}^{-1} = -0.0352\text{ kJ mol}^{-1}\text{K}^{-1}\):</p>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(\Delta_r G^\circ_{700} = \Delta_r H^\circ_{700} - T \cdot \Delta_r S^\circ_{700} = -37.8\text{ kJ mol}^{-1} - 700\text{ K} \cdot (-0.0352\text{ kJ mol}^{-1}\text{K}^{-1})\)<br>
+                \(\Delta_r G^\circ_{700} = -37.8 + 24.64 = \mathbf{-13.16\text{ kJ mol}^{-1} = -13160\text{ J mol}^{-1}}\)
+              </p>
+            </div>
+
+            <div id="mB_2" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step b: Thermodynamic Equilibrium Constant \(K_p^{\text{th}}\)</div>
+              <p class="text-slate-700">Use \(\Delta_r G^\circ\) in \(\text{J mol}^{-1}\) in the exponent:</p>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(K_p^{\text{th}} = \exp\left(-\frac{\Delta_r G^\circ_{700}}{R \cdot T}\right) = \exp\left(-\frac{-13160\text{ J mol}^{-1}}{8.314\text{ J mol}^{-1}\text{K}^{-1} \cdot 700\text{ K}}\right) = \exp(+2.2612) = \mathbf{9.59}\)
+              </p>
+            </div>
+
+            <div id="mB_3" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step c: Reaction Quotient \(Q\), \(\Delta_r G\) and Shift Direction</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(Q = \frac{p(\text{CO}_2) \cdot p(\text{H}_2)}{p(\text{CO}) \cdot p(\text{H}_2\text{O})} = \frac{2.0 \cdot 2.0}{0.20 \cdot 0.10} = \mathbf{200}\)<br>
+                \(\Delta_r G = R \cdot T \cdot \ln\left(\frac{Q}{K_p^{\text{th}}}\right) = 8.314 \cdot 700 \cdot \ln\left(\frac{200}{9.59}\right) = +17680\text{ J mol}^{-1} = \mathbf{+17.7\text{ kJ mol}^{-1}}\)
+              </p>
+              <p class="text-xs text-slate-700 pt-1">
+                <strong>Conclusion:</strong> Since \(Q &gt; K_p^{\text{th}}\) (and \(\Delta_r G &gt; 0\) for the forward reaction), the system reacts spontaneously <strong>from right to left</strong> (forming reactants).
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- ================= 3. PROGRESS BAR ================= -->
+    <div id="progressWrapper" class="hidden bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between gap-4">
+      <div class="text-sm font-bold text-slate-700">
+        Part 2 — Your Worksheet Progress: <span id="progressCount" class="text-indigo-700 font-mono">0 / 12</span> steps solved
+      </div>
+      <div class="w-48 bg-slate-200 h-2.5 rounded-full overflow-hidden">
+        <div id="progressBar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- ================= 4. INDIVIDUALIZED EXERCISES CONTAINER ================= -->
+    <div id="worksheetContent" class="hidden space-y-6">
+
+      <!-- ================= PROBLEM 1 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 1 &bull; L03 Second Law (Entropy Changes of Ideal Gases)</span>
+            <h2 class="text-lg font-bold text-slate-900">Reversible vs. Vacuum Expansion &amp; Combined <em>T</em>–<em>V</em> Entropy Change</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">03_Thermodynamics_2nd_3rd_Law.pdf</code> Slides 11–14 (Clausius &amp; Entropy changes), Slide 24 (Formulae)</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> L03 Exercises #2 &amp; #4 (Pages 25–28)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          A sample of <strong class="text-indigo-700 font-mono" id="p1_n">--</strong> mol of Neon (Ne, monoatomic ideal gas with <em>C<sub>V,m</sub></em> = 1.5 &middot; <em>R</em> = 12.47 J mol<sup>&minus;1</sup> K<sup>&minus;1</sup>) 
+          at an initial temperature of <em>T<sub>i</sub></em> = <strong class="text-indigo-700 font-mono" id="p1_Ti">--</strong> K expands from an initial volume of 
+          <em>V<sub>i</sub></em> = <strong class="text-indigo-700 font-mono" id="p1_Vi">--</strong> dm<sup>3</sup> to a final volume of 
+          <em>V<sub>f</sub></em> = <strong class="text-indigo-700 font-mono" id="p1_Vf">--</strong> dm<sup>3</sup>.
+        </p>
+
+        <div id="prof_p1" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 1.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1a: Calculate the system entropy change \(\Delta S_{\text{sys}} = n R \ln\left(\frac{V_f}{V_i}\right)\) for an isothermal expansion from \(V_i\) to \(V_f\) (in J K<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_1" type="number" step="any" placeholder="ΔS_sys in J/K" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">J K<sup>&minus;1</sup></span>
+            <button onclick="checkStep(1, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 1.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1b: Since \(S\) is a state function, \(\Delta S_{\text{sys}}\) is identical for a reversible and an irreversible isothermal expansion. What is the entropy change of the <em>surroundings</em> \(\Delta S_{\text{sur}}\) if the isothermal expansion is carried out <strong>reversibly</strong> (so that \(\Delta S_{\text{tot}} = \Delta S_{\text{sys}} + \Delta S_{\text{sur}} = 0\))?
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_2" type="number" step="any" placeholder="ΔS_sur in J/K" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">J K<sup>&minus;1</sup> (watch the sign!)</span>
+            <button onclick="checkStep(1, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 1.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1c: Now suppose the Neon sample is simultaneously expanded from \(V_i\) to \(V_f\) <em>and</em> heated from \(T_i\) to \(T_f = \) <strong class="text-indigo-700 font-mono" id="p1_Tf">--</strong> K. Calculate the total system entropy change \(\Delta S_{\text{sys,tot}} = n R \ln\left(\frac{V_f}{V_i}\right) + n C_{V,m} \ln\left(\frac{T_f}{T_i}\right)\) (in J K<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_3" type="number" step="any" placeholder="ΔS_sys,tot in J/K" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">J K<sup>&minus;1</sup></span>
+            <button onclick="checkStep(1, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 2 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 2 &bull; L03/L06 Gas Mixing (Try-Test 1 Q5 Benchmark)</span>
+            <h2 class="text-lg font-bold text-slate-900">Entropy of Mixing \(\Delta_{\text{mix}}S\) and Gibbs Energy of Mixing \(\Delta_{\text{mix}}G\)</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">06_Phases_II.pdf</code> Slides 6–7 (Mixing of ideal gases) &amp; <code class="font-mono bg-white px-1.5 py-0.5 rounded border">03_Thermodynamics_2nd_3rd_Law.pdf</code> Slide 18</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> <code class="font-mono bg-white px-1 py-0.5 rounded border">T01_TryTests.pdf</code> Question 5 (Page 7) &amp; L06 In-Slide Ex. 2 (Slide 7)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          In a gas mixing station, <strong class="text-indigo-700 font-mono" id="p2_nHe">--</strong> mol of Helium (He) and 
+          <strong class="text-indigo-700 font-mono" id="p2_nAr">--</strong> mol of Argon (Ar) are mixed isothermally at 
+          &vartheta; = <strong class="text-indigo-700 font-mono" id="p2_TC">--</strong> &deg;C and constant total pressure. Assume ideal gas behaviour.
+        </p>
+
+        <div id="prof_p2" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 2.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2a: Calculate the mole fraction of Helium \(x(\text{He}) = \frac{n(\text{He})}{n(\text{He}) + n(\text{Ar})}\):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_1" type="number" step="any" placeholder="x(He) (0 to 1)" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">(dimensionless)</span>
+            <button onclick="checkStep(2, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 2.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2b: Calculate the entropy of mixing \(\Delta_{\text{mix}}S = -n_{\text{tot}} R \left[x(\text{He})\ln x(\text{He}) + x(\text{Ar})\ln x(\text{Ar})\right]\) (in J K<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_2" type="number" step="any" placeholder="Δ_mix S in J/K" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">J K<sup>&minus;1</sup></span>
+            <button onclick="checkStep(2, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 2.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2c: Calculate the Gibbs energy of mixing \(\Delta_{\text{mix}}G = -T \cdot \Delta_{\text{mix}}S\) at this temperature (in kJ, watch the sign!):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_3" type="number" step="any" placeholder="Δ_mix G in kJ" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">kJ</span>
+            <button onclick="checkStep(2, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 3 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 3 &bull; L03/L04 Kirchhoff's Law &amp; Gibbs-Helmholtz (Quiz 1 Rep 2 Benchmark)</span>
+            <h2 class="text-lg font-bold text-slate-900">Temperature Dependence of \(\Delta_r H^\circ\), \(\Delta_r S^\circ\) and \(\Delta_r G^\circ\)</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">03_Thermodynamics_2nd_3rd_Law.pdf</code> Slide 22 &amp; <code class="font-mono bg-white px-1.5 py-0.5 rounded border">04_Thermochemistry_Combination.pdf</code> Slides 8–10</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> <code class="font-mono bg-white px-1 py-0.5 rounded border">Q01_Quizzes.pdf</code> (2nd Rep, Q1: \(\text{SnO}_2 + 2\,\text{H}_2\)) &amp; <code class="font-mono bg-white px-1 py-0.5 rounded border">T01_TryTests.pdf</code> (Q8)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          Consider the reduction of tin(IV) oxide with hydrogen gas: \(\text{SnO}_2(s) + 2\,\text{H}_2(g) \rightleftharpoons \text{Sn}(s) + 2\,\text{H}_2\text{O}(g)\).<br>
+          At \(T_1 = 298\text{ K}\), the standard reaction quantities are \(\Delta_r H^\circ_{298} = +\)<strong class="text-indigo-700 font-mono" id="p3_dH298">--</strong> kJ mol<sup>&minus;1</sup>, 
+          \(\Delta_r S^\circ_{298} = +\)<strong class="text-indigo-700 font-mono" id="p3_dS298">--</strong> J mol<sup>&minus;1</sup> K<sup>&minus;1</sup>, and the molar heat capacity of reaction is 
+          \(\Delta_r C_p = +5.40\text{ J mol}^{-1}\text{K}^{-1}\) (assumed constant). The reactor is heated to \(T_2 = \) <strong class="text-indigo-700 font-mono" id="p3_T2">--</strong> K.
+        </p>
+
+        <div id="prof_p3" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 3.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3a: Calculate \(\Delta_r H^\circ(T_2) = \Delta_r H^\circ_{298} + \Delta_r C_p \cdot (T_2 - 298)\) at the elevated temperature \(T_2\) (in kJ mol<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_1" type="number" step="any" placeholder="ΔrH°(T2) in kJ/mol" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">kJ mol<sup>&minus;1</sup></span>
+            <button onclick="checkStep(3, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 3.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3b: Calculate \(\Delta_r S^\circ(T_2) = \Delta_r S^\circ_{298} + \Delta_r C_p \cdot \ln\left(\frac{T_2}{298}\right)\) at \(T_2\) (in J mol<sup>&minus;1</sup> K<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_2" type="number" step="any" placeholder="ΔrS°(T2) in J/(mol K)" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">J mol<sup>&minus;1</sup> K<sup>&minus;1</sup></span>
+            <button onclick="checkStep(3, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 3.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3c: Calculate the standard Gibbs energy of reaction \(\Delta_r G^\circ(T_2) = \Delta_r H^\circ(T_2) - T_2 \cdot \Delta_r S^\circ(T_2)\) at \(T_2\) (in kJ mol<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_3" type="number" step="any" placeholder="ΔrG°(T2) in kJ/mol" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">kJ mol<sup>&minus;1</sup></span>
+            <button onclick="checkStep(3, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 4 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 4 &bull; L04 Chemical Equilibrium (\(K_p^{\text{th}}\), Shift Temperature &amp; Quotient \(Q\))</span>
+            <h2 class="text-lg font-bold text-slate-900">Gas-Phase Dissociation of \(\text{PCl}_5\): Inversion Temperature, \(K_p^{\text{th}}\) &amp; \(\Delta_r G\)</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">04_Thermochemistry_Combination.pdf</code> Slides 13–15 (\(\Delta_r G^\circ = -RT\ln K_p^{\text{th}}\) &amp; \(Q\)), Slide 26</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> L04 In-Slide Ex. 4 (Slides 26–29) &amp; L04 Exercises #4 &amp; #6 (Pages 31–34)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          For the endothermic gas-phase dissociation \(\text{PCl}_5(g) \rightleftharpoons \text{PCl}_3(g) + \text{Cl}_2(g)\), the reaction enthalpy is 
+          \(\Delta_r H^\circ = +\)<strong class="text-indigo-700 font-mono" id="p4_dH">--</strong> kJ mol<sup>&minus;1</sup> and the reaction entropy is 
+          \(\Delta_r S^\circ = +\)<strong class="text-indigo-700 font-mono" id="p4_dS">--</strong> J mol<sup>&minus;1</sup> K<sup>&minus;1</sup> (assume both values remain constant with temperature).
+        </p>
+
+        <div id="prof_p4" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 4.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4a: Calculate the inversion temperature \(T_{\text{inv}}\) (in K) where the equilibrium shifts from the reactant side to the product side (\(K_p^{\text{th}} = 1 \implies \Delta_r G^\circ = 0\)):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_1" type="number" step="any" placeholder="T_inv in K" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">K</span>
+            <button onclick="checkStep(4, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 4.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4b: Calculate the dimensionless thermodynamic equilibrium constant \(K_p^{\text{th}} = \exp\left(-\frac{\Delta_r H^\circ - T_{\text{op}}\Delta_r S^\circ}{R \cdot T_{\text{op}}}\right)\) at an operating temperature of \(T_{\text{op}} = \) <strong class="text-indigo-700 font-mono" id="p4_Top">--</strong> K:
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_2" type="number" step="any" placeholder="Kp^th (dimensionless)" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">(dimensionless)</span>
+            <button onclick="checkStep(4, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 4.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4c: At \(T_{\text{op}}\), a vessel contains partial pressures \(p(\text{PCl}_5) = 0.80\text{ bar}\), \(p(\text{PCl}_3) = 0.20\text{ bar}\), and \(p(\text{Cl}_2) = 0.20\text{ bar}\) (so \(Q^{\text{th}} = \frac{0.20 \cdot 0.20}{0.80} = 0.050\)). Calculate \(\Delta_r G = \Delta_r G^\circ + R T_{\text{op}} \ln Q^{\text{th}}\) (in kJ mol<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_3" type="number" step="any" placeholder="ΔrG in kJ/mol" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">kJ mol<sup>&minus;1</sup></span>
+            <button onclick="checkStep(4, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SUBMISSION TOKEN BOX ================= -->
+      <section class="bg-indigo-950 text-white p-6 rounded-xl shadow-lg border-2 border-amber-400">
+        <div class="flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <h3 class="font-bold text-lg text-amber-400">📤 Submission Verification Token</h3>
+            <p class="text-indigo-200 text-xs mt-1">
+              Copy this token and paste it into the <strong>Unit 02 Submission Form</strong> in MS Teams. It encodes your Student ID and your current score.
+            </p>
+          </div>
+          <button onclick="copyToken()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs transition">
+            Copy Token
+          </button>
+        </div>
+        <div class="mt-4 bg-indigo-900/90 p-3.5 rounded-lg border border-indigo-700 flex items-center justify-between">
+          <code id="tokenDisplay" class="font-mono text-sm md:text-base text-amber-300 select-all">Solve at least 1 step to generate token...</code>
+          <span id="copyFeedback" class="text-xs text-emerald-400 font-semibold hidden">Copied! ✓</span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-6 mt-10 text-center text-xs text-slate-400">
+    IMC University of Applied Sciences Krems &bull; Physical Chemistry Exercise Tutorial &bull; Mag. Erich Kerzendorfer
+  </footer>
+
+  <script>
+    const STORAGE_KEY = "PC_IMC_UNIT02_STATE_V1";
+    let params = {};
+    let solved = {
+      "1_1": false, "1_2": false, "1_3": false,
+      "2_1": false, "2_2": false, "2_3": false,
+      "3_1": false, "3_2": false, "3_3": false,
+      "4_1": false, "4_2": false, "4_3": false
+    };
+
+    function toggleModelStep(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function showAllModelSteps(prefix, count) {
+      const firstHidden = document.getElementById(`${prefix}_1`).classList.contains('hidden');
+      for (let i = 1; i <= count; i++) {
+        const el = document.getElementById(`${prefix}_${i}`);
+        if (el) el.classList.toggle('hidden', !firstHidden);
+      }
+    }
+
+    function toggleChalkboardScript() {
+      const boxes = document.querySelectorAll('.chalkboard-box');
+      const isHidden = boxes[0].classList.contains('hidden');
+      boxes.forEach(b => b.classList.toggle('hidden', !isHidden));
+      document.getElementById('btnChalkboard').textContent = isHidden 
+        ? "🎙️ Hide Spoken Explanation Hints" 
+        : "🎙️ Show Spoken Explanation Hints";
+    }
+
+    function createRng(seedStr) {
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        h = Math.imul(h ^ seedStr.charCodeAt(i), 16777619);
+      }
+      return function() {
+        h += h << 13; h ^= h >>> 7;
+        h += h << 3;  h ^= h >>> 17;
+        return ((h += h << 5) >>> 0) / 4294967296;
+      };
+    }
+
+    function withinTol(val, target, relTol = 0.018) {
+      if (isNaN(val)) return false;
+      if (target === 0) return Math.abs(val) < 0.01;
+      return Math.abs(val - target) <= Math.abs(target) * relTol;
+    }
+
+    function initWorksheet(fromStorage = false) {
+      const rawId = document.getElementById('studentIdInput').value.trim();
+      if (rawId.length < 4) {
+        alert("Please enter your Student ID (at least 4 characters).");
+        return;
+      }
+
+      const isProf = rawId.toUpperCase().startsWith("PROF-");
+      const cleanId = isProf ? rawId.slice(5).trim() : rawId;
+      const rng = createRng(cleanId);
+
+      // --- Problem 1 Parameters ---
+      const p1_n = Math.round((1.2 + rng() * 1.8) * 10) / 10;   // 1.2 to 3.0 mol
+      const p1_Ti = Math.round(285 + rng() * 35);               // 285 to 320 K
+      const p1_Vi = Math.round((2.0 + rng() * 2.5) * 10) / 10;  // 2.0 to 4.5 dm3
+      const p1_Vf = Math.round((p1_Vi + 4.5 + rng() * 5.0) * 10) / 10;
+      const p1_Tf = Math.round(p1_Ti + 70 + rng() * 80);        // +70 to +150 K
+      const Cvm_Ne = 1.5 * 8.314;                               // 12.471 J/(mol K)
+      const dS_sys_iso = p1_n * 8.314 * Math.log(p1_Vf / p1_Vi);
+      const dS_sur_rev = -dS_sys_iso;
+      const dS_sys_tot = dS_sys_iso + p1_n * Cvm_Ne * Math.log(p1_Tf / p1_Ti);
+
+      // --- Problem 2 Parameters ---
+      const p2_nHe = Math.round((1.5 + rng() * 3.0) * 10) / 10; // 1.5 to 4.5 mol He
+      const p2_nAr = Math.round((4.5 + rng() * 5.5) * 10) / 10; // 4.5 to 10.0 mol Ar
+      const p2_TC = Math.round(20 + rng() * 40);                // 20 to 60 °C
+      const p2_TK = p2_TC + 273.15;
+      const p2_ntot = p2_nHe + p2_nAr;
+      const xHe = p2_nHe / p2_ntot;
+      const xAr = p2_nAr / p2_ntot;
+      const dS_mix = -p2_ntot * 8.314 * (xHe * Math.log(xHe) + xAr * Math.log(xAr));
+      const dG_mix_kJ = -(p2_TK * dS_mix) / 1000;
+
+      // --- Problem 3 Parameters ---
+      const p3_dH298 = Math.round((88.0 + rng() * 14.0) * 10) / 10; // 88.0 to 102.0 kJ/mol
+      const p3_dS298 = Math.round((112.0 + rng() * 18.0) * 10) / 10; // 112.0 to 130.0 J/(mol K)
+      const p3_dCp = 5.40;                                           // J/(mol K)
+      const p3_T2 = Math.round(750 + rng() * 150);                   // 750 to 900 K
+      const dH_T2_kJ = p3_dH298 + (p3_dCp * (p3_T2 - 298)) / 1000;
+      const dS_T2_J = p3_dS298 + p3_dCp * Math.log(p3_T2 / 298);
+      const dG_T2_kJ = dH_T2_kJ - (p3_T2 * dS_T2_J) / 1000;
+
+      // --- Problem 4 Parameters ---
+      const p4_dH = Math.round((84.0 + rng() * 12.0) * 10) / 10;    // 84.0 to 96.0 kJ/mol
+      const p4_dS = Math.round((165.0 + rng() * 20.0) * 10) / 10;   // 165.0 to 185.0 J/(mol K)
+      const T_inv = (p4_dH * 1000) / p4_dS;
+      const p4_Top = Math.round(T_inv - 15 + rng() * 45);           // near T_inv so Kp is well-behaved
+      const dG0_Top_J = (p4_dH * 1000) - p4_Top * p4_dS;
+      const Kp_Top = Math.exp(-dG0_Top_J / (8.314 * p4_Top));
+      const Q_val = 0.050;
+      const dG_actual_kJ = (dG0_Top_J + 8.314 * p4_Top * Math.log(Q_val)) / 1000;
+
+      params = {
+        cleanId, isProf,
+        p1_n, p1_Ti, p1_Vi, p1_Vf, p1_Tf, Cvm_Ne, dS_sys_iso, dS_sur_rev, dS_sys_tot,
+        p2_nHe, p2_nAr, p2_TC, p2_TK, p2_ntot, xHe, xAr, dS_mix, dG_mix_kJ,
+        p3_dH298, p3_dS298, p3_dCp, p3_T2, dH_T2_kJ, dS_T2_J, dG_T2_kJ,
+        p4_dH, p4_dS, T_inv, p4_Top, dG0_Top_J, Kp_Top, Q_val, dG_actual_kJ
+      };
+
+      document.getElementById('p1_n').textContent = p1_n.toFixed(2);
+      document.getElementById('p1_Ti').textContent = p1_Ti;
+      document.getElementById('p1_Vi').textContent = p1_Vi.toFixed(1);
+      document.getElementById('p1_Vf').textContent = p1_Vf.toFixed(1);
+      document.getElementById('p1_Tf').textContent = p1_Tf;
+
+      document.getElementById('p2_nHe').textContent = p2_nHe.toFixed(2);
+      document.getElementById('p2_nAr').textContent = p2_nAr.toFixed(2);
+      document.getElementById('p2_TC').textContent = p2_TC;
+
+      document.getElementById('p3_dH298').textContent = p3_dH298.toFixed(1);
+      document.getElementById('p3_dS298').textContent = p3_dS298.toFixed(1);
+      document.getElementById('p3_T2').textContent = p3_T2;
+
+      document.getElementById('p4_dH').textContent = p4_dH.toFixed(1);
+      document.getElementById('p4_dS').textContent = p4_dS.toFixed(1);
+      document.getElementById('p4_Top').textContent = p4_Top;
+
+      document.getElementById('worksheetContent').classList.remove('hidden');
+      document.getElementById('progressWrapper').classList.remove('hidden');
+
+      const banner = document.getElementById('statusBanner');
+      banner.classList.remove('hidden');
+      if (isProf) {
+        banner.textContent = `👨‍🏫 LECTURER MODE ACTIVE for Student ID ${cleanId} — Exact target values shown below each problem.`;
+        showProfBoxes(true);
+      } else {
+        banner.textContent = `✓ Individual parameters locked for Student ID: ${cleanId}`;
+        showProfBoxes(false);
+      }
+
+      if (!fromStorage) {
+        saveState();
+      }
+      updateProgressUI();
+    }
+
+    function showProfBoxes(show) {
+      const p = params;
+      const ids = ['prof_p1', 'prof_p2', 'prof_p3', 'prof_p4'];
+      ids.forEach(id => document.getElementById(id).classList.toggle('hidden', !show));
+      if (!show) return;
+
+      document.getElementById('prof_p1').innerHTML = 
+        `<strong>[PROF SOLUTIONS P1]</strong> <strong>1a:</strong> ΔS_sys = +${p.dS_sys_iso.toFixed(2)} J/K | <strong>1b:</strong> ΔS_sur(rev) = ${p.dS_sur_rev.toFixed(2)} J/K | <strong>1c:</strong> ΔS_sys,tot = +${p.dS_sys_tot.toFixed(2)} J/K`;
+      document.getElementById('prof_p2').innerHTML = 
+        `<strong>[PROF SOLUTIONS P2]</strong> n_tot=${p.p2_ntot.toFixed(2)} mol, T=${p.p2_TK.toFixed(2)} K | <strong>2a:</strong> x(He) = ${p.xHe.toFixed(4)} | <strong>2b:</strong> Δ_mix S = +${p.dS_mix.toFixed(2)} J/K | <strong>2c:</strong> Δ_mix G = ${p.dG_mix_kJ.toFixed(2)} kJ`;
+      document.getElementById('prof_p3').innerHTML = 
+        `<strong>[PROF SOLUTIONS P3]</strong> <strong>3a:</strong> ΔrH°(${p.p3_T2}) = +${p.dH_T2_kJ.toFixed(2)} kJ/mol | <strong>3b:</strong> ΔrS°(${p.p3_T2}) = +${p.dS_T2_J.toFixed(2)} J/(mol K) | <strong>3c:</strong> ΔrG°(${p.p3_T2}) = ${p.dG_T2_kJ.toFixed(2)} kJ/mol`;
+      document.getElementById('prof_p4').innerHTML = 
+        `<strong>[PROF SOLUTIONS P4]</strong> <strong>4a:</strong> T_inv = ${p.T_inv.toFixed(1)} K | <strong>4b:</strong> Kp^th = ${p.Kp_Top.toFixed(3)} (ΔrG°=${(p.dG0_Top_J/1000).toFixed(2)} kJ/mol) | <strong>4c:</strong> ΔrG = ${p.dG_actual_kJ.toFixed(2)} kJ/mol`;
+    }
+
+    function setFeedback(key, isCorrect, msg, isTrap = false) {
+      const fb = document.getElementById(`fb_${key}`);
+      fb.textContent = msg;
+      if (isCorrect) {
+        fb.className = "text-xs font-semibold text-emerald-600";
+        solved[key] = true;
+      } else if (isTrap) {
+        fb.className = "text-xs font-semibold text-amber-600";
+      } else {
+        fb.className = "text-xs font-semibold text-rose-600";
+      }
+      saveState();
+      updateProgressUI();
+    }
+
+    function checkStep(prob, step) {
+      const key = `${prob}_${step}`;
+      const val = parseFloat(document.getElementById(`inp_${key}`).value);
+      const p = params;
+
+      if (isNaN(val)) {
+        setFeedback(key, false, "⚠️ Please enter a numerical value.");
+        return;
+      }
+
+      // --- PROBLEM 1 CHECKS ---
+      if (key === "1_1") {
+        const trapLog10 = p.p1_n * 8.314 * Math.log10(p.p1_Vf / p.p1_Vi);
+        const trapForgotN = 8.314 * Math.log(p.p1_Vf / p.p1_Vi);
+        if (withinTol(val, p.dS_sys_iso, 0.018)) {
+          setFeedback(key, true, "✅ Correct! Isothermal expansion increases system entropy.");
+        } else if (withinTol(val, -p.dS_sys_iso, 0.02)) {
+          setFeedback(key, false, "⚠️ Sign Trap: Since V_f > V_i, ln(V_f/V_i) > 0, so ΔS_sys is positive!", true);
+        } else if (withinTol(val, trapLog10, 0.02)) {
+          setFeedback(key, false, "⚠️ Logarithm Trap: Use the natural logarithm (ln), not log10!", true);
+        } else if (withinTol(val, trapForgotN, 0.02)) {
+          setFeedback(key, false, "⚠️ Don't forget to multiply by the number of moles n!", true);
+        } else {
+          setFeedback(key, false, "❌ Use ΔS_sys = n * 8.314 * ln(V_f / V_i).");
+        }
+      }
+
+      if (key === "1_2") {
+        if (withinTol(val, p.dS_sur_rev, 0.018)) {
+          setFeedback(key, true, "✅ Spot on! For a reversible process, ΔS_sur = -ΔS_sys (so ΔS_tot = 0).");
+        } else if (withinTol(val, -p.dS_sur_rev, 0.02)) {
+          setFeedback(key, false, "⚠️ Sign Trap! Since heat flows from the surroundings into the expanding gas, ΔS_sur = -q_rev/T = -ΔS_sys must be NEGATIVE!", true);
+        } else if (Math.abs(val) < 0.01) {
+          setFeedback(key, false, "⚠️ Trap: ΔS_sur = 0 is true for an irreversible vacuum expansion (q=0). Here we asked for the REVERSIBLE case where ΔS_tot = 0!", true);
+        } else {
+          setFeedback(key, false, "❌ Since ΔS_tot = ΔS_sys + ΔS_sur = 0 for a reversible process, ΔS_sur = -ΔS_sys.");
+        }
+      }
+
+      if (key === "1_3") {
+        const trapUsedCp = p.dS_sys_iso + p.p1_n * (2.5 * 8.314) * Math.log(p.p1_Tf / p.p1_Ti);
+        const trapOnlyTemp = p.p1_n * p.Cvm_Ne * Math.log(p.p1_Tf / p.p1_Ti);
+        if (withinTol(val, p.dS_sys_tot, 0.02)) {
+          setFeedback(key, true, "✅ Correct! Both volume and temperature contributions summed properly.");
+        } else if (withinTol(val, trapUsedCp, 0.015)) {
+          setFeedback(key, false, "⚠️ Trap: When combining ΔV and ΔT, use Cv,m = 1.5*R = 12.47 J/(mol K) for the temperature term (not Cp,m)!", true);
+        } else if (withinTol(val, trapOnlyTemp, 0.02)) {
+          setFeedback(key, false, "⚠️ That is only the temperature part! Add ΔS_sys from Step 1a.", true);
+        } else {
+          setFeedback(key, false, "❌ Add Step 1a to n * 12.47 * ln(T_f / T_i).");
+        }
+      }
+
+      // --- PROBLEM 2 CHECKS ---
+      if (key === "2_1") {
+        const trapRatio = p.p2_nHe / p.p2_nAr;
+        if (withinTol(val, p.xHe, 0.015)) {
+          setFeedback(key, true, "✅ Correct mole fraction x(He)!");
+        } else if (withinTol(val, trapRatio, 0.02)) {
+          setFeedback(key, false, "⚠️ Trap: Divide n(He) by the TOTAL moles n(He) + n(Ar), not just by n(Ar)!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate n(He) / (n(He) + n(Ar)).");
+        }
+      }
+
+      if (key === "2_2") {
+        const trapPerMole = p.dS_mix / p.p2_ntot;
+        if (withinTol(val, p.dS_mix, 0.02)) {
+          setFeedback(key, true, "✅ Correct positive entropy of mixing!");
+        } else if (withinTol(val, -p.dS_mix, 0.02)) {
+          setFeedback(key, false, "⚠️ Sign Trap! Since ln(x) is negative, the minus sign in front makes Δ_mix S POSITIVE!", true);
+        } else if (withinTol(Math.abs(val), trapPerMole, 0.02)) {
+          setFeedback(key, false, "⚠️ Don't forget to multiply by the total amount of gas n_tot = n(He) + n(Ar)!", true);
+        } else {
+          setFeedback(key, false, "❌ Use Δ_mix S = -n_tot * 8.314 * (x_He*ln(x_He) + x_Ar*ln(x_Ar)).");
+        }
+      }
+
+      if (key === "2_3") {
+        const trapJoules = p.dG_mix_kJ * 1000;
+        const trapCelsius = -(p.p2_TC * p.dS_mix) / 1000;
+        if (withinTol(val, p.dG_mix_kJ, 0.02)) {
+          setFeedback(key, true, "✅ Spot on! Negative Δ_mix G confirms spontaneous mixing.");
+        } else if (withinTol(val, -p.dG_mix_kJ, 0.02)) {
+          setFeedback(key, false, "⚠️ Sign Trap! Spontaneous mixing always has a NEGATIVE Gibbs energy: Δ_mix G = -T * Δ_mix S < 0!", true);
+        } else if (withinTol(Math.abs(val), Math.abs(trapJoules), 0.03)) {
+          setFeedback(key, false, "⚠️ Unit Trap: Your result is in Joules (J). Divide by 1000 to get kJ!", true);
+        } else if (withinTol(Math.abs(val), Math.abs(trapCelsius), 0.05)) {
+          setFeedback(key, false, "⚠️ Unit Trap: Convert temperature to Kelvin (T = °C + 273.15)!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate Δ_mix G = -(T_in_K * Δ_mix_S) / 1000.");
+        }
+      }
+
+      // --- PROBLEM 3 CHECKS ---
+      if (key === "3_1") {
+        const trapNo1000 = p.p3_dH298 + p.p3_dCp * (p.p3_T2 - 298);
+        if (withinTol(val, p.dH_T2_kJ, 0.015)) {
+          setFeedback(key, true, "✅ Correct! Unit conversion of ΔrCp (J → kJ) mastered.");
+        } else if (withinTol(val, trapNo1000, 0.05)) {
+          setFeedback(key, false, "⚠️ Classic Unit Trap! ΔrH° is in kJ/mol, but ΔrCp = 5.40 is in J/(mol K). Divide ΔrCp*(T2 - 298) by 1000 before adding!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate ΔrH°_298 + (5.40 * (T2 - 298)) / 1000.");
+        }
+      }
+
+      if (key === "3_2") {
+        const trapLinearT = p.p3_dS298 + p.p3_dCp * (p.p3_T2 - 298);
+        if (withinTol(val, p.dS_T2_J, 0.015)) {
+          setFeedback(key, true, "✅ Correct reaction entropy at T2!");
+        } else if (withinTol(val, trapLinearT, 0.05)) {
+          setFeedback(key, false, "⚠️ Formula Trap: For entropy, Kirchhoff's law uses ΔrCp * ln(T2 / 298), not (T2 - 298)!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate ΔrS°_298 + 5.40 * ln(T2 / 298).");
+        }
+      }
+
+      if (key === "3_3") {
+        const trapNo1000 = p.dH_T2_kJ - p.p3_T2 * p.dS_T2_J;
+        const trapUsed298 = p.dH_T2_kJ - (298 * p.dS_T2_J) / 1000;
+        if (withinTol(val, p.dG_T2_kJ, 0.03)) {
+          setFeedback(key, true, "✅ Excellent! Gibbs-Helmholtz at T2 solved accurately.");
+        } else if (withinTol(val, trapNo1000, 0.05)) {
+          setFeedback(key, false, "⚠️ Unit Trap! Divide T2 * ΔrS°(T2) by 1000 to convert J/mol to kJ/mol before subtracting from ΔrH°(T2)!", true);
+        } else if (withinTol(val, trapUsed298, 0.05)) {
+          setFeedback(key, false, "⚠️ Temperature Trap: Multiply ΔrS°(T2) by T2, not by 298 K!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate ΔrH°(T2) - (T2 * ΔrS°(T2)) / 1000.");
+        }
+      }
+
+      // --- PROBLEM 4 CHECKS ---
+      if (key === "4_1") {
+        const trapNo1000 = p.p4_dH / p.p4_dS;
+        const trapCelsius = p.T_inv - 273.15;
+        if (withinTol(val, p.T_inv, 0.015)) {
+          setFeedback(key, true, "✅ Correct inversion temperature in Kelvin!");
+        } else if (withinTol(val, trapNo1000, 0.05)) {
+          setFeedback(key, false, "⚠️ Unit Trap! Multiply ΔrH° (in kJ/mol) by 1000 so both numerator and denominator are in Joules!", true);
+        } else if (withinTol(val, trapCelsius, 0.03)) {
+          setFeedback(key, false, "⚠️ T = ΔrH° / ΔrS° directly gives Kelvin (K)! Do not subtract 273.15.", true);
+        } else {
+          setFeedback(key, false, "❌ Use T_inv = (ΔrH° * 1000) / ΔrS°.");
+        }
+      }
+
+      if (key === "4_2") {
+        const trapForgotMinus = Math.exp(p.dG0_Top_J / (8.314 * p.p4_Top));
+        const trapkJInExp = Math.exp(-(p.dG0_Top_J / 1000) / (8.314 * p.p4_Top));
+        if (withinTol(val, p.Kp_Top, 0.035)) {
+          setFeedback(key, true, "✅ Correct equilibrium constant Kp^th!");
+        } else if (withinTol(val, trapForgotMinus, 0.04)) {
+          setFeedback(key, false, "⚠️ Sign Trap in exponent: Kp = exp( -ΔrG° / (R*T) ). Check your minus sign!", true);
+        } else if (withinTol(val, trapkJInExp, 0.02)) {
+          setFeedback(key, false, "⚠️ Unit Trap in exponent: Express ΔrG° in J/mol (not kJ/mol) when dividing by R = 8.314 J/(mol K)!", true);
+        } else {
+          setFeedback(key, false, "❌ First find ΔrG° in J/mol: (ΔrH°*1000 - T_op*ΔrS°), then calculate exp(-ΔrG° / (8.314 * T_op)).");
+        }
+      }
+
+      if (key === "4_3") {
+        const trapJoules = p.dG_actual_kJ * 1000;
+        const trapPlusMinus = (p.dG0_Top_J - 8.314 * p.p4_Top * Math.log(p.Q_val)) / 1000;
+        if (withinTol(val, p.dG_actual_kJ, 0.03)) {
+          setFeedback(key, true, "✅ Spot on! Since ΔrG < 0 (Q < Kp), the reaction proceeds to the right.");
+        } else if (withinTol(Math.abs(val), Math.abs(trapJoules), 0.04)) {
+          setFeedback(key, false, "⚠️ Unit Trap: Your result is in J/mol. Divide by 1000 to get kJ/mol!", true);
+        } else if (withinTol(val, trapPlusMinus, 0.03)) {
+          setFeedback(key, false, "⚠️ Sign Trap: Use ΔrG = ΔrG° + R*T*ln(Q). Since Q = 0.050 < 1, R*T*ln(Q) is negative!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate ΔrG = R * T_op * ln(0.050 / Kp^th) / 1000 (in kJ/mol).");
+        }
+      }
+    }
+
+    function updateProgressUI() {
+      const total = 12;
+      const doneCount = Object.values(solved).filter(Boolean).length;
+      document.getElementById('progressCount').textContent = `${doneCount} / ${total}`;
+      document.getElementById('progressBar').style.width = `${(doneCount / total) * 100}%`;
+
+      if (doneCount > 0 && params.cleanId) {
+        const idNum = parseInt(params.cleanId.replace(/\D/g, '').slice(-4)) || 2468;
+        const hash = ((idNum * 19) + (doneCount * 37) + params.p2_TC).toString(16).toUpperCase();
+        document.getElementById('tokenDisplay').textContent = `PC1-U02-${params.cleanId}-${doneCount}of12-CHK${hash}`;
+      } else {
+        document.getElementById('tokenDisplay').textContent = "Solve at least 1 step to generate token...";
+      }
+    }
+
+    function copyToken() {
+      const tokenText = document.getElementById('tokenDisplay').textContent;
+      if (tokenText.startsWith("Solve")) return;
+      navigator.clipboard.writeText(tokenText);
+      const fb = document.getElementById('copyFeedback');
+      fb.classList.remove('hidden');
+      setTimeout(() => fb.classList.add('hidden'), 2500);
+    }
+
+    function saveState() {
+      if (!params.cleanId) return;
+      const inputs = {};
+      Object.keys(solved).forEach(k => {
+        inputs[k] = document.getElementById(`inp_${k}`).value;
+      });
+      const state = {
+        rawId: document.getElementById('studentIdInput').value.trim(),
+        solved,
+        inputs
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadSavedState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const state = JSON.parse(raw);
+        if (state.rawId) {
+          document.getElementById('studentIdInput').value = state.rawId;
+          if (state.solved) solved = state.solved;
+          initWorksheet(true);
+          if (state.inputs) {
+            Object.keys(state.inputs).forEach(k => {
+              const el = document.getElementById(`inp_${k}`);
+              if (el && state.inputs[k] !== undefined) el.value = state.inputs[k];
+              if (solved[k]) {
+                const fb = document.getElementById(`fb_${k}`);
+                fb.textContent = "✅ Solved (restored)";
+                fb.className = "text-xs font-semibold text-emerald-600";
+              }
+            });
+          }
+          updateProgressUI();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function resetProgress() {
+      if (!confirm("Reset all saved inputs and progress for Unit 02?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+
+    window.addEventListener('DOMContentLoaded', loadSavedState);
+  </script>
+</body>
+</html>

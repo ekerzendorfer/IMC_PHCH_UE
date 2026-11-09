@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PC Tutorial - Unit 03: Phase Equilibria &amp; Electrochemistry I</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {output: 'html', delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen pb-16">
+
+  <!-- Top Navigation & Banner -->
+  <header class="bg-indigo-950 text-white shadow-lg border-b-4 border-amber-500">
+    <div class="max-w-4xl mx-auto px-6 py-6">
+      <div class="flex flex-wrap justify-between items-center gap-2">
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="text-xs bg-indigo-800 hover:bg-indigo-700 text-indigo-100 px-3 py-1 rounded-lg font-semibold transition">
+            &larr; Course Hub
+          </a>
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-400">IMC Krems &bull; Physical Chemistry Tutorial</span>
+        </div>
+        <span class="text-xs bg-indigo-900 px-3 py-1 rounded-full text-indigo-200 font-mono">Topics: L05/L06 (Phases) &amp; L07 (Electrochem I)</span>
+      </div>
+
+      <h1 class="text-2xl md:text-3xl font-extrabold mt-3">Unit 03: Phase Equilibria &amp; Electrochemical Potentials</h1>
+      <p class="text-indigo-200 text-sm mt-1">
+        Part 1: In-Class Guided Modeling &bull; Part 2: Individualized Exercise Worksheet (saved automatically in your browser).
+      </p>
+
+      <!-- Student ID Bar -->
+      <div class="mt-5 flex flex-wrap items-center gap-3 bg-indigo-900/70 p-4 rounded-xl border border-indigo-800">
+        <label for="studentIdInput" class="text-xs font-bold uppercase tracking-wider text-indigo-200">Student ID:</label>
+        <input id="studentIdInput" type="text" placeholder="e.g. 2510456012" 
+               class="px-3.5 py-2 rounded-lg text-slate-900 font-mono text-sm w-48 focus:outline-none focus:ring-2 focus:ring-amber-400">
+        <button onclick="initWorksheet(false)" 
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm transition shadow">
+          Load My Worksheet
+        </button>
+        <button onclick="resetProgress()" 
+                class="text-xs text-indigo-300 hover:text-white underline ml-auto">
+          Reset Saved Inputs
+        </button>
+      </div>
+      <div id="statusBanner" class="mt-2 text-xs font-mono text-amber-300 hidden"></div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 mt-6 space-y-6">
+
+    <!-- ================= 1. FORMULA & CONSTANTS SHEET ================= -->
+    <details class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <summary class="px-6 py-4 font-bold text-slate-800 cursor-pointer hover:bg-slate-50 flex justify-between items-center select-none">
+        <span>📋 Formula Sheet, Constants &amp; Unit Rules for L05, L06 &amp; L07 (Click to expand)</span>
+        <span class="text-xs font-normal text-slate-500">Matches Lecture &amp; Exam Notation</span>
+      </summary>
+      <div class="px-6 pb-5 pt-2 border-t border-slate-100 text-sm space-y-4 bg-slate-50/60">
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-3 rounded text-xs text-amber-950">
+          <strong>⚠️ Key Unit &amp; Stoichiometry Traps in Unit 03:</strong><br>
+          &bull; <strong>Clausius-Clapeyron:</strong> Convert \(\Delta_{\text{vap}}H\) from \(\text{kJ mol}^{-1}\) to \(\text{J mol}^{-1}\) before dividing by \(R = 8.314\text{ J mol}^{-1}\text{K}^{-1}\)! Both pressures \(p_1, p_2\) can be in any unit (\(\text{mbar}\), \(\text{Torr}\), \(\text{bar}\)) as long as both use the <em>same</em> unit.<br>
+          &bull; <strong>Cryoscopy:</strong> Molality \(b = \frac{n_{\text{solute}}}{m_{\text{solvent}}(\text{in kg})}\) refers to <strong>kilograms of solvent</strong> (not grams!).<br>
+          &bull; <strong>Nernst Equation:</strong> Always raise species concentrations to their stoichiometric powers (e.g., \([\text{H}^+]^{14}\) or \([\text{Cr}^{3+}]^2\))!
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 mb-2">Phases I &amp; II (L05 Slide 24 &amp; L06 Slide 24)</h4>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              <li><strong>Gibbs Phase Rule:</strong> \(F = C - P + 2\) &nbsp;(Pure substance: \(F = 3 - P\))</li>
+              <li><strong>Clausius-Clapeyron Equation:</strong><br>
+                \(\ln\left(\frac{p_2}{p_1}\right) = \frac{\Delta_{\text{vap}}H}{R} \cdot \left(\frac{1}{T_1} - \frac{1}{T_2}\right)\)
+              </li>
+              <li><strong>Rearranged for Boiling Temperature \(T_2\):</strong><br>
+                \(\frac{1}{T_2} = \frac{1}{T_1} - \frac{R}{\Delta_{\text{vap}}H}\ln\left(\frac{p_2}{p_1}\right) = \frac{1}{T_1} + \frac{R}{\Delta_{\text{vap}}H}\ln\left(\frac{p_1}{p_2}\right)\)
+              </li>
+              <li><strong>Cryoscopy (Freezing Point Depression):</strong><br>
+                \(\Delta T_f = |K_f| \cdot b_{\text{solute}} = |K_f| \cdot \frac{m_{\text{solute}}}{M_{\text{solute}} \cdot m_{\text{solvent}}(\text{kg})}\)
+              </li>
+            </ul>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 mb-2">Electrochemistry I (L07 Slide 28)</h4>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              <li><strong>Constants:</strong> \(F = 96485\text{ C mol}^{-1}\), &nbsp;\(R = 8.314\text{ J mol}^{-1}\text{K}^{-1}\)</li>
+              <li><strong>Gibbs Energy &amp; Cell Voltage:</strong> \(\Delta_r G^\circ = -z \cdot F \cdot \Delta E^\circ\)</li>
+              <li><strong>Luther's Rule (Latimer Diagrams):</strong><br>
+                \(E^\circ_{\text{total}} = \frac{\sum z_i \cdot E^\circ_i}{\sum z_i} = \frac{z_1 E^\circ_1 + z_2 E^\circ_2}{z_1 + z_2}\)
+              </li>
+              <li><strong>Nernst Equation (Half-Cell \(\text{Ox} + z\,e^- \rightleftharpoons \text{Red}\)):</strong><br>
+                \(E = E^\circ + \frac{R \cdot T}{z \cdot F}\ln\left(\frac{a_{\text{Ox}}^{\nu_{\text{Ox}}}}{a_{\text{Red}}^{\nu_{\text{Red}}}}\right) \underset{298\text{ K}}{\approx} E^\circ + \frac{0.05916}{z}\log_{10}\left(\frac{c_{\text{Ox}}^{\nu_{\text{Ox}}}}{c_{\text{Red}}^{\nu_{\text{Red}}}}\right)\)
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- ================= 2. IN-CLASS GUIDED MODELING (VORRECHENBEISPIELE) ================= -->
+    <details id="modelingDetails" class="bg-white rounded-xl shadow-sm border-2 border-indigo-200 overflow-hidden" open>
+      <summary class="px-6 py-4 font-bold text-indigo-950 bg-indigo-50/70 cursor-pointer hover:bg-indigo-100/60 flex flex-wrap justify-between items-center gap-2 select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">👨‍🏫</span>
+          <span>Part 1: In-Class Guided Modeling (Worked Benchmark Examples)</span>
+        </div>
+        <span class="text-xs font-semibold bg-indigo-200 text-indigo-900 px-2.5 py-1 rounded-full">Step-by-Step Projector View</span>
+      </summary>
+
+      <div class="p-6 space-y-6 border-t border-indigo-100">
+        <div class="flex flex-wrap justify-between items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs">
+          <span class="text-slate-600">
+            💡 <strong>Study Tip:</strong> Click through the steps below to review the exact calculation strategy and unit checks before starting your personal worksheet.
+          </span>
+          <button onclick="toggleChalkboardScript()" id="btnChalkboard"
+                  class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-3 py-1.5 rounded transition">
+            🎙️ Show Spoken Explanation Hints
+          </button>
+        </div>
+
+        <!-- MODELING EXAMPLE A -->
+        <div class="border border-slate-200 rounded-xl p-5 space-y-4 bg-white">
+          <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase text-amber-600 tracking-wider">Modeling Example A &bull; Phases (Clausius-Clapeyron Vacuum Distillation)</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">Vacuum Distillation of Acetophenone: Required Pressure for Gentle Boiling</h3>
+            </div>
+            <span class="text-xs bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded font-mono">
+              Ref: Quiz 1 (2nd Rep, Q4) &bull; L05 Slides 18–22
+            </span>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-amber-500 text-sm text-slate-700 leading-relaxed">
+            <strong>Problem:</strong> The normal boiling point of acetophenone at \(p_1 = 760\text{ Torr}\) (\(1013\text{ mbar}\)) is \(\vartheta_1 = 202.0\text{ }^\circ\text{C}\). Its molar enthalpy of vaporization is \(\Delta_{\text{vap}}H = 43.6\text{ kJ mol}^{-1}\).<br>
+            To prevent thermal decomposition, we want to distil acetophenone at \(\vartheta_2 = 80.0\text{ }^\circ\text{C}\) in a vacuum distillation apparatus.<br>
+            <strong>a)</strong> Convert both temperatures into Kelvin (\(T_1, T_2\)).<br>
+            <strong>b)</strong> Calculate the dimensionless right-hand side \(\frac{\Delta_{\text{vap}}H}{R}\left(\frac{1}{T_1} - \frac{1}{T_2}\right)\).<br>
+            <strong>c)</strong> Calculate the required pressure \(p_2\) in the distillation apparatus (in \(\text{Torr}\) and \(\text{mbar}\)).
+          </div>
+
+          <!-- Lecturer Chalkboard Script A -->
+          <div class="chalkboard-box hidden bg-amber-50/80 border border-amber-300 p-3.5 rounded-lg text-xs text-amber-950 space-y-1.5">
+            <div class="font-bold uppercase tracking-wider text-amber-800">🎙️ Spoken Board Moderation (English Phrases):</div>
+            <p>&bull; <em>"Why do we use vacuum distillation in organic chemistry? Because high-boiling compounds decompose near \(200\text{ }^\circ\text{C}\), and the Clausius-Clapeyron equation tells us how much we must lower the pressure."</em></p>
+            <p>&bull; <em>"First, convert both temperatures to Kelvin! Never plug degrees Celsius into \(1/T_1 - 1/T_2\)."</em></p>
+            <p>&bull; <em>"Second, watch the units in \(\Delta_{\text{vap}}H / R\): \(\Delta_{\text{vap}}H\) is \(43600\text{ J mol}^{-1}\), divided by \(8.314\text{ J mol}^{-1}\text{K}^{-1}\). Since \(T_2 &lt; T_1\), the bracket \((1/T_1 - 1/T_2)\) is negative, which gives \(p_2 &lt; p_1\)."</em></p>
+          </div>
+
+          <!-- Interactive Step Buttons A -->
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="toggleModelStep('mA_1')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step a: Temperatures in K
+            </button>
+            <button onclick="toggleModelStep('mA_2')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step b: Exponent Term \(\ln(p_2/p_1)\)
+            </button>
+            <button onclick="toggleModelStep('mA_3')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step c: Vacuum Pressure \(p_2\)
+            </button>
+            <button onclick="showAllModelSteps('mA', 3)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition ml-auto">
+              Show / Hide All
+            </button>
+          </div>
+
+          <!-- Step Contents A -->
+          <div class="space-y-3 text-sm">
+            <div id="mA_1" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step a: Convert Temperatures to Kelvin</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(T_1 = 202.0 + 273.15 = \mathbf{475.15\text{ K}}\) &nbsp;|&nbsp; \(T_2 = 80.0 + 273.15 = \mathbf{353.15\text{ K}}\)
+              </p>
+            </div>
+
+            <div id="mA_2" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step b: Evaluate \(\ln(p_2/p_1)\) with \(\Delta_{\text{vap}}H = 43600\text{ J mol}^{-1}\)</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(\ln\left(\frac{p_2}{p_1}\right) = \frac{43600\text{ J mol}^{-1}}{8.314\text{ J mol}^{-1}\text{K}^{-1}} \cdot \left(\frac{1}{475.15\text{ K}} - \frac{1}{353.15\text{ K}}\right)\)<br>
+                \(\ln\left(\frac{p_2}{p_1}\right) = 5244.2\text{ K} \cdot \left(0.0021046 - 0.0028317\right)\text{ K}^{-1} = \mathbf{-3.813}\)
+              </p>
+            </div>
+
+            <div id="mA_3" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step c: Solve for \(p_2 = p_1 \cdot \exp(-3.813)\)</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(p_2 = 760\text{ Torr} \cdot e^{-3.813} = 760\text{ Torr} \cdot 0.02208 = \mathbf{16.8\text{ Torr}}\) &nbsp;\(\left(\text{or } 1013\text{ mbar} \cdot 0.02208 = \mathbf{22.4\text{ mbar}}\right)\)
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODELING EXAMPLE B -->
+        <div class="border border-slate-200 rounded-xl p-5 space-y-4 bg-white">
+          <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase text-amber-600 tracking-wider">Modeling Example B &bull; Electrochemistry I (Luther's Rule &amp; Nernst Equation)</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">Manganese Latimer Diagram &amp; pH-Dependent Reduction Potential</h3>
+            </div>
+            <span class="text-xs bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded font-mono">
+              Ref: L07 Slides 17, 26 &bull; Try-Test 1 Q11
+            </span>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-amber-500 text-sm text-slate-700 leading-relaxed">
+            <strong>Problem:</strong> In acidic solution (\(\text{pH} = 0\)), the Latimer diagram for Manganese shows the following standard potentials:<br>
+            $$\text{MnO}_4^-\text{ ( VII )} \xrightarrow{+1.695\text{ V}} \text{MnO}_2\text{ ( IV )} \xrightarrow{+1.230\text{ V}} \text{Mn}^{2+}\text{ ( II )}$$
+            <strong>a)</strong> Determine the electron numbers \(z_1, z_2\) for both steps and calculate the overall standard potential \(E^\circ(\text{MnO}_4^-/\text{Mn}^{2+})\) using Luther's rule.<br>
+            <strong>b)</strong> Write the balanced half-cell equation for \(\text{MnO}_4^- \to \text{Mn}^{2+}\) in acidic solution.<br>
+            <strong>c)</strong> Calculate the half-cell potential \(E(\text{MnO}_4^-/\text{Mn}^{2+})\) at \(298.15\text{ K}\) if \(\text{pH} = 3.00\) and all other species are at standard activity (\(1.00\text{ M}\)).
+          </div>
+
+          <!-- Lecturer Chalkboard Script B -->
+          <div class="chalkboard-box hidden bg-amber-50/80 border border-amber-300 p-3.5 rounded-lg text-xs text-amber-950 space-y-1.5">
+            <div class="font-bold uppercase tracking-wider text-amber-800">🎙️ Spoken Board Moderation (English Phrases):</div>
+            <p>&bull; <em>"Why are we NOT allowed to simply add two redox potentials \(E^\circ_1 + E^\circ_2\) when combining half-reactions? Because cell voltage is an intensive quantity, whereas Gibbs energy \(\Delta G^\circ = -zFE^\circ\) is extensive!"</em></p>
+            <p>&bull; <em>"That leads directly to Luther's rule: We weight each potential \(E^\circ_i\) by the number of transferred electrons \(z_i\) and divide by the total number of electrons \(z_{\text{tot}} = 3 + 2 = 5\)."</em></p>
+            <p>&bull; <em>"In Step c, notice that \(8\text{ protons}\) appear on the oxidized side of the half-reaction. At \(\text{pH} = 3\), \([\text{H}^+] = 10^{-3}\text{ M}\), so inside the logarithm we have \((10^{-3})^8 = 10^{-24}\)!"</em></p>
+          </div>
+
+          <!-- Interactive Step Buttons B -->
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="toggleModelStep('mB_1')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step a: Luther's Rule \(E^\circ\)
+            </button>
+            <button onclick="toggleModelStep('mB_2')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step b: Half-Reaction Stoichiometry
+            </button>
+            <button onclick="toggleModelStep('mB_3')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step c: Nernst Potential at \(\text{pH} = 3.0\)
+            </button>
+            <button onclick="showAllModelSteps('mB', 3)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition ml-auto">
+              Show / Hide All
+            </button>
+          </div>
+
+          <!-- Step Contents B -->
+          <div class="space-y-3 text-sm">
+            <div id="mB_1" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step a: Electron Numbers &amp; Luther's Rule</div>
+              <p class="text-slate-700">Step 1 (\(\text{+VII} \to \text{+IV}\)): \(z_1 = 3\). Step 2 (\(\text{+IV} \to \text{+II}\)): \(z_2 = 2\). Total electrons: \(z_{\text{tot}} = 3 + 2 = 5\):</p>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(E^\circ(\text{MnO}_4^-/\text{Mn}^{2+}) = \frac{z_1 \cdot E^\circ_1 + z_2 \cdot E^\circ_2}{z_1 + z_2} = \frac{3 \cdot 1.695\text{ V} + 2 \cdot 1.230\text{ V}}{5} = \frac{7.545\text{ V}}{5} = \mathbf{+1.509\text{ V}}\)
+              </p>
+            </div>
+
+            <div id="mB_2" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step b: Balanced Half-Reaction in Acidic Medium</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(\text{MnO}_4^-(aq) + 8\,\text{H}^+(aq) + 5\,e^- \rightleftharpoons \text{Mn}^{2+}(aq) + 4\,\text{H}_2\text{O}(l)\)
+              </p>
+            </div>
+
+            <div id="mB_3" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step c: Nernst Equation at \(\text{pH} = 3.00 \implies [\text{H}^+] = 10^{-3}\text{ M}\)</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(E = E^\circ + \frac{0.05916\text{ V}}{5} \cdot \log_{10}\left(\frac{[\text{MnO}_4^-] \cdot [\text{H}^+]^8}{[\text{Mn}^{2+}]}\right) = 1.509\text{ V} + \frac{0.05916}{5} \cdot \log_{10}\left((10^{-3})^8\right)\)<br>
+                \(E = 1.509\text{ V} + 0.01183\text{ V} \cdot (-24) = 1.509\text{ V} - 0.284\text{ V} = \mathbf{+1.225\text{ V}}\)
+              </p>
+              <p class="text-xs text-slate-700 pt-1">
+                <strong>Insight:</strong> Raising the pH from \(0\) to \(3\) lowers the oxidizing power of permanganate by nearly \(300\text{ mV}\) because \(8\,\text{H}^+\) ions are consumed per \(\text{MnO}_4^-\)!
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- ================= 3. PROGRESS BAR ================= -->
+    <div id="progressWrapper" class="hidden bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between gap-4">
+      <div class="text-sm font-bold text-slate-700">
+        Part 2 — Your Worksheet Progress: <span id="progressCount" class="text-indigo-700 font-mono">0 / 12</span> steps solved
+      </div>
+      <div class="w-48 bg-slate-200 h-2.5 rounded-full overflow-hidden">
+        <div id="progressBar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- ================= 4. INDIVIDUALIZED EXERCISES CONTAINER ================= -->
+    <div id="worksheetContent" class="hidden space-y-6">
+
+      <!-- ================= PROBLEM 1 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 1 &bull; L05/L06 Phases (Clausius-Clapeyron Boiling Temperature)</span>
+            <h2 class="text-lg font-bold text-slate-900">Rotary Evaporator: Boiling Point of 1-Octanol under Reduced Pressure</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">05_Phases_I.pdf</code> Slides 18–22 (Clausius-Clapeyron &amp; vacuum distillation), Slide 24</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> <code class="font-mono bg-white px-1 py-0.5 rounded border">06_Phases_II.pdf</code> Exercise #2 (Page 27) &amp; <code class="font-mono bg-white px-1 py-0.5 rounded border">Q01_Quizzes.pdf</code> (2nd Rep, Q4)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          At normal atmospheric pressure (\(p_1 = 1013\text{ mbar}\)), a high-boiling alcohol has a boiling point of 
+          &vartheta;<sub>1</sub> = <strong class="text-indigo-700 font-mono" id="p1_TC1">--</strong> &deg;C. Its molar enthalpy of vaporization is 
+          \(\Delta_{\text{vap}}H = \) <strong class="text-indigo-700 font-mono" id="p1_dHvap">--</strong> kJ mol<sup>&minus;1</sup>. 
+          In a rotary evaporator, the pressure is reduced to \(p_2 = \) <strong class="text-indigo-700 font-mono" id="p1_p2">--</strong> mbar.
+        </p>
+
+        <div id="prof_p1" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 1.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1a: Convert the normal boiling point &vartheta;<sub>1</sub> into the absolute temperature \(T_1\) (in K):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_1" type="number" step="any" placeholder="T1 in K" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">K</span>
+            <button onclick="checkStep(1, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 1.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1b: Using \(\ln\left(\frac{p_1}{p_2}\right) = \frac{\Delta_{\text{vap}}H}{R}\left(\frac{1}{T_2} - \frac{1}{T_1}\right) \implies \frac{1}{T_2} = \frac{1}{T_1} + \frac{R}{\Delta_{\text{vap}}H}\ln\left(\frac{p_1}{p_2}\right)\), calculate the new boiling temperature \(T_2\) (in K):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_2" type="number" step="any" placeholder="T2 in K" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">K</span>
+            <button onclick="checkStep(1, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 1.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1c: Express the new boiling point &vartheta;<sub>2</sub> at \(p_2\) in degrees Celsius (&deg;C):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_3" type="number" step="any" placeholder="ϑ2 in °C" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">&deg;C</span>
+            <button onclick="checkStep(1, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 2 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 2 &bull; L06 Colligative Properties (Try-Test 1 Q10 Benchmark)</span>
+            <h2 class="text-lg font-bold text-slate-900">Cryoscopy (Rast Method): Molar Mass Determination in Camphor</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">06_Phases_II.pdf</code> Slides 11–14 (Colligative properties &amp; cryoscopy), Slide 24</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> <code class="font-mono bg-white px-1 py-0.5 rounded border">T01_TryTests.pdf</code> Question 10 (Page 14: Benzophenone in camphor)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          To determine the molar mass \(M\) of an unknown non-volatile organic compound, 
+          \(m_{\text{sub}} = \) <strong class="text-indigo-700 font-mono" id="p2_msub">--</strong> g of the substance are melted together with 
+          \(m_{\text{cam}} = \) <strong class="text-indigo-700 font-mono" id="p2_mcam">--</strong> g of pure camphor (cryoscopic constant 
+          \(|K_f| = 39.7\text{ K kg mol}^{-1}\)). The melting point drops from \(176.30\text{ }^\circ\text{C}\) (pure camphor) to 
+          &vartheta;<sub>mix</sub> = <strong class="text-indigo-700 font-mono" id="p2_Tmix">--</strong> &deg;C.
+        </p>
+
+        <div id="prof_p2" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 2.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2a: Calculate the magnitude of the freezing point depression \(\Delta T_f = 176.30 - \vartheta_{\text{mix}}\) (in K):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_1" type="number" step="any" placeholder="ΔTf in K" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">K (positive value)</span>
+            <button onclick="checkStep(2, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 2.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2b: Calculate the molality \(b = \frac{\Delta T_f}{|K_f|}\) of the solute in the camphor melt (in mol kg<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_2" type="number" step="any" placeholder="b in mol/kg" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">mol kg<sup>&minus;1</sup></span>
+            <button onclick="checkStep(2, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 2.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2c: Calculate the molar mass \(M = \frac{m_{\text{sub}}}{b \cdot m_{\text{cam}}(\text{in kg})}\) of the unknown compound (in g mol<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_3" type="number" step="any" placeholder="M in g/mol" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">g mol<sup>&minus;1</sup></span>
+            <button onclick="checkStep(2, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 3 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 3 &bull; L07 Electrochemistry I (Luther's Rule &amp; Dichromate Nernst Equation)</span>
+            <h2 class="text-lg font-bold text-slate-900">Latimer Diagram of Bromine &amp; pH-Dependent \(\text{Cr}_2\text{O}_7^{2-}/\text{Cr}^{3+}\) Potential</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">07_Electrochemistry I.pdf</code> Slides 16–18 (Luther's rule &amp; Latimer), Slides 21–26 (Nernst equation)</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> L07 In-Slide Ex. 3 (Slide 17), In-Slide Ex. 6 (Slide 26) &amp; <code class="font-mono bg-white px-1 py-0.5 rounded border">Q01_Quizzes.pdf</code> (2nd Rep, Q3)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          <strong>Part A (Luther's Rule):</strong> In acidic solution (\(\text{pH} = 0\)), the Latimer diagram for bromine species shows:<br>
+          \(\text{BrO}_4^-\text{ (+VII)} \xrightarrow{E^\circ_1 = +1.853\text{ V}} \text{BrO}_3^-\text{ (+V)} \xrightarrow{E^\circ_2 = +}\)<strong class="text-indigo-700 font-mono" id="p3_E2">--</strong>\(\text{ V} \text{ HOBr (+I)}\).<br>
+          <strong>Part B (Nernst Equation at \(298.15\text{ K}\)):</strong> Consider the dichromate half-cell reaction<br>
+          \(\text{Cr}_2\text{O}_7^{2-}(aq) + 14\,\text{H}^+(aq) + 6\,e^- \rightleftharpoons 2\,\text{Cr}^{3+}(aq) + 7\,\text{H}_2\text{O}(l)\) &nbsp;with \(E^\circ = +1.330\text{ V}\).
+        </p>
+
+        <div id="prof_p3" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 3.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3a (Part A): Using Luther's rule \(E^\circ_{\text{tot}} = \frac{z_1 E^\circ_1 + z_2 E^\circ_2}{z_1 + z_2}\) (with \(z_1 = 2\) and \(z_2 = 4\)), calculate the standard potential \(E^\circ(\text{BrO}_4^-/\text{HOBr})\) (in V):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_1" type="number" step="any" placeholder="E° in V" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">V</span>
+            <button onclick="checkStep(3, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 3.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3b (Part B): Calculate \(E(\text{Cr}_2\text{O}_7^{2-}/\text{Cr}^{3+})\) at \(298.15\text{ K}\) and \(\text{pH} = 0\) (\([\text{H}^+] = 1.00\text{ M}\)) if \([\text{Cr}_2\text{O}_7^{2-}] = \) <strong class="text-indigo-700 font-mono" id="p3_cOx">--</strong> M and \([\text{Cr}^{3+}] = \) <strong class="text-indigo-700 font-mono" id="p3_cRed">--</strong> M (in V):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_2" type="number" step="any" placeholder="E in V" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">V (watch \([\text{Cr}^{3+}]^2\) in denominator!)</span>
+            <button onclick="checkStep(3, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 3.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3c (Part B): Calculate \(E(\text{Cr}_2\text{O}_7^{2-}/\text{Cr}^{3+})\) at \(298.15\text{ K}\) if both chromium species are at standard concentration (\(1.00\text{ M}\)), but the solution is buffered at \(\text{pH} = \) <strong class="text-indigo-700 font-mono" id="p3_pH">--</strong> (in V):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_3" type="number" step="any" placeholder="E(pH) in V" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">V</span>
+            <button onclick="checkStep(3, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 4 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 4 &bull; L07 Electrochemistry I (Nernst Equation &amp; Solubility Product \(K_{sp}\))</span>
+            <h2 class="text-lg font-bold text-slate-900">Lead Electrode in Saturated \(\text{PbI}_2 / \text{KI}\) Solution (Electrode of the Second Kind)</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">07_Electrochemistry I.pdf</code> Slides 13–15 (Reference electrodes), Slides 21–24 (Nernst equation)</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">07_Electrochemistry I.pdf</code> Exercises #5 &amp; #6 (Pages 30–32)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          A metallic lead electrode (\(\text{Pb}^{2+} + 2\,e^- \rightleftharpoons \text{Pb}(s)\), \(E^\circ = -0.126\text{ V}\)) is immersed at \(T = 298.15\text{ K}\) in an aqueous potassium iodide solution of concentration \(c(\text{KI}) = [\text{I}^-] = \) <strong class="text-indigo-700 font-mono" id="p4_cI">--</strong> mol L<sup>&minus;1</sup> that is saturated with solid lead(II) iodide (\(\text{PbI}_2(s) \rightleftharpoons \text{Pb}^{2+}(aq) + 2\,\text{I}^-(aq)\), solubility product \(K_{sp} = 8.30 \cdot 10^{-9}\)).
+        </p>
+
+        <div id="prof_p4" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 4.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4a: Using \(K_{sp} = [\text{Pb}^{2+}] \cdot [\text{I}^-]^2\), calculate the equilibrium concentration of free \(\text{Pb}^{2+}\) ions in the solution (in mol L<sup>&minus;1</sup>; you can enter scientific notation like <code class="bg-slate-100 px-1 rounded">3.32e-7</code>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_1" type="number" step="any" placeholder="e.g. 3.32e-7" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">mol L<sup>&minus;1</sup></span>
+            <button onclick="checkStep(4, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 4.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4b: Calculate the half-cell potential \(E(\text{Pb}^{2+}/\text{Pb}) = E^\circ + \frac{R \cdot T}{2 \cdot F}\ln[\text{Pb}^{2+}]\) at \(298.15\text{ K}\) (in V, include the minus sign!):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_2" type="number" step="any" placeholder="e.g. -0.315" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">V</span>
+            <button onclick="checkStep(4, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 4.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4c: This lead half-cell (anode) is connected to a silver/silver-chloride reference electrode with a constant potential of \(E_{\text{ref}} = +0.220\text{ V}\) (cathode). Calculate the positive cell voltage \(\Delta E = E_{\text{cathode}} - E_{\text{anode}}\) (in V):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_3" type="number" step="any" placeholder="ΔE in V" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">V</span>
+            <button onclick="checkStep(4, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SUBMISSION TOKEN BOX ================= -->
+      <section class="bg-indigo-950 text-white p-6 rounded-xl shadow-lg border-2 border-amber-400">
+        <div class="flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <h3 class="font-bold text-lg text-amber-400">📤 Submission Verification Token</h3>
+            <p class="text-indigo-200 text-xs mt-1">
+              Copy this token and paste it into the <strong>Unit 03 Submission Form</strong> in MS Teams. It encodes your Student ID and your current score.
+            </p>
+          </div>
+          <button onclick="copyToken()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs transition">
+            Copy Token
+          </button>
+        </div>
+        <div class="mt-4 bg-indigo-900/90 p-3.5 rounded-lg border border-indigo-700 flex items-center justify-between">
+          <code id="tokenDisplay" class="font-mono text-sm md:text-base text-amber-300 select-all">Solve at least 1 step to generate token...</code>
+          <span id="copyFeedback" class="text-xs text-emerald-400 font-semibold hidden">Copied! ✓</span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-6 mt-10 text-center text-xs text-slate-400">
+    IMC University of Applied Sciences Krems &bull; Physical Chemistry Exercise Tutorial &bull; Mag. Erich Kerzendorfer
+  </footer>
+
+  <script>
+    const STORAGE_KEY = "PC_IMC_UNIT03_STATE_V1";
+    let params = {};
+    let solved = {
+      "1_1": false, "1_2": false, "1_3": false,
+      "2_1": false, "2_2": false, "2_3": false,
+      "3_1": false, "3_2": false, "3_3": false,
+      "4_1": false, "4_2": false, "4_3": false
+    };
+
+    function toggleModelStep(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function showAllModelSteps(prefix, count) {
+      const firstHidden = document.getElementById(`${prefix}_1`).classList.contains('hidden');
+      for (let i = 1; i <= count; i++) {
+        const el = document.getElementById(`${prefix}_${i}`);
+        if (el) el.classList.toggle('hidden', !firstHidden);
+      }
+    }
+
+    function toggleChalkboardScript() {
+      const boxes = document.querySelectorAll('.chalkboard-box');
+      const isHidden = boxes[0].classList.contains('hidden');
+      boxes.forEach(b => b.classList.toggle('hidden', !isHidden));
+      document.getElementById('btnChalkboard').textContent = isHidden 
+        ? "🎙️ Hide Spoken Explanation Hints" 
+        : "🎙️ Show Spoken Explanation Hints";
+    }
+
+    function createRng(seedStr) {
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        h = Math.imul(h ^ seedStr.charCodeAt(i), 16777619);
+      }
+      return function() {
+        h += h << 13; h ^= h >>> 7;
+        h += h << 3;  h ^= h >>> 17;
+        return ((h += h << 5) >>> 0) / 4294967296;
+      };
+    }
+
+    function withinTol(val, target, relTol = 0.015) {
+      if (isNaN(val)) return false;
+      if (target === 0) return Math.abs(val) < 0.01;
+      return Math.abs(val - target) <= Math.abs(target) * relTol;
+    }
+
+    function initWorksheet(fromStorage = false) {
+      const rawId = document.getElementById('studentIdInput').value.trim();
+      if (rawId.length < 4) {
+        alert("Please enter your Student ID (at least 4 characters).");
+        return;
+      }
+
+      const isProf = rawId.toUpperCase().startsWith("PROF-");
+      const cleanId = isProf ? rawId.slice(5).trim() : rawId;
+      const rng = createRng(cleanId);
+
+      // --- Problem 1 Parameters (Clausius-Clapeyron) ---
+      const p1_TC1 = Math.round(175 + rng() * 35);                  // 175 to 210 °C
+      const p1_T1 = p1_TC1 + 273.15;
+      const p1_dHvap = Math.round((48.0 + rng() * 14.0) * 10) / 10; // 48.0 to 62.0 kJ/mol
+      const p1_p2 = Math.round(15 + rng() * 35);                    // 15 to 50 mbar
+      const invT2 = (1 / p1_T1) + (8.314 / (p1_dHvap * 1000)) * Math.log(1013 / p1_p2);
+      const p1_T2 = 1 / invT2;
+      const p1_TC2 = p1_T2 - 273.15;
+
+      // --- Problem 2 Parameters (Cryoscopy in Camphor) ---
+      const p2_msub = Math.round((1.50 + rng() * 1.20) * 100) / 100; // 1.50 to 2.70 g
+      const p2_mcam = Math.round(80 + rng() * 40);                   // 80 to 120 g camphor
+      const targetM = Math.round(150 + rng() * 90);                  // realistic M between 150 and 240 g/mol
+      const b_true = p2_msub / (targetM * (p2_mcam / 1000));
+      const dTf_raw = 39.7 * b_true;
+      const p2_Tmix = Math.round((176.30 - dTf_raw) * 100) / 100;
+      const p2_dTf = 176.30 - p2_Tmix;
+      const p2_b = p2_dTf / 39.7;
+      const p2_M = p2_msub / (p2_b * (p2_mcam / 1000));
+
+      // --- Problem 3 Parameters (Luther's Rule & Dichromate Nernst) ---
+      const p3_E2 = Math.round((1.420 + rng() * 0.090) * 1000) / 1000; // 1.420 to 1.510 V
+      const p3_Etot = (2 * 1.853 + 4 * p3_E2) / 6;
+      const cOx_choices = [0.050, 0.10, 0.20, 0.25, 0.50];
+      const cRed_choices = [0.0010, 0.0020, 0.0050, 0.010, 0.020];
+      const p3_cOx = cOx_choices[Math.floor(rng() * cOx_choices.length)];
+      const p3_cRed = cRed_choices[Math.floor(rng() * cRed_choices.length)];
+      const R_F_298 = (8.314 * 298.15) / 96485; // 0.025693 V (or ln10 * 0.025693 = 0.05916 V)
+      const p3_E_conc = 1.330 + (R_F_298 / 6) * Math.log(p3_cOx / Math.pow(p3_cRed, 2));
+      const p3_pH = Math.round((2.5 + rng() * 3.5) * 10) / 10;         // pH 2.5 to 6.0
+      const p3_E_pH = 1.330 + (0.05916 / 6) * (-14 * p3_pH);
+
+      // --- Problem 4 Parameters (Pb/PbI2 Electrode & Ksp) ---
+      const p4_cI = Math.round((0.05 + rng() * 0.20) * 100) / 100;     // 0.05 to 0.25 M KI
+      const Ksp_PbI2 = 8.30e-9;
+      const p4_cPb = Ksp_PbI2 / Math.pow(p4_cI, 2);
+      const p4_EPb = -0.126 + (R_F_298 / 2) * Math.log(p4_cPb);
+      const p4_dE = 0.220 - p4_EPb;
+
+      params = {
+        cleanId, isProf,
+        p1_TC1, p1_T1, p1_dHvap, p1_p2, p1_T2, p1_TC2,
+        p2_msub, p2_mcam, p2_Tmix, p2_dTf, p2_b, p2_M,
+        p3_E2, p3_Etot, p3_cOx, p3_cRed, p3_E_conc, p3_pH, p3_E_pH,
+        p4_cI, Ksp_PbI2, p4_cPb, p4_EPb, p4_dE
+      };
+
+      document.getElementById('p1_TC1').textContent = p1_TC1;
+      document.getElementById('p1_dHvap').textContent = p1_dHvap.toFixed(1);
+      document.getElementById('p1_p2').textContent = p1_p2;
+
+      document.getElementById('p2_msub').textContent = p2_msub.toFixed(2);
+      document.getElementById('p2_mcam').textContent = p2_mcam.toFixed(1);
+      document.getElementById('p2_Tmix').textContent = p2_Tmix.toFixed(2);
+
+      document.getElementById('p3_E2').textContent = p3_E2.toFixed(3);
+      document.getElementById('p3_cOx').textContent = p3_cOx;
+      document.getElementById('p3_cRed').textContent = p3_cRed;
+      document.getElementById('p3_pH').textContent = p3_pH.toFixed(1);
+
+      document.getElementById('p4_cI').textContent = p4_cI.toFixed(2);
+
+      document.getElementById('worksheetContent').classList.remove('hidden');
+      document.getElementById('progressWrapper').classList.remove('hidden');
+
+      const banner = document.getElementById('statusBanner');
+      banner.classList.remove('hidden');
+      if (isProf) {
+        banner.textContent = `👨‍🏫 LECTURER MODE ACTIVE for Student ID ${cleanId} — Exact target values shown below each problem.`;
+        showProfBoxes(true);
+      } else {
+        banner.textContent = `✓ Individual parameters locked for Student ID: ${cleanId}`;
+        showProfBoxes(false);
+      }
+
+      if (!fromStorage) {
+        saveState();
+      }
+      updateProgressUI();
+    }
+
+    function showProfBoxes(show) {
+      const p = params;
+      const ids = ['prof_p1', 'prof_p2', 'prof_p3', 'prof_p4'];
+      ids.forEach(id => document.getElementById(id).classList.toggle('hidden', !show));
+      if (!show) return;
+
+      document.getElementById('prof_p1').innerHTML = 
+        `<strong>[PROF SOLUTIONS P1]</strong> <strong>1a:</strong> T1 = ${p.p1_T1.toFixed(2)} K | <strong>1b:</strong> T2 = ${p.p1_T2.toFixed(2)} K | <strong>1c:</strong> ϑ2 = ${p.p1_TC2.toFixed(1)} °C`;
+      document.getElementById('prof_p2').innerHTML = 
+        `<strong>[PROF SOLUTIONS P2]</strong> <strong>2a:</strong> ΔTf = ${p.p2_dTf.toFixed(2)} K | <strong>2b:</strong> b = ${p.p2_b.toFixed(4)} mol/kg | <strong>2c:</strong> M = ${p.p2_M.toFixed(1)} g/mol`;
+      document.getElementById('prof_p3').innerHTML = 
+        `<strong>[PROF SOLUTIONS P3]</strong> <strong>3a:</strong> E°_tot = +${p.p3_Etot.toFixed(3)} V | <strong>3b:</strong> E(conc) = +${p.p3_E_conc.toFixed(3)} V | <strong>3c:</strong> E(pH=${p.p3_pH}) = +${p.p3_E_pH.toFixed(3)} V`;
+      document.getElementById('prof_p4').innerHTML = 
+        `<strong>[PROF SOLUTIONS P4]</strong> <strong>4a:</strong> [Pb²⁺] = ${p.p4_cPb.toExponential(3)} mol/L | <strong>4b:</strong> E(Pb²⁺/Pb) = ${p.p4_EPb.toFixed(3)} V | <strong>4c:</strong> ΔE = +${p.p4_dE.toFixed(3)} V`;
+    }
+
+    function setFeedback(key, isCorrect, msg, isTrap = false) {
+      const fb = document.getElementById(`fb_${key}`);
+      fb.textContent = msg;
+      if (isCorrect) {
+        fb.className = "text-xs font-semibold text-emerald-600";
+        solved[key] = true;
+      } else if (isTrap) {
+        fb.className = "text-xs font-semibold text-amber-600";
+      } else {
+        fb.className = "text-xs font-semibold text-rose-600";
+      }
+      saveState();
+      updateProgressUI();
+    }
+
+    function checkStep(prob, step) {
+      const key = `${prob}_${step}`;
+      const val = parseFloat(document.getElementById(`inp_${key}`).value);
+      const p = params;
+
+      if (isNaN(val)) {
+        setFeedback(key, false, "⚠️ Please enter a numerical value.");
+        return;
+      }
+
+      // --- PROBLEM 1 CHECKS ---
+      if (key === "1_1") {
+        if (Math.abs(val - p.p1_T1) <= 0.3) {
+          setFeedback(key, true, "✅ Correct temperature in Kelvin!");
+        } else {
+          setFeedback(key, false, "❌ Add 273.15 to the Celsius temperature.");
+        }
+      }
+
+      if (key === "1_2") {
+        const trapWrongSign = 1 / ((1 / p.p1_T1) - (8.314 / (p.p1_dHvap * 1000)) * Math.log(1013 / p.p1_p2));
+        const trapNo1000 = 1 / ((1 / p.p1_T1) + (8.314 / p.p1_dHvap) * Math.log(1013 / p.p1_p2));
+        if (withinTol(val, p.p1_T2, 0.01)) {
+          setFeedback(key, true, "✅ Correct boiling temperature T2 in Kelvin!");
+        } else if (withinTol(val, trapWrongSign, 0.015)) {
+          setFeedback(key, false, "⚠️ Sign Trap! At lower pressure p2 < p1, the boiling temperature T2 must be LOWER than T1 (so 1/T2 > 1/T1)!", true);
+        } else if (withinTol(val, trapNo1000, 0.02)) {
+          setFeedback(key, false, "⚠️ Unit Trap! Convert Δ_vap H from kJ/mol to J/mol (multiply by 1000) before dividing R by Δ_vap H!", true);
+        } else if (withinTol(val, 1 / p.p1_T2, 0.05)) {
+          setFeedback(key, false, "⚠️ That is 1/T2! Take the reciprocal (1/x) on your calculator to get T2 in Kelvin.", true);
+        } else {
+          setFeedback(key, false, "❌ Use 1/T2 = 1/T1 + (8.314 / (Δ_vap H * 1000)) * ln(1013 / p2), then invert to find T2.");
+        }
+      }
+
+      if (key === "1_3") {
+        if (Math.abs(val - p.p1_TC2) <= 1.8) {
+          setFeedback(key, true, "✅ Spot on! Vacuum reduces the boiling point significantly.");
+        } else {
+          setFeedback(key, false, "❌ Subtract 273.15 from your Kelvin temperature T2 (Step 1b).");
+        }
+      }
+
+      // --- PROBLEM 2 CHECKS ---
+      if (key === "2_1") {
+        if (Math.abs(val - p.p2_dTf) <= 0.08) {
+          setFeedback(key, true, "✅ Correct freezing point depression ΔTf!");
+        } else if (Math.abs(val + p.p2_dTf) <= 0.08) {
+          setFeedback(key, false, "⚠️ Enter the positive magnitude of ΔTf = 176.30 - ϑ_mix!", true);
+        } else {
+          setFeedback(key, false, "❌ Subtract ϑ_mix from 176.30 °C.");
+        }
+      }
+
+      if (key === "2_2") {
+        if (withinTol(val, p.p2_b, 0.018)) {
+          setFeedback(key, true, "✅ Correct molality in mol/kg!");
+        } else if (withinTol(val, p.p2_dTf * 39.7, 0.02)) {
+          setFeedback(key, false, "⚠️ Formula Trap: Since ΔTf = |Kf| * b, divide ΔTf by 39.7 (do not multiply)!", true);
+        } else {
+          setFeedback(key, false, "❌ Divide ΔTf (Step 2a) by 39.7 K kg mol⁻¹.");
+        }
+      }
+
+      if (key === "2_3") {
+        const trapGramsCamphor = p.p2_M / 1000;
+        if (withinTol(val, p.p2_M, 0.02)) {
+          setFeedback(key, true, "✅ Excellent! Molar mass determined accurately.");
+        } else if (withinTol(val, trapGramsCamphor, 0.03)) {
+          setFeedback(key, false, "⚠️ Classic Unit Trap! Convert the mass of camphor m_cam from grams to kilograms (divide by 1000) in the denominator!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate M = m_sub / (b * (m_cam / 1000)).");
+        }
+      }
+
+      // --- PROBLEM 3 CHECKS ---
+      if (key === "3_1") {
+        const trapSimpleAverage = (1.853 + p.p3_E2) / 2;
+        const trapSum = 1.853 + p.p3_E2;
+        if (Math.abs(val - p.p3_Etot) <= 0.008) {
+          setFeedback(key, true, "✅ Correct! Luther's electron-weighted rule mastered.");
+        } else if (Math.abs(val - trapSimpleAverage) <= 0.008) {
+          setFeedback(key, false, "⚠️ Trap: Do not take the simple average (E1+E2)/2! Weight by electrons: (2*E1 + 4*E2) / 6.", true);
+        } else if (Math.abs(val - trapSum) <= 0.05) {
+          setFeedback(key, false, "⚠️ Trap: Redox potentials are intensive quantities and cannot simply be added! Use Luther's rule.", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate (2 * 1.853 + 4 * E°2) / 6.");
+        }
+      }
+
+      if (key === "3_2") {
+        const R_F = (8.314 * 298.15) / 96485;
+        const trapForgotSquare = 1.330 + (R_F / 6) * Math.log(p.p3_cOx / p.p3_cRed);
+        const trapInverted = 1.330 - (R_F / 6) * Math.log(p.p3_cOx / Math.pow(p.p3_cRed, 2));
+        if (Math.abs(val - p.p3_E_conc) <= 0.008) {
+          setFeedback(key, true, "✅ Spot on! Stoichiometric exponent [Cr³⁺]² included properly.");
+        } else if (Math.abs(val - trapForgotSquare) <= 0.006) {
+          setFeedback(key, false, "⚠️ Stoichiometry Trap! 2 moles of Cr³⁺ are formed per mole of Cr2O7²⁻, so you must SQUARE [Cr³⁺]² in the denominator!", true);
+        } else if (Math.abs(val - trapInverted) <= 0.006) {
+          setFeedback(key, false, "⚠️ Sign/Fraction Trap: Put the oxidized species [Cr2O7²⁻] in the numerator and [Cr³⁺]² in the denominator!", true);
+        } else {
+          setFeedback(key, false, "❌ Use E = 1.330 + (0.05916 / 6) * log10( [Cr2O7²⁻] / [Cr³⁺]² ).");
+        }
+      }
+
+      if (key === "3_3") {
+        const trapForgot14 = 1.330 + (0.05916 / 6) * (-p.p3_pH);
+        const trapPluspH = 1.330 - (0.05916 / 6) * (-14 * p.p3_pH);
+        if (Math.abs(val - p.p3_E_pH) <= 0.01) {
+          setFeedback(key, true, "✅ Correct! All 14 H⁺ ions accounted for.");
+        } else if (Math.abs(val - trapForgot14) <= 0.01) {
+          setFeedback(key, false, "⚠️ Stoichiometry Trap! There are 14 H⁺ in the half-reaction, so log10([H⁺]^14) = -14 * pH!", true);
+        } else if (Math.abs(val - trapPluspH) <= 0.01) {
+          setFeedback(key, false, "⚠️ Sign Trap: Since [H⁺] = 10^(-pH) is in the numerator, increasing pH lowers the potential E!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate E = 1.330 - (14 * 0.05916 / 6) * pH.");
+        }
+      }
+
+      // --- PROBLEM 4 CHECKS ---
+      if (key === "4_1") {
+        const trapForgotSquareI = p.Ksp_PbI2 / p.p4_cI;
+        if (withinTol(val, p.p4_cPb, 0.02)) {
+          setFeedback(key, true, "✅ Correct equilibrium concentration [Pb²⁺]!");
+        } else if (withinTol(val, trapForgotSquareI, 0.02)) {
+          setFeedback(key, false, "⚠️ Stoichiometry Trap: Since Ksp = [Pb²⁺] * [I⁻]², you must divide Ksp by [I⁻] SQUARED!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate [Pb²⁺] = 8.30e-9 / ([I⁻])².");
+        }
+      }
+
+      if (key === "4_2") {
+        const trapZ1 = -0.126 + 0.05916 * Math.log10(p.p4_cPb);
+        if (Math.abs(val - p.p4_EPb) <= 0.008) {
+          setFeedback(key, true, "✅ Correct half-cell potential E(Pb²⁺/Pb)!");
+        } else if (Math.abs(val + p.p4_EPb) <= 0.008) {
+          setFeedback(key, false, "⚠️ Sign Trap! Don't forget the minus sign (E is negative)!", true);
+        } else if (Math.abs(val - trapZ1) <= 0.01) {
+          setFeedback(key, false, "⚠️ Electron Number Trap: For Pb²⁺ + 2e⁻ → Pb, use z = 2!", true);
+        } else {
+          setFeedback(key, false, "❌ Use E = -0.126 + (0.05916 / 2) * log10([Pb²⁺]).");
+        }
+      }
+
+      if (key === "4_3") {
+        const trapSubtractedWrong = 0.220 + p.p4_EPb;
+        if (Math.abs(val - p.p4_dE) <= 0.008) {
+          setFeedback(key, true, "✅ Spot on! ΔE = E_cathode - E_anode = 0.220 - (negative E_Pb).");
+        } else if (Math.abs(val - trapSubtractedWrong) <= 0.008) {
+          setFeedback(key, false, "⚠️ Sign Trap! ΔE = E_cathode - E_anode. Subtracting a negative anode potential means ADDING its magnitude to 0.220 V!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate ΔE = 0.220 - E(Pb²⁺/Pb).");
+        }
+      }
+    }
+
+    function updateProgressUI() {
+      const total = 12;
+      const doneCount = Object.values(solved).filter(Boolean).length;
+      document.getElementById('progressCount').textContent = `${doneCount} / ${total}`;
+      document.getElementById('progressBar').style.width = `${(doneCount / total) * 100}%`;
+
+      if (doneCount > 0 && params.cleanId) {
+        const idNum = parseInt(params.cleanId.replace(/\D/g, '').slice(-4)) || 3579;
+        const hash = ((idNum * 23) + (doneCount * 41) + params.p1_TC1).toString(16).toUpperCase();
+        document.getElementById('tokenDisplay').textContent = `PC1-U03-${params.cleanId}-${doneCount}of12-CHK${hash}`;
+      } else {
+        document.getElementById('tokenDisplay').textContent = "Solve at least 1 step to generate token...";
+      }
+    }
+
+    function copyToken() {
+      const tokenText = document.getElementById('tokenDisplay').textContent;
+      if (tokenText.startsWith("Solve")) return;
+      navigator.clipboard.writeText(tokenText);
+      const fb = document.getElementById('copyFeedback');
+      fb.classList.remove('hidden');
+      setTimeout(() => fb.classList.add('hidden'), 2500);
+    }
+
+    function saveState() {
+      if (!params.cleanId) return;
+      const inputs = {};
+      Object.keys(solved).forEach(k => {
+        inputs[k] = document.getElementById(`inp_${k}`).value;
+      });
+      const state = {
+        rawId: document.getElementById('studentIdInput').value.trim(),
+        solved,
+        inputs
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadSavedState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const state = JSON.parse(raw);
+        if (state.rawId) {
+          document.getElementById('studentIdInput').value = state.rawId;
+          if (state.solved) solved = state.solved;
+          initWorksheet(true);
+          if (state.inputs) {
+            Object.keys(state.inputs).forEach(k => {
+              const el = document.getElementById(`inp_${k}`);
+              if (el && state.inputs[k] !== undefined) el.value = state.inputs[k];
+              if (solved[k]) {
+                const fb = document.getElementById(`fb_${k}`);
+                fb.textContent = "✅ Solved (restored)";
+                fb.className = "text-xs font-semibold text-emerald-600";
+              }
+            });
+          }
+          updateProgressUI();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function resetProgress() {
+      if (!confirm("Reset all saved inputs and progress for Unit 03?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+
+    window.addEventListener('DOMContentLoaded', loadSavedState);
+  </script>
+</body>
+</html>

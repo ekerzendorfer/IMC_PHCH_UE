@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>IMC Krems • Physical Chemistry Exercise Hub</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {output: 'html', delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col justify-between">
+
+  <!-- Top Header -->
+  <header class="bg-indigo-950 text-white shadow-lg border-b-4 border-amber-500">
+    <div class="max-w-5xl mx-auto px-6 py-7">
+      <div class="flex flex-wrap justify-between items-center gap-2">
+        <span class="text-xs font-bold uppercase tracking-widest text-amber-400">IMC University of Applied Sciences Krems</span>
+        <span class="text-xs bg-indigo-900 px-3 py-1 rounded-full text-indigo-200 font-mono">Applied Chemistry &bull; Summer Semester</span>
+      </div>
+      <h1 class="text-2xl md:text-4xl font-extrabold mt-2">Physical Chemistry — Interactive Exercise Hub</h1>
+      <p class="text-indigo-200 text-sm md:text-base mt-1.5 max-w-3xl">
+        Companion calculation tutorials and individualized practice worksheets for <strong>Physical Chemistry I &amp; II</strong> (Lectures: Prof. Manfred Kerschbaumer &bull; Exercises: Mag. Erich Kerzendorfer).
+      </p>
+    </div>
+  </header>
+
+  <!-- ================= ACCESS CODE GATE (Protects GitHub Pages from public browsing) ================= -->
+  <div id="accessGate" class="max-w-md mx-auto px-6 my-16 w-full">
+    <div class="bg-white rounded-2xl shadow-md border border-slate-200 p-7 space-y-5 text-center">
+      <div class="w-12 h-12 bg-indigo-100 text-indigo-800 rounded-full flex items-center justify-center mx-auto text-xl font-bold">
+        🔒
+      </div>
+      <div>
+        <h2 class="text-xl font-bold text-slate-900">Course Access Required</h2>
+        <p class="text-xs text-slate-500 mt-1">
+          Please enter the course access code provided in MS Teams to unlock the exercise worksheets.
+        </p>
+      </div>
+      <div class="space-y-3">
+        <input id="accessCodeInput" type="password" placeholder="Enter Course Code..." 
+               onkeydown="if(event.key==='Enter') verifyAccess()"
+               class="w-full px-4 py-2.5 rounded-lg border border-slate-300 font-mono text-center text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600">
+        <button onclick="verifyAccess()" 
+                class="w-full bg-indigo-900 hover:bg-indigo-800 text-white font-bold py-2.5 rounded-lg text-sm transition shadow">
+          Unlock Course Hub
+        </button>
+        <p id="accessError" class="text-xs text-rose-600 font-semibold hidden">Invalid course code. Please check MS Teams.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MAIN COURSE HUB CONTENT (Hidden until unlocked) ================= -->
+  <main id="hubContent" class="hidden max-w-5xl mx-auto px-6 mt-8 space-y-8 w-full">
+
+    <!-- Status / Mode Bar -->
+    <div class="bg-white px-5 py-3.5 rounded-xl shadow-sm border border-slate-200 flex flex-wrap justify-between items-center gap-3 text-xs">
+      <div class="flex items-center gap-2">
+        <span id="roleBadge" class="bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full">✓ Student Access Active</span>
+        <span class="text-slate-500">Worksheets generate personal numbers from your IMC Student ID.</span>
+      </div>
+      <button onclick="logoutHub()" class="text-slate-400 hover:text-rose-600 underline font-medium">
+        Lock Hub / Switch Mode
+      </button>
+    </div>
+
+    <!-- Course Guide & "By Heart" Rules (Collapsible) -->
+    <details class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <summary class="px-6 py-4 font-bold text-slate-800 cursor-pointer hover:bg-slate-50 flex justify-between items-center select-none">
+        <span>ℹ️ How the Tutorials Work, Grading Scheme &amp; Mandatory "By Heart" Formulae</span>
+        <span class="text-xs font-normal text-indigo-600">Click to expand</span>
+      </summary>
+      <div class="px-6 pb-6 pt-3 border-t border-slate-100 text-sm space-y-4 bg-slate-50/50">
+        <div class="grid md:grid-cols-3 gap-4">
+          <div class="bg-white p-4 rounded-lg border border-slate-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 mb-1.5">1. 90-Min Double Unit Rhythm</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              &bull; <strong>Phase 1 (20 min):</strong> Q&amp;A on previous exercises or short 15-min chapter test (Units 3, 6, 9).<br>
+              &bull; <strong>Phase 2 (25 min):</strong> <em>Guided Modeling</em> — step-by-step demonstration of 2 key problems.<br>
+              &bull; <strong>Phase 3 (45 min):</strong> <em>Active Workshop</em> — start solving your personal HTML worksheet in class; finish remaining steps at home.
+            </p>
+          </div>
+          <div class="bg-white p-4 rounded-lg border border-slate-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 mb-1.5">2. Continuous Assessment</h4>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              &bull; <strong>40% Weekly Worksheets:</strong> Enter your Student ID, solve the steps (assisted by instant unit-trap hints), and paste your <em>Verification Token</em> into MS Forms.<br>
+              &bull; <strong>60% Three Short Chapter Tests:</strong> 15–20 min digital tests in Units 3, 6, and 9 (20% each).
+            </p>
+          </div>
+          <div class="bg-rose-50 p-4 rounded-lg border border-rose-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-rose-900 mb-1.5">3. Five "By Heart" Formulae</h4>
+            <p class="text-xs text-rose-900 leading-relaxed">
+              A formula &amp; constants sheet is provided in all quizzes/exams, <strong>except</strong> for these 5 basic laws which must be known by heart (no Periodic Table allowed!):
+            </p>
+            <div class="mt-2 font-mono text-xs text-rose-950 bg-white/80 p-2 rounded border border-rose-200">
+              \(\rho = \frac{m}{V}\), &nbsp;\(n = \frac{m}{M}\), &nbsp;\(c = \frac{n}{V}\)<br>
+              \(pV = nRT\), &nbsp;\(x_i = \frac{n_i}{n_{\text{tot}}}\)
+            </div>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- Dynamic Blocks Container -->
+    <div id="blocksContainer" class="space-y-8"></div>
+
+  </main>
+
+  <footer class="max-w-5xl mx-auto px-6 py-10 text-center text-xs text-slate-400 w-full">
+    IMC University of Applied Sciences Krems &bull; Physical Chemistry Tutorial Hub &bull; Mag. Erich Kerzendorfer
+  </footer>
+
+  <script>
+    // =========================================================================
+    // CONFIGURATION FOR ERICH (EASY SEMESTER CONTROL)
+    // =========================================================================
+    // 1. Course Access Code for students (communicated in MS Teams):
+    const STUDENT_COURSE_CODE = "IMC-PC-2027";
+    // 2. Lecturer Master Code (unlocks all 9 units even if status is "locked"):
+    const LECTURER_MASTER_CODE = "PROF-KERZI";
+
+    // 3. Unit Configuration: Change status from "locked" to "available" to release a unit!
+    const COURSE_BLOCKS = [
+      {
+        blockTitle: "Block 1: Gases, Thermodynamics, Chemical Equilibrium & Phases",
+        blockSub: "Physical Chemistry I (Lectures L01 – L07) • Concludes with 15-min Block Test 1 in Unit 03",
+        units: [
+          {
+            id: "U01",
+            number: "Unit 01",
+            title: "Properties of Gases & The First Law",
+            lectures: "L01 (Gases) & L02 (1st Law)",
+            topics: "Dalton's partial pressures, mean thermal speed v_mean, Van der Waals pressure & Z, irreversible vs. isothermal reversible expansion work w, heat capacities Cp/Cv & adiabatic expansion.",
+            file: "unit01_gases_1st_law.html",
+            formsUrl: "", // Optional: paste MS Forms link here later
+            status: "available", // "available" or "locked"
+            quizBadge: false
+          },
+          {
+            id: "U02",
+            number: "Unit 02",
+            title: "2nd & 3rd Law, Entropy & Chemical Equilibrium",
+            lectures: "L03 (2nd/3rd Law) & L04 (Combination)",
+            topics: "Boltzmann microstates S = k ln W, entropy of mixing & ΔG_mix, reversible vs. vacuum expansion entropies, Kirchhoff's law (ΔH_T, ΔS_T), Gibbs energy ΔG° = -RT ln Kp & reaction quotient Q.",
+            file: "unit02_entropy_equilibrium.html",
+            formsUrl: "",
+            status: "locked",
+            quizBadge: false
+          },
+          {
+            id: "U03",
+            number: "Unit 03",
+            title: "Phase Equilibria & Electrochemical Potentials (Redox I)",
+            lectures: "L05/L06 (Phases I/II) & L07 (Electrochemistry I)",
+            topics: "Clausius-Clapeyron equation (vacuum distillation boiling point/pressure), cryoscopy molar mass determination, Luther's rule in Latimer diagrams, Nernst equation (including pH & Ksp).",
+            file: "unit03_phases_redox.html",
+            formsUrl: "",
+            status: "locked",
+            quizBadge: true,
+            quizText: "Includes 15-min Block Test 1 (Units 1–2)"
+          }
+        ]
+      },
+      {
+        blockTitle: "Block 2: Electrolysis, Conductivity, Reaction Kinetics & Viscosity",
+        blockSub: "Physical Chemistry I (Lectures L08 – L14) • Concludes with 15-min Block Test 2 in Unit 06",
+        units: [
+          {
+            id: "U04",
+            number: "Unit 04",
+            title: "Electrolysis, Faraday's Law & Ionic Conductivity",
+            lectures: "L08 (Electrochem II) & L09 (Electrochem III)",
+            topics: "Decomposition voltages & overpotential, Faraday's laws of electrolysis (Hall-Héroult Al production & current efficiency η), molar conductivity Λ_m = κ/c (SI unit conversion) & Ostwald's dilution law.",
+            file: "unit04_electrolysis_conductivity.html",
+            formsUrl: "",
+            status: "locked",
+            quizBadge: false
+          },
+          {
+            id: "U05",
+            number: "Unit 05",
+            title: "Reaction Rates, Integrated Rate Laws & Mechanisms",
+            lectures: "L10 (Kinetics I) & L12 (Kinetics II)",
+            topics: "Initial rate method (reaction orders), integrated 1st and 2nd order rate laws k from concentration/titration tables, half-life τ, pre-equilibria & steady-state approximation (Lindemann / Michaelis-Menten).",
+            file: "unit05_kinetics_mechanisms.html",
+            formsUrl: "",
+            status: "locked",
+            quizBadge: false
+          },
+          {
+            id: "U06",
+            number: "Unit 06",
+            title: "Arrhenius Temperature Dependence & Fluid Viscosity",
+            lectures: "L13 (Kinetics III) & L14 (Viscosity)",
+            topics: "Reaction order from k units, two-point Arrhenius equation (activation energy Ea & frequency factor A), dynamic vs. kinematic viscosity (Poise/Stoke to SI) & Ostwald capillary viscometer.",
+            file: "unit06_arrhenius_viscosity.html",
+            formsUrl: "",
+            status: "locked",
+            quizBadge: true,
+            quizText: "Includes 15-min Block Test 2 (Units 3–5)"
+          }
+        ]
+      },
+      {
+        blockTitle: "Block 3: Nuclear Chemistry, Quantum Shell, Spectroscopy & Solid State",
+        blockSub: "Physical Chemistry II (Lectures L21 – L26) • Concludes with 20-min Block Test 3 in Unit 09",
+        units: [
+          {
+            id: "U07",
+            number: "Unit 07",
+            title: "Nuclear Reactions & Quantum Mechanics of the Shell",
+            lectures: "L21 (The Nucleus) & L22 (The Shell)",
+            topics: "Mass defect Δm & nuclear decay energy in eV/MeV (E = Δm c²), radiometric dating (1st-order decay law), particle in a 1D & 2D square box (degeneracy), hydrogenic wave functions Ψ(n,l,m).",
+            file: "unit07_nucleus_shell.html",
+            formsUrl: "",
+            status: "locked",
+            quizBadge: false
+          },
+          {
+            id: "U08",
+            number: "Unit 08",
+            title: "Chemical Bonding, Term Symbols & Molecular Spectroscopy",
+            lectures: "L23 (Covalent) & L25 (Matter & Radiation)",
+            topics: "Frost-Musulin aromaticity energies, tetrahedral/octahedral splitting Δ in cm⁻¹, wavenumbers & Rydberg transitions, atomic term symbols (L, S, J), Lambert-Beer law, normal modes (3N-6) & NMR Larmor frequency.",
+            file: "unit08_bonding_spectroscopy.html",
+            formsUrl: "",
+            status: "locked",
+            quizBadge: false
+          },
+          {
+            id: "U09",
+            number: "Unit 09",
+            title: "Crystallography, Bragg Diffraction & Integrated Structure Problems",
+            lectures: "L26 (The Solid State) & Try-Test II",
+            topics: "Unit cell density ρ = N·M/(N_A·a³), atomic radius r, interplanar spacing d_hkl, Bragg's law nλ = 2d sin θ (glancing angle), combined combustion analysis + DBE + MS/NMR structure elucidation.",
+            file: "unit09_solid_state_review.html",
+            formsUrl: "",
+            status: "locked",
+            quizBadge: true,
+            quizText: "Includes 20-min Block Test 3 (Units 7–9)"
+          }
+        ]
+      }
+    ];
+
+    const HUB_AUTH_KEY = "PC_IMC_HUB_ROLE_V1";
+
+    function verifyAccess() {
+      const inp = document.getElementById('accessCodeInput').value.trim().toUpperCase();
+      const err = document.getElementById('accessError');
+
+      if (inp === STUDENT_COURSE_CODE.toUpperCase()) {
+        localStorage.setItem(HUB_AUTH_KEY, "student");
+        err.classList.add('hidden');
+        renderHub("student");
+      } else if (inp === LECTURER_MASTER_CODE.toUpperCase()) {
+        localStorage.setItem(HUB_AUTH_KEY, "lecturer");
+        err.classList.add('hidden');
+        renderHub("lecturer");
+      } else {
+        err.classList.remove('hidden');
+      }
+    }
+
+    function logoutHub() {
+      localStorage.removeItem(HUB_AUTH_KEY);
+      document.getElementById('hubContent').classList.add('hidden');
+      document.getElementById('accessGate').classList.remove('hidden');
+      document.getElementById('accessCodeInput').value = "";
+    }
+
+    function renderHub(role) {
+      document.getElementById('accessGate').classList.add('hidden');
+      document.getElementById('hubContent').classList.remove('hidden');
+
+      const badge = document.getElementById('roleBadge');
+      if (role === "lecturer") {
+        badge.textContent = "👨‍🏫 Lecturer Master Mode (All 9 Units Unlocked)";
+        badge.className = "bg-amber-100 text-amber-900 border border-amber-300 font-bold px-3 py-1 rounded-full";
+      } else {
+        badge.textContent = "✓ Student Access Active";
+        badge.className = "bg-emerald-100 text-emerald-800 font-bold px-3 py-1 rounded-full";
+      }
+
+      const container = document.getElementById('blocksContainer');
+      container.innerHTML = "";
+
+      COURSE_BLOCKS.forEach(block => {
+        const section = document.createElement('section');
+        section.className = "space-y-4";
+
+        let cardsHtml = "";
+        block.units.forEach(u => {
+          const isUnlocked = (u.status === "available") || (role === "lecturer");
+          const statusBadge = u.status === "available"
+            ? `<span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-2.5 py-0.5 rounded-full">● Available</span>`
+            : (role === "lecturer"
+                ? `<span class="bg-amber-100 text-amber-800 text-xs font-bold px-2.5 py-0.5 rounded-full">🔓 Lecturer Preview (Locked for Students)</span>`
+                : `<span class="bg-slate-200 text-slate-600 text-xs font-semibold px-2.5 py-0.5 rounded-full">🔒 Upcoming</span>`);
+
+          const quizHtml = u.quizBadge
+            ? `<div class="mt-2 inline-block bg-rose-50 border border-rose-200 text-rose-800 text-xs font-semibold px-2.5 py-1 rounded">⏱️ ${u.quizText}</div>`
+            : "";
+
+          const actionBtn = isUnlocked
+            ? `<a href="${u.file}" class="inline-flex items-center justify-center bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-bold px-4 py-2.5 rounded-lg transition shadow-sm">
+                 Open Interactive Worksheet &rarr;
+               </a>`
+            : `<button disabled class="inline-flex items-center justify-center bg-slate-200 text-slate-400 text-xs font-bold px-4 py-2.5 rounded-lg cursor-not-allowed">
+                 Unlocked in Upcoming Session
+               </button>`;
+
+          const formsBtn = (isUnlocked && u.formsUrl)
+            ? `<a href="${u.formsUrl}" target="_blank" class="inline-flex items-center justify-center bg-emerald-700 hover:bg-emerald-600 text-white text-xs font-bold px-3.5 py-2.5 rounded-lg transition">
+                 Submit Token (MS Forms)
+               </a>`
+            : "";
+
+          cardsHtml += `
+            <div class="bg-white rounded-xl shadow-sm border ${u.status === 'available' ? 'border-indigo-300 ring-1 ring-indigo-100' : 'border-slate-200'} p-5 flex flex-col justify-between space-y-4">
+              <div class="space-y-2">
+                <div class="flex flex-wrap justify-between items-center gap-2">
+                  <span class="text-xs font-mono font-bold uppercase px-2 py-0.5 rounded bg-indigo-50 text-indigo-800">${u.number} &bull; ${u.lectures}</span>
+                  ${statusBadge}
+                </div>
+                <h3 class="text-base font-bold text-slate-900">${u.title}</h3>
+                <p class="text-xs text-slate-600 leading-relaxed">${u.topics}</p>
+                ${quizHtml}
+              </div>
+              <div class="pt-3 border-t border-slate-100 flex flex-wrap items-center gap-2">
+                ${actionBtn}
+                ${formsBtn}
+              </div>
+            </div>
+          `;
+        });
+
+        section.innerHTML = `
+          <div class="border-b border-slate-300 pb-2">
+            <h2 class="text-lg md:text-xl font-extrabold text-indigo-950">${block.blockTitle}</h2>
+            <p class="text-xs text-slate-500">${block.blockSub}</p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-5">
+            ${cardsHtml}
+          </div>
+        `;
+        container.appendChild(section);
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedRole = localStorage.getItem(HUB_AUTH_KEY);
+      if (savedRole === "student" || savedRole === "lecturer") {
+        renderHub(savedRole);
+      }
+    });
+  </script>
+</body>
+</html>

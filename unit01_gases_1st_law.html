@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>PC Tutorial - Unit 01: Gases & 1st Law</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body, {output: 'html', delimiters: [{left: '$$', right: '$$', display: true}, {left: '\\(', right: '\\)', display: false}]});"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen pb-16">
+
+  <!-- Top Navigation & Banner -->
+  <header class="bg-indigo-950 text-white shadow-lg border-b-4 border-amber-500">
+    <div class="max-w-4xl mx-auto px-6 py-6">
+      <div class="flex flex-wrap justify-between items-center gap-2">
+        <div class="flex items-center gap-3">
+          <a href="index.html" class="text-xs bg-indigo-800 hover:bg-indigo-700 text-indigo-100 px-3 py-1 rounded-lg font-semibold transition">
+            &larr; Course Hub
+          </a>
+          <span class="text-xs font-bold uppercase tracking-widest text-amber-400">IMC Krems &bull; Physical Chemistry Tutorial</span>
+        </div>
+        <span class="text-xs bg-indigo-900 px-3 py-1 rounded-full text-indigo-200 font-mono">Topics: L01 (Gases) &amp; L02 (1st Law)</span>
+      </div>
+
+      <h1 class="text-2xl md:text-3xl font-extrabold mt-3">Unit 01: Properties of Gases &amp; The First Law</h1>
+      <p class="text-indigo-200 text-sm mt-1">
+        Part 1: In-Class Guided Modeling &bull; Part 2: Individualized Exercise Worksheet (saved automatically in your browser).
+      </p>
+
+      <!-- Student ID Bar -->
+      <div class="mt-5 flex flex-wrap items-center gap-3 bg-indigo-900/70 p-4 rounded-xl border border-indigo-800">
+        <label for="studentIdInput" class="text-xs font-bold uppercase tracking-wider text-indigo-200">Student ID:</label>
+        <input id="studentIdInput" type="text" placeholder="e.g. 2510456012" 
+               class="px-3.5 py-2 rounded-lg text-slate-900 font-mono text-sm w-48 focus:outline-none focus:ring-2 focus:ring-amber-400">
+        <button onclick="initWorksheet(false)" 
+                class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm transition shadow">
+          Load My Worksheet
+        </button>
+        <button onclick="resetProgress()" 
+                class="text-xs text-indigo-300 hover:text-white underline ml-auto">
+          Reset Saved Inputs
+        </button>
+      </div>
+      <div id="statusBanner" class="mt-2 text-xs font-mono text-amber-300 hidden"></div>
+    </div>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-6 mt-6 space-y-6">
+
+    <!-- ================= 1. FORMULA & CONSTANTS SHEET ================= -->
+    <details class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <summary class="px-6 py-4 font-bold text-slate-800 cursor-pointer hover:bg-slate-50 flex justify-between items-center select-none">
+        <span>📋 Formula Sheet, Constants &amp; Exam Rules (Click to expand)</span>
+        <span class="text-xs font-normal text-slate-500">Matches Lecture &amp; Exam Notation</span>
+      </summary>
+      <div class="px-6 pb-5 pt-2 border-t border-slate-100 text-sm space-y-4 bg-slate-50/60">
+        <div class="bg-rose-50 border-l-4 border-rose-500 p-3 rounded text-xs text-rose-900">
+          <strong>⚠️ Exam Rule ("By Heart" Formulae — L00 Intro Slide 2):</strong> In all quizzes and the final exam, you must know these 5 basic equations by heart (they are <em>not</em> printed on the exam formula sheet):
+          <span class="font-mono block mt-1.5">
+            \(\rho = \frac{m}{V}\) &nbsp;|&nbsp; \(n = \frac{m}{M}\) &nbsp;|&nbsp; \(c = \frac{n}{V}\) &nbsp;|&nbsp; \(p \cdot V = n \cdot R \cdot T\) &nbsp;|&nbsp; \(x_i = \frac{n_i}{n_{\text{tot}}}\) &nbsp;(and \(p_i = x_i \cdot p_{\text{tot}}\))
+          </span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 mb-2">Constants &amp; Unit Conversions</h4>
+            <ul class="space-y-1 text-xs font-mono text-slate-700">
+              <li>\(R = 8.314\text{ J mol}^{-1}\text{K}^{-1} = 8.314\text{ Pa m}^3\text{mol}^{-1}\text{K}^{-1}\)</li>
+              <li>\(R = 0.08314\text{ dm}^3\text{ bar mol}^{-1}\text{K}^{-1}\)</li>
+              <li>\(R = 0.08205\text{ L atm mol}^{-1}\text{K}^{-1}\)</li>
+              <li>\(1\text{ bar} = 10^5\text{ Pa} = 100\text{ kPa}\) &nbsp;|&nbsp; \(1\text{ L}\cdot\text{bar} = 100\text{ J}\)</li>
+              <li>\(1\text{ atm} = 1.01325\text{ bar} = 760\text{ Torr}\)</li>
+              <li>\(T(\text{K}) = \vartheta(^\circ\text{C}) + 273.15\)</li>
+            </ul>
+          </div>
+          <div class="bg-white p-3.5 rounded-lg border border-slate-200">
+            <h4 class="font-bold text-xs uppercase tracking-wider text-indigo-900 mb-2">Formulas Provided on Exam Sheet (L01 Slide 28 &amp; L02 Slide 34)</h4>
+            <ul class="space-y-1.5 text-xs text-slate-700">
+              <li><strong>Mean speed:</strong> \(v_{\text{mean}} = \sqrt{\frac{8RT}{\pi M}} \implies \frac{v_A}{v_B} = \sqrt{\frac{M_B}{M_A}}\)</li>
+              <li><strong>Van der Waals:</strong> \(p = \frac{nRT}{V - nb} - a\frac{n^2}{V^2}\) &nbsp;|&nbsp; \(Z = \frac{p_{\text{real}}}{p_{\text{id}}} = \frac{V_{\text{real}}}{V_{\text{id}}}\)</li>
+              <li><strong>Critical data:</strong> \(T_c = \frac{8a}{27Rb}\), &nbsp;\(p_c = \frac{a}{27b^2}\), &nbsp;\(V_c = 3b\)</li>
+              <li><strong>Work (1st Law):</strong> \(w_{\text{irrev}} = -p_{\text{ex}}\Delta V\) &nbsp;|&nbsp; \(w_{\text{rev}} = -nRT\ln\frac{V_f}{V_i}\)</li>
+              <li><strong>Heat capacity &amp; Adiabat:</strong> \(C_{p,m} - C_{V,m} = R\), &nbsp;\(\gamma = \frac{C_{p,m}}{C_{V,m}}\), &nbsp;\(p_i V_i^\gamma = p_f V_f^\gamma\)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </details>
+
+    <!-- ================= 2. IN-CLASS GUIDED MODELING (VORRECHENBEISPIELE) ================= -->
+    <details id="modelingDetails" class="bg-white rounded-xl shadow-sm border-2 border-indigo-200 overflow-hidden" open>
+      <summary class="px-6 py-4 font-bold text-indigo-950 bg-indigo-50/70 cursor-pointer hover:bg-indigo-100/60 flex flex-wrap justify-between items-center gap-2 select-none">
+        <div class="flex items-center gap-2">
+          <span class="text-lg">👨‍🏫</span>
+          <span>Part 1: In-Class Guided Modeling (Worked Benchmark Examples)</span>
+        </div>
+        <span class="text-xs font-semibold bg-indigo-200 text-indigo-900 px-2.5 py-1 rounded-full">Step-by-Step Projector View</span>
+      </summary>
+
+      <div class="p-6 space-y-6 border-t border-indigo-100">
+        <div class="flex flex-wrap justify-between items-center gap-3 bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs">
+          <span class="text-slate-600">
+            💡 <strong>Study Tip:</strong> Click through the steps below to see the exact problem-solving strategy and unit checks before starting your personal worksheet.
+          </span>
+          <button onclick="toggleChalkboardScript()" id="btnChalkboard"
+                  class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-3 py-1.5 rounded transition">
+            🎙️ Show Spoken Explanation Hints
+          </button>
+        </div>
+
+        <!-- MODELING EXAMPLE A -->
+        <div class="border border-slate-200 rounded-xl p-5 space-y-4 bg-white">
+          <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase text-amber-600 tracking-wider">Modeling Example A &bull; Real Gases &amp; Van der Waals</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">Chlorine Gas under High Pressure: Ideal vs. Real Pressure &amp; Compression Factor \(Z\)</h3>
+            </div>
+            <span class="text-xs bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded font-mono">
+              Ref: L01 Slides 19–25 &bull; Quiz 1 (Rep 1, Q2)
+            </span>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-amber-500 text-sm text-slate-700 leading-relaxed">
+            <strong>Problem:</strong> \(n = 2.00\text{ mol}\) of Chlorine gas (\(\text{Cl}_2\)) are confined in a steel vessel of volume \(V = 3.00\text{ L}\) at \(T = 350\text{ K}\).<br>
+            Van der Waals parameters for \(\text{Cl}_2\): \(a = 6.260\text{ atm L}^2\text{mol}^{-2}\) and \(b = 0.0542\text{ L mol}^{-1}\).<br>
+            <strong>a)</strong> Calculate the pressure \(p_{\text{id}}\) assuming perfect gas behaviour.<br>
+            <strong>b)</strong> Calculate the real pressure \(p_{\text{vdW}}\) assuming \(\text{Cl}_2\) behaves as a Van der Waals gas.<br>
+            <strong>c)</strong> Calculate the compression factor \(Z\) and decide which type of intermolecular forces predominate.
+          </div>
+
+          <!-- Lecturer Chalkboard Script A -->
+          <div class="chalkboard-box hidden bg-amber-50/80 border border-amber-300 p-3.5 rounded-lg text-xs text-amber-950 space-y-1.5">
+            <div class="font-bold uppercase tracking-wider text-amber-800">🎙️ Spoken Board Moderation (English Phrases):</div>
+            <p>&bull; <em>"Before touching the calculator, let's check the units of the Van der Waals constants \(a\) and \(b\). Notice that \(a\) is given in \(\text{atm}\cdot\text{L}^2\cdot\text{mol}^{-2}\)."</em></p>
+            <p>&bull; <em>"To make the units cancel out cleanly, we do NOT use \(R = 8.314\), but we pick \(R = 0.08205\text{ L}\cdot\text{atm}\cdot\text{mol}^{-1}\cdot\text{K}^{-1}\) from our formula sheet."</em></p>
+            <p>&bull; <em>"In the Van der Waals equation, the first term corrects for the excluded volume \(n\cdot b\) (repulsion), while the second term subtracts \(a\cdot n^2/V^2\) for intermolecular attraction."</em></p>
+          </div>
+
+          <!-- Interactive Step Buttons A -->
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="toggleModelStep('mA_1')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step a: Ideal Pressure \(p_{\text{id}}\)
+            </button>
+            <button onclick="toggleModelStep('mA_2')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step b: Van der Waals \(p_{\text{vdW}}\)
+            </button>
+            <button onclick="toggleModelStep('mA_3')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step c: Compression Factor \(Z\)
+            </button>
+            <button onclick="showAllModelSteps('mA', 3)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition ml-auto">
+              Show / Hide All
+            </button>
+          </div>
+
+          <!-- Step Contents A -->
+          <div class="space-y-3 text-sm">
+            <div id="mA_1" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step a: Ideal Gas Law (Choice of \(R\))</div>
+              <p class="text-slate-700">Since \(V\) is in \(\text{L}\) and \(a, b\) use \(\text{atm}\) and \(\text{L}\), we select \(R = 0.08205\text{ L atm mol}^{-1}\text{K}^{-1}\):</p>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(p_{\text{id}} = \frac{n \cdot R \cdot T}{V} = \frac{2.00\text{ mol} \cdot 0.08205\text{ L atm mol}^{-1}\text{K}^{-1} \cdot 350\text{ K}}{3.00\text{ L}} = \mathbf{19.15\text{ atm}}\)
+              </p>
+            </div>
+
+            <div id="mA_2" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step b: Van der Waals Equation (Repulsive &amp; Attractive Terms)</div>
+              <p class="text-slate-700">Calculate both terms separately to avoid calculator bracket errors:</p>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(p_{\text{vdW}} = \frac{nRT}{V - nb} - a\frac{n^2}{V^2} = \frac{2.00 \cdot 0.08205 \cdot 350}{3.00 - 2.00 \cdot 0.0542} - 6.260 \cdot \frac{2.00^2}{3.00^2}\)<br>
+                \(p_{\text{vdW}} = \frac{57.435}{2.8916}\text{ atm} - 6.260 \cdot \frac{4.00}{9.00}\text{ atm} = 19.86\text{ atm} - 2.78\text{ atm} = \mathbf{17.08\text{ atm}}\)
+              </p>
+            </div>
+
+            <div id="mA_3" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step c: Compression Factor \(Z\) &amp; Interpretation</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(Z = \frac{p_{\text{real}}}{p_{\text{id}}} = \frac{17.08\text{ atm}}{19.15\text{ atm}} = \mathbf{0.892}\)
+              </p>
+              <p class="text-xs text-slate-700 pt-1">
+                <strong>Interpretation:</strong> Since \(Z &lt; 1\) (i.e. \(p_{\text{real}} &lt; p_{\text{id}}\)), <strong>attractive forces</strong> between the \(\text{Cl}_2\) molecules predominate over repulsive forces under these conditions.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- MODELING EXAMPLE B -->
+        <div class="border border-slate-200 rounded-xl p-5 space-y-4 bg-white">
+          <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase text-amber-600 tracking-wider">Modeling Example B &bull; First Law of Thermodynamics</span>
+              <h3 class="text-base font-bold text-slate-900 mt-0.5">Expansion Work of a Gas: Irreversible vs. Isothermal Reversible Process</h3>
+            </div>
+            <span class="text-xs bg-indigo-50 text-indigo-800 border border-indigo-200 px-2.5 py-1 rounded font-mono">
+              Ref: L02 Slides 8–15 &bull; In-Slide Ex. 3 &bull; Try-Test 1 Q6
+            </span>
+          </div>
+
+          <div class="bg-slate-50 p-4 rounded-lg border-l-4 border-amber-500 text-sm text-slate-700 leading-relaxed">
+            <strong>Problem:</strong> A cylinder with a piston contains \(n = 1.50\text{ mol}\) of Argon (\(\text{Ar}\), ideal gas) at a temperature of \(\vartheta = 47\text{ }^\circ\text{C}\) (\(T = 320.15\text{ K}\)). The gas expands from an initial volume of \(V_i = 5.00\text{ L}\) to a final volume of \(V_f = 15.0\text{ L}\).<br>
+            <strong>a)</strong> Calculate the work \(w_{\text{irrev}}\) done in an <em>irreversible</em> expansion against a constant external pressure of \(p_{\text{ex}} = 1.10\text{ bar}\).<br>
+            <strong>b)</strong> Calculate the work \(w_{\text{rev}}\) and heat \(q_{\text{rev}}\) if the expansion occurs <em>isothermally and reversibly</em>.
+          </div>
+
+          <!-- Lecturer Chalkboard Script B -->
+          <div class="chalkboard-box hidden bg-amber-50/80 border border-amber-300 p-3.5 rounded-lg text-xs text-amber-950 space-y-1.5">
+            <div class="font-bold uppercase tracking-wider text-amber-800">🎙️ Spoken Board Moderation (English Phrases):</div>
+            <p>&bull; <em>"In Physical Chemistry we always use the egoistic system convention: When the gas expands (\(\Delta V &gt; 0\)), the system does work on the surroundings and loses energy, so \(w\) MUST be negative."</em></p>
+            <p>&bull; <em>"Watch out for the number one unit trap in Step a: Multiplying \(\text{bar}\) by \(\text{Liters}\) does NOT give Joules! Since \(1\text{ bar} = 10^5\text{ Pa}\) and \(1\text{ L} = 10^{-3}\text{ m}^3\), \(1\text{ L}\cdot\text{bar}\) equals exactly \(100\text{ Joules}\)."</em></p>
+            <p>&bull; <em>"In Step b, for an isothermal process of an ideal gas, internal energy \(\Delta U = 0\). By the First Law (\(\Delta U = q + w = 0\)), the heat \(q_{\text{rev}}\) entering the cylinder equals \(-w_{\text{rev}}\)."</em></p>
+          </div>
+
+          <!-- Interactive Step Buttons B -->
+          <div class="flex flex-wrap gap-2 pt-1">
+            <button onclick="toggleModelStep('mB_1')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step a: Irreversible Work \(w_{\text{irrev}}\)
+            </button>
+            <button onclick="toggleModelStep('mB_2')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step b: Isothermal Reversible \(w_{\text{rev}}\)
+            </button>
+            <button onclick="toggleModelStep('mB_3')" class="bg-indigo-900 hover:bg-indigo-800 text-white text-xs font-semibold px-3.5 py-1.5 rounded-lg transition">
+              Step c: Heat \(q_{\text{rev}}\) &amp; Comparison
+            </button>
+            <button onclick="showAllModelSteps('mB', 3)" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-1.5 rounded-lg transition ml-auto">
+              Show / Hide All
+            </button>
+          </div>
+
+          <!-- Step Contents B -->
+          <div class="space-y-3 text-sm">
+            <div id="mB_1" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step a: Irreversible Expansion (\(\text{bar}\cdot\text{L} \to \text{J}\) Conversion)</div>
+              <p class="text-slate-700">Convert to SI units (\(p_{\text{ex}} = 1.10 \cdot 10^5\text{ Pa}\), \(\Delta V = 10.0 \cdot 10^{-3}\text{ m}^3\)) or use \(1\text{ L}\cdot\text{bar} = 100\text{ J}\):</p>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(w_{\text{irrev}} = -p_{\text{ex}} \cdot (V_f - V_i) = -1.10\text{ bar} \cdot (15.0 - 5.00)\text{ L} = -11.0\text{ L}\cdot\text{bar} = \mathbf{-1100\text{ J} = -1.10\text{ kJ}}\)
+              </p>
+            </div>
+
+            <div id="mB_2" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step b: Isothermal Reversible Expansion (\(T = 47 + 273.15 = 320.15\text{ K}\))</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(w_{\text{rev}} = -n \cdot R \cdot T \cdot \ln\left(\frac{V_f}{V_i}\right) = -1.50\text{ mol} \cdot 8.314\text{ J mol}^{-1}\text{K}^{-1} \cdot 320.15\text{ K} \cdot \ln\left(\frac{15.0}{5.00}\right)\)<br>
+                \(w_{\text{rev}} = -3992.6\text{ J} \cdot 1.0986 = \mathbf{-4386\text{ J} = -4.39\text{ kJ}}\)
+              </p>
+            </div>
+
+            <div id="mB_3" class="hidden bg-emerald-50/70 border border-emerald-200 p-4 rounded-lg space-y-1">
+              <div class="font-bold text-emerald-950 text-xs uppercase">Step c: First Law for Isothermal Ideal Gas (\(\Delta U = 0\))</div>
+              <p class="font-mono text-xs md:text-sm bg-white p-2.5 rounded border border-emerald-100">
+                \(\Delta U = q_{\text{rev}} + w_{\text{rev}} = 0 \implies q_{\text{rev}} = -w_{\text{rev}} = \mathbf{+4.39\text{ kJ}}\)
+              </p>
+              <p class="text-xs text-slate-700 pt-1">
+                <strong>Key Takeaway:</strong> The reversible process performs roughly four times as much work (\(|w_{\text{rev}}| &gt; |w_{\text{irrev}}|\)) because the external pressure is continuously matched to the internal gas pressure.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </details>
+
+    <!-- ================= 3. PROGRESS BAR ================= -->
+    <div id="progressWrapper" class="hidden bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex items-center justify-between gap-4">
+      <div class="text-sm font-bold text-slate-700">
+        Part 2 — Your Worksheet Progress: <span id="progressCount" class="text-indigo-700 font-mono">0 / 12</span> steps solved
+      </div>
+      <div class="w-48 bg-slate-200 h-2.5 rounded-full overflow-hidden">
+        <div id="progressBar" class="bg-emerald-500 h-full transition-all duration-300" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <!-- ================= 4. INDIVIDUALIZED EXERCISES CONTAINER ================= -->
+    <div id="worksheetContent" class="hidden space-y-6">
+
+      <!-- ================= PROBLEM 1 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 1 &bull; L01 Gases (Ideal Gas Mixtures &amp; Kinetic Model)</span>
+            <h2 class="text-lg font-bold text-slate-900">Shielding Gas Cylinder: Partial Pressures &amp; Molecular Speeds</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">01_Thermochemistry_Gases.pdf</code> Slides 4–7 (Gas law &amp; Dalton), Slides 11–13 (Mean speed), Slide 28 (Formulae)</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> L01 In-Slide Ex. 2 (Slide 8) &amp; L01 Exercises #1, #2, #3 (Pages 29–31)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          A rigid welding cylinder with an internal volume of <em>V</em> = <strong class="text-indigo-700 font-mono" id="p1_V">--</strong> dm<sup>3</sup> 
+          is filled with <strong class="text-indigo-700 font-mono" id="p1_mAr">--</strong> g of Argon (Ar, <em>M</em> = 39.95 g mol<sup>&minus;1</sup>) 
+          and <strong class="text-indigo-700 font-mono" id="p1_mCO2">--</strong> g of Carbon Dioxide (CO<sub>2</sub>, <em>M</em> = 44.01 g mol<sup>&minus;1</sup>) 
+          at a temperature of &vartheta; = <strong class="text-indigo-700 font-mono" id="p1_TC">--</strong> &deg;C. 
+          Assume both gases behave ideally.
+        </p>
+
+        <div id="prof_p1" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 1.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1a: Calculate the total amount of gas \(n_{\text{tot}} = n(\text{Ar}) + n(\text{CO}_2)\) and the mole fraction \(x(\text{Ar})\). Enter \(x(\text{Ar})\):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_1" type="number" step="any" placeholder="e.g. 0.815" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">(dimensionless, 0 to 1)</span>
+            <button onclick="checkStep(1, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 1.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1b: Calculate the partial pressure of Argon \(p(\text{Ar})\) in the cylinder (in bar):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_2" type="number" step="any" placeholder="p(Ar) in bar" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">bar</span>
+            <button onclick="checkStep(1, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 1.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 1c: Calculate the mean thermal speed \(v_{\text{mean}}(\text{Ar}) = \sqrt{\frac{8RT}{\pi M(\text{Ar})}}\) of the Argon atoms at this temperature (in m s<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_1_3" type="number" step="any" placeholder="v_mean in m/s" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">m s<sup>&minus;1</sup></span>
+            <button onclick="checkStep(1, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_1_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 2 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 2 &bull; L01 Real Gases (Quiz 1 &amp; Try-Test Benchmark)</span>
+            <h2 class="text-lg font-bold text-slate-900">Real Behaviour of Ammonia: Van der Waals Pressure &amp; Compression Factor \(Z\)</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">01_Thermochemistry_Gases.pdf</code> Slides 18–25 (Compression factor \(Z\) &amp; Van der Waals), Slide 28</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> L01 In-Slide Ex. 5 (Slide 19), <code class="font-mono bg-white px-1 py-0.5 rounded border">Q01_Quizzes.pdf</code> (1st Rep, Q2) &amp; <code class="font-mono bg-white px-1 py-0.5 rounded border">T01_TryTests.pdf</code> (Q1)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          <strong class="text-indigo-700 font-mono" id="p2_n">--</strong> mol of Ammonia gas (NH<sub>3</sub>) are confined in a reactor vessel of 
+          volume <em>V</em> = <strong class="text-indigo-700 font-mono" id="p2_V">--</strong> L at <em>T</em> = <strong class="text-indigo-700 font-mono" id="p2_TK">--</strong> K.<br>
+          The Van der Waals parameters for NH<sub>3</sub> are: <em>a</em> = 4.170 atm L<sup>2</sup> mol<sup>&minus;2</sup> and <em>b</em> = 0.0371 L mol<sup>&minus;1</sup>.
+          <span class="block mt-1 text-xs text-slate-500">(Use <em>R</em> = 0.08205 L atm mol<sup>&minus;1</sup> K<sup>&minus;1</sup> to match the units of <em>a</em> and <em>b</em>!)</span>
+        </p>
+
+        <div id="prof_p2" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 2.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2a: Calculate the pressure \(p_{\text{id}}\) assuming NH<sub>3</sub> behaves as a perfect (ideal) gas (in atm):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_1" type="number" step="any" placeholder="p_id in atm" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">atm</span>
+            <button onclick="checkStep(2, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 2.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2b: Calculate the real pressure \(p_{\text{vdW}}\) using the Van der Waals equation (in atm):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_2" type="number" step="any" placeholder="p_vdW in atm" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">atm</span>
+            <button onclick="checkStep(2, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 2.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 2c: Calculate the compression factor \(Z = \frac{p_{\text{vdW}}}{p_{\text{id}}}\) under these conditions:
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_2_3" type="number" step="any" placeholder="Z (dimensionless)" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">(Note: \(Z &lt; 1\) means attractive forces dominate!)</span>
+            <button onclick="checkStep(2, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_2_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 3 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 3 &bull; L02 First Law (Work &amp; Heat Transactions)</span>
+            <h2 class="text-lg font-bold text-slate-900">Irreversible vs. Isothermal Reversible Expansion of Nitrogen</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">02_Thermodynamics_1st-Law.pdf</code> Slides 8–11 (Volume work \(w\)), Slides 13–15 (First Law), Slide 34</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> L02 In-Slide Ex. 3 (Slide 12), L02 Exercises #1 &amp; #2 (Page 35), <code class="font-mono bg-white px-1 py-0.5 rounded border">T01_TryTests.pdf</code> (Q6)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          A piston assembly contains <strong class="text-indigo-700 font-mono" id="p3_n">--</strong> mol of Nitrogen (N<sub>2</sub>, treated as a perfect gas) 
+          at a constant temperature of &vartheta; = <strong class="text-indigo-700 font-mono" id="p3_TC">--</strong> &deg;C. 
+          The gas expands from an initial volume of <em>V<sub>i</sub></em> = <strong class="text-indigo-700 font-mono" id="p3_Vi">--</strong> L 
+          to a final volume of <em>V<sub>f</sub></em> = <strong class="text-indigo-700 font-mono" id="p3_Vf">--</strong> L.
+        </p>
+
+        <div id="prof_p3" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 3.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3a: Calculate the work \(w_{\text{irrev}}\) done by the system during an <em>irreversible</em> expansion against a constant external pressure of \(p_{\text{ex}} = 1.20\text{ bar}\) (in J, watch the sign!):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_1" type="number" step="any" placeholder="w_irrev in J" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">J (include minus sign for expansion!)</span>
+            <button onclick="checkStep(3, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 3.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3b: Calculate the work \(w_{\text{rev}}\) done if the same expansion occurs <em>isothermally and reversibly</em> (in kJ):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_2" type="number" step="any" placeholder="w_rev in kJ" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">kJ</span>
+            <button onclick="checkStep(3, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 3.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 3c: Since \(\Delta U = 0\) for an isothermal process of an ideal gas, how much heat \(q_{\text{rev}}\) must be supplied to the gas during the reversible expansion (in kJ)?
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_3_3" type="number" step="any" placeholder="q_rev in kJ" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">kJ</span>
+            <button onclick="checkStep(3, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_3_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= PROBLEM 4 ================= -->
+      <section class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 space-y-4">
+        <div class="flex flex-wrap justify-between items-start gap-2 border-b pb-3">
+          <div>
+            <span class="text-xs font-bold uppercase text-indigo-600 tracking-wider">Problem 4 &bull; L02 First Law (Heat Capacity &amp; Adiabatic Changes)</span>
+            <h2 class="text-lg font-bold text-slate-900">Reversible Adiabatic Expansion of a Diatomic Gas</h2>
+          </div>
+          <span class="bg-slate-100 text-slate-600 text-xs font-mono px-2.5 py-1 rounded">3 Steps</span>
+        </div>
+
+        <!-- Lecture & Example Service Box -->
+        <div class="bg-indigo-50/70 border border-indigo-100 rounded-lg px-3.5 py-2 text-xs text-indigo-950 flex flex-wrap gap-x-4 gap-y-1 items-center">
+          <span>📖 <strong>Lecture Theory:</strong> <code class="font-mono bg-white px-1.5 py-0.5 rounded border">02_Thermodynamics_1st-Law.pdf</code> Slides 16–18 (\(C_{p,m} - C_{V,m} = R\)), Slides 31–33 (Adiabatic changes \(pV^\gamma\))</span>
+          <span>🔍 <strong>Similar Worked Examples:</strong> L02 In-Slide Ex. 4 (Slide 18), In-Slide Ex. 8 (Slide 33) &amp; L02 Exercise #9 (Pages 36 &amp; 38)</span>
+        </div>
+
+        <p class="text-sm text-slate-700 leading-relaxed bg-slate-50 p-4 rounded-lg border-l-4 border-indigo-600">
+          A sample of <strong class="text-indigo-700 font-mono" id="p4_n">--</strong> mol of a diatomic ideal gas (for which <em>C<sub>V,m</sub></em> = 2.5 &middot; <em>R</em>) 
+          is initially at a pressure of <em>p<sub>i</sub></em> = <strong class="text-indigo-700 font-mono" id="p4_pi">--</strong> kPa and a temperature of 
+          <em>T<sub>i</sub></em> = <strong class="text-indigo-700 font-mono" id="p4_Ti">--</strong> K. 
+          It undergoes a reversible adiabatic expansion until its pressure drops to <em>p<sub>f</sub></em> = <strong class="text-indigo-700 font-mono" id="p4_pf">--</strong> kPa.
+        </p>
+
+        <div id="prof_p4" class="hidden bg-amber-50 border border-amber-300 p-3 rounded-lg text-xs font-mono text-amber-900"></div>
+
+        <!-- Step 4.1 -->
+        <div class="pt-2">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4a: Calculate the molar heat capacity at constant pressure \(C_{p,m} = C_{V,m} + R\) (in J mol<sup>&minus;1</sup> K<sup>&minus;1</sup>):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_1" type="number" step="any" placeholder="Cp,m in J/(mol K)" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">J mol<sup>&minus;1</sup> K<sup>&minus;1</sup> (Note: \(\gamma = C_{p,m}/C_{V,m} = 1.40\))</span>
+            <button onclick="checkStep(4, 1)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_1" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 4.2 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4b: Calculate the initial volume \(V_i\) of the gas sample (in L):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_2" type="number" step="any" placeholder="V_i in L" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">L (dm<sup>3</sup>)</span>
+            <button onclick="checkStep(4, 2)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_2" class="text-xs font-medium"></span>
+          </div>
+        </div>
+
+        <!-- Step 4.3 -->
+        <div class="border-t pt-4">
+          <label class="block text-sm font-semibold text-slate-700">
+            Step 4c: Using \(p_i V_i^\gamma = p_f V_f^\gamma \implies V_f = V_i \cdot \left(\frac{p_i}{p_f}\right)^{1/\gamma}\), calculate the final volume \(V_f\) (in L):
+          </label>
+          <div class="mt-2 flex flex-wrap items-center gap-3">
+            <input id="inp_4_3" type="number" step="any" placeholder="V_f in L" class="border border-slate-300 rounded-lg px-3 py-1.5 w-40 font-mono text-sm">
+            <span class="text-xs text-slate-500">L</span>
+            <button onclick="checkStep(4, 3)" class="bg-slate-800 text-white px-4 py-1.5 rounded-lg text-xs font-semibold hover:bg-slate-700">Check</button>
+            <span id="fb_4_3" class="text-xs font-medium"></span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SUBMISSION TOKEN BOX ================= -->
+      <section class="bg-indigo-950 text-white p-6 rounded-xl shadow-lg border-2 border-amber-400">
+        <div class="flex flex-wrap justify-between items-center gap-4">
+          <div>
+            <h3 class="font-bold text-lg text-amber-400">📤 Submission Verification Token</h3>
+            <p class="text-indigo-200 text-xs mt-1">
+              Copy this token and paste it into the <strong>Unit 01 Submission Form</strong> in MS Teams. It encodes your Student ID and your current score.
+            </p>
+          </div>
+          <button onclick="copyToken()" class="bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-lg text-xs transition">
+            Copy Token
+          </button>
+        </div>
+        <div class="mt-4 bg-indigo-900/90 p-3.5 rounded-lg border border-indigo-700 flex items-center justify-between">
+          <code id="tokenDisplay" class="font-mono text-sm md:text-base text-amber-300 select-all">Solve at least 1 step to generate token...</code>
+          <span id="copyFeedback" class="text-xs text-emerald-400 font-semibold hidden">Copied! ✓</span>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer class="max-w-4xl mx-auto px-6 mt-10 text-center text-xs text-slate-400">
+    IMC University of Applied Sciences Krems &bull; Physical Chemistry Exercise Tutorial &bull; Mag. Erich Kerzendorfer
+  </footer>
+
+  <script>
+    const STORAGE_KEY = "PC_IMC_UNIT01_STATE_V2";
+    let params = {};
+    let solved = {
+      "1_1": false, "1_2": false, "1_3": false,
+      "2_1": false, "2_2": false, "2_3": false,
+      "3_1": false, "3_2": false, "3_3": false,
+      "4_1": false, "4_2": false, "4_3": false
+    };
+
+    // Guided Modeling Step Toggle
+    function toggleModelStep(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function showAllModelSteps(prefix, count) {
+      const firstHidden = document.getElementById(`${prefix}_1`).classList.contains('hidden');
+      for (let i = 1; i <= count; i++) {
+        const el = document.getElementById(`${prefix}_${i}`);
+        if (el) el.classList.toggle('hidden', !firstHidden);
+      }
+    }
+
+    function toggleChalkboardScript() {
+      const boxes = document.querySelectorAll('.chalkboard-box');
+      const isHidden = boxes[0].classList.contains('hidden');
+      boxes.forEach(b => b.classList.toggle('hidden', !isHidden));
+      document.getElementById('btnChalkboard').textContent = isHidden 
+        ? "🎙️ Hide Spoken Explanation Hints" 
+        : "🎙️ Show Spoken Explanation Hints";
+    }
+
+    function createRng(seedStr) {
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        h = Math.imul(h ^ seedStr.charCodeAt(i), 16777619);
+      }
+      return function() {
+        h += h << 13; h ^= h >>> 7;
+        h += h << 3;  h ^= h >>> 17;
+        return ((h += h << 5) >>> 0) / 4294967296;
+      };
+    }
+
+    function withinTol(val, target, relTol = 0.018) {
+      if (isNaN(val)) return false;
+      if (target === 0) return Math.abs(val) < 0.01;
+      return Math.abs(val - target) <= Math.abs(target) * relTol;
+    }
+
+    function initWorksheet(fromStorage = false) {
+      const rawId = document.getElementById('studentIdInput').value.trim();
+      if (rawId.length < 4) {
+        alert("Please enter your Student ID (at least 4 characters).");
+        return;
+      }
+
+      const isProf = rawId.toUpperCase().startsWith("PROF-");
+      const cleanId = isProf ? rawId.slice(5).trim() : rawId;
+      const rng = createRng(cleanId);
+
+      // --- Problem 1 Parameters ---
+      const p1_V = Math.round(12 + rng() * 13);
+      const p1_mAr = Math.round(80 + rng() * 70);
+      const p1_mCO2 = Math.round(25 + rng() * 45);
+      const p1_TC = Math.round(18 + rng() * 27);
+      const p1_TK = p1_TC + 273.15;
+      const nAr = p1_mAr / 39.95;
+      const nCO2 = p1_mCO2 / 44.01;
+      const nTot = nAr + nCO2;
+      const xAr = nAr / nTot;
+      const pAr_bar = (nAr * 0.08314 * p1_TK) / p1_V;
+      const vMean_Ar = Math.sqrt((8 * 8.314 * p1_TK) / (Math.PI * 0.03995));
+
+      // --- Problem 2 Parameters ---
+      const p2_n = Math.round((1.5 + rng() * 2.0) * 10) / 10;
+      const p2_V = Math.round((1.2 + rng() * 1.3) * 10) / 10;
+      const p2_TK = Math.round(360 + rng() * 90);
+      const a_NH3 = 4.170, b_NH3 = 0.0371, R_atm = 0.08205;
+      const p_id = (p2_n * R_atm * p2_TK) / p2_V;
+      const p_vdW = ((p2_n * R_atm * p2_TK) / (p2_V - p2_n * b_NH3)) - a_NH3 * Math.pow(p2_n / p2_V, 2);
+      const Z_val = p_vdW / p_id;
+
+      // --- Problem 3 Parameters ---
+      const p3_n = Math.round((1.4 + rng() * 1.6) * 10) / 10;
+      const p3_TC = Math.round(35 + rng() * 55);
+      const p3_TK = p3_TC + 273.15;
+      const p3_Vi = Math.round((4.0 + rng() * 4.0) * 10) / 10;
+      const p3_Vf = Math.round((p3_Vi + 5.0 + rng() * 6.0) * 10) / 10;
+      const w_irrev_J = -1.20 * (p3_Vf - p3_Vi) * 100;
+      const w_rev_kJ = -(p3_n * 8.314 * p3_TK * Math.log(p3_Vf / p3_Vi)) / 1000;
+      const q_rev_kJ = -w_rev_kJ;
+
+      // --- Problem 4 Parameters ---
+      const p4_n = Math.round((1.8 + rng() * 1.7) * 10) / 10;
+      const p4_pi = Math.round(220 + rng() * 120);
+      const p4_Ti = Math.round(310 + rng() * 60);
+      const p4_pf = Math.round(110 + rng() * 60);
+      const Cvm = 2.5 * 8.314;
+      const Cpm = 3.5 * 8.314;
+      const gamma = 1.4;
+      const p4_Vi_L = (p4_n * 8.314 * p4_Ti) / p4_pi;
+      const p4_Vf_L = p4_Vi_L * Math.pow(p4_pi / p4_pf, 1 / gamma);
+
+      params = {
+        cleanId, isProf,
+        p1_V, p1_mAr, p1_mCO2, p1_TC, p1_TK, nAr, nTot, xAr, pAr_bar, vMean_Ar,
+        p2_n, p2_V, p2_TK, p_id, p_vdW, Z_val,
+        p3_n, p3_TC, p3_TK, p3_Vi, p3_Vf, w_irrev_J, w_rev_kJ, q_rev_kJ,
+        p4_n, p4_pi, p4_Ti, p4_pf, Cvm, Cpm, gamma, p4_Vi_L, p4_Vf_L
+      };
+
+      document.getElementById('p1_V').textContent = p1_V.toFixed(1);
+      document.getElementById('p1_mAr').textContent = p1_mAr.toFixed(1);
+      document.getElementById('p1_mCO2').textContent = p1_mCO2.toFixed(1);
+      document.getElementById('p1_TC').textContent = p1_TC;
+
+      document.getElementById('p2_n').textContent = p2_n.toFixed(2);
+      document.getElementById('p2_V').textContent = p2_V.toFixed(2);
+      document.getElementById('p2_TK').textContent = p2_TK;
+
+      document.getElementById('p3_n').textContent = p3_n.toFixed(2);
+      document.getElementById('p3_TC').textContent = p3_TC;
+      document.getElementById('p3_Vi').textContent = p3_Vi.toFixed(1);
+      document.getElementById('p3_Vf').textContent = p3_Vf.toFixed(1);
+
+      document.getElementById('p4_n').textContent = p4_n.toFixed(2);
+      document.getElementById('p4_pi').textContent = p4_pi;
+      document.getElementById('p4_Ti').textContent = p4_Ti;
+      document.getElementById('p4_pf').textContent = p4_pf;
+
+      document.getElementById('worksheetContent').classList.remove('hidden');
+      document.getElementById('progressWrapper').classList.remove('hidden');
+
+      const banner = document.getElementById('statusBanner');
+      banner.classList.remove('hidden');
+      if (isProf) {
+        banner.textContent = `👨‍🏫 LECTURER MODE ACTIVE for Student ID ${cleanId} — Exact target values shown below each problem.`;
+        showProfBoxes(true);
+      } else {
+        banner.textContent = `✓ Individual parameters locked for Student ID: ${cleanId}`;
+        showProfBoxes(false);
+      }
+
+      if (!fromStorage) {
+        saveState();
+      }
+      updateProgressUI();
+    }
+
+    function showProfBoxes(show) {
+      const p = params;
+      const ids = ['prof_p1', 'prof_p2', 'prof_p3', 'prof_p4'];
+      ids.forEach(id => document.getElementById(id).classList.toggle('hidden', !show));
+      if (!show) return;
+
+      document.getElementById('prof_p1').innerHTML = 
+        `<strong>[PROF SOLUTIONS P1]</strong> n(Ar)=${p.nAr.toFixed(3)} mol, n_tot=${p.nTot.toFixed(3)} mol | <strong>1a:</strong> x(Ar) = ${p.xAr.toFixed(4)} | <strong>1b:</strong> p(Ar) = ${p.pAr_bar.toFixed(2)} bar | <strong>1c:</strong> v_mean = ${p.vMean_Ar.toFixed(1)} m/s`;
+      document.getElementById('prof_p2').innerHTML = 
+        `<strong>[PROF SOLUTIONS P2]</strong> <strong>2a:</strong> p_id = ${p.p_id.toFixed(2)} atm | <strong>2b:</strong> p_vdW = ${p.p_vdW.toFixed(2)} atm | <strong>2c:</strong> Z = ${p.Z_val.toFixed(3)}`;
+      document.getElementById('prof_p3').innerHTML = 
+        `<strong>[PROF SOLUTIONS P3]</strong> T=${p.p3_TK.toFixed(2)} K | <strong>3a:</strong> w_irrev = ${p.w_irrev_J.toFixed(1)} J | <strong>3b:</strong> w_rev = ${p.w_rev_kJ.toFixed(2)} kJ | <strong>3c:</strong> q_rev = +${p.q_rev_kJ.toFixed(2)} kJ`;
+      document.getElementById('prof_p4').innerHTML = 
+        `<strong>[PROF SOLUTIONS P4]</strong> <strong>4a:</strong> Cp,m = ${p.Cpm.toFixed(2)} J/(mol K) | <strong>4b:</strong> V_i = ${p.p4_Vi_L.toFixed(2)} L | <strong>4c:</strong> V_f = ${p.p4_Vf_L.toFixed(2)} L`;
+    }
+
+    function setFeedback(key, isCorrect, msg, isTrap = false) {
+      const fb = document.getElementById(`fb_${key}`);
+      fb.textContent = msg;
+      if (isCorrect) {
+        fb.className = "text-xs font-semibold text-emerald-600";
+        solved[key] = true;
+      } else if (isTrap) {
+        fb.className = "text-xs font-semibold text-amber-600";
+      } else {
+        fb.className = "text-xs font-semibold text-rose-600";
+      }
+      saveState();
+      updateProgressUI();
+    }
+
+    function checkStep(prob, step) {
+      const key = `${prob}_${step}`;
+      const val = parseFloat(document.getElementById(`inp_${key}`).value);
+      const p = params;
+
+      if (isNaN(val)) {
+        setFeedback(key, false, "⚠️ Please enter a numerical value.");
+        return;
+      }
+
+      if (key === "1_1") {
+        const massFractionTrap = p.p1_mAr / (p.p1_mAr + p.p1_mCO2);
+        if (withinTol(val, p.xAr, 0.015)) {
+          setFeedback(key, true, "✅ Correct mole fraction!");
+        } else if (withinTol(val, p.xAr * 100, 0.02)) {
+          setFeedback(key, false, "⚠️ Trap: Enter the mole fraction (between 0 and 1), not the percentage!", true);
+        } else if (withinTol(val, massFractionTrap, 0.01)) {
+          setFeedback(key, false, "⚠️ Trap: Convert mass m to moles n = m/M before calculating x(Ar)!", true);
+        } else {
+          setFeedback(key, false, "❌ Check n(Ar) = m(Ar)/39.95 and n(CO2) = m(CO2)/44.01.");
+        }
+      }
+
+      if (key === "1_2") {
+        const trapCelsius = (p.nAr * 0.08314 * p.p1_TC) / p.p1_V;
+        const trapPtot = (p.nTot * 0.08314 * p.p1_TK) / p.p1_V;
+        if (withinTol(val, p.pAr_bar, 0.02)) {
+          setFeedback(key, true, "✅ Correct partial pressure in bar!");
+        } else if (withinTol(val, trapCelsius, 0.05)) {
+          setFeedback(key, false, "⚠️ Unit Trap: Convert temperature to Kelvin (T = °C + 273.15)!", true);
+        } else if (withinTol(val, trapPtot, 0.02)) {
+          setFeedback(key, false, "⚠️ That is the total pressure p_tot! Multiply by x(Ar) or use n(Ar).", true);
+        } else if (withinTol(val, p.pAr_bar * 100, 0.03)) {
+          setFeedback(key, false, "⚠️ Unit Trap: Your result is in kPa. Divide by 100 to get bar (or use R = 0.08314 L bar / mol K)!", true);
+        } else {
+          setFeedback(key, false, "❌ Use p(Ar) = n(Ar) * R * T / V with R = 0.08314 dm³ bar mol⁻¹ K⁻¹.");
+        }
+      }
+
+      if (key === "1_3") {
+        const trapGramsInSqrt = Math.sqrt((8 * 8.314 * p.p1_TK) / (Math.PI * 39.95));
+        const trapRms = Math.sqrt((3 * 8.314 * p.p1_TK) / 0.03995);
+        if (withinTol(val, p.vMean_Ar, 0.015)) {
+          setFeedback(key, true, "✅ Spot on! Molar mass in kg/mol used properly.");
+        } else if (withinTol(val, trapGramsInSqrt, 0.03)) {
+          setFeedback(key, false, "⚠️ Classic SI Trap! Inside the square root, M must be in kg/mol (0.03995 kg/mol), not g/mol!", true);
+        } else if (withinTol(val, trapRms, 0.015)) {
+          setFeedback(key, false, "⚠️ Formula Trap: You calculated v_rms = √(3RT/M). Here we asked for v_mean = √(8RT / πM)!", true);
+        } else {
+          setFeedback(key, false, "❌ Check T in Kelvin, R = 8.314 J/(mol K), and M = 0.03995 kg/mol.");
+        }
+      }
+
+      if (key === "2_1") {
+        const trapR8314 = (p.p2_n * 8.314 * p.p2_TK) / p.p2_V;
+        const trapRbar = (p.p2_n * 0.08314 * p.p2_TK) / p.p2_V;
+        if (withinTol(val, p.p_id, 0.015)) {
+          setFeedback(key, true, "✅ Correct ideal pressure in atm!");
+        } else if (withinTol(val, trapR8314, 0.03)) {
+          setFeedback(key, false, "⚠️ Unit Trap: You used R = 8.314, but V is in L and we need atm! Use R = 0.08205 L atm mol⁻¹ K⁻¹.", true);
+        } else if (withinTol(val, trapRbar, 0.01)) {
+          setFeedback(key, false, "⚠️ Close! You used R = 0.08314 (which gives bar). Use R = 0.08205 for atm!", true);
+        } else {
+          setFeedback(key, false, "❌ Use p_id = n * R * T / V with R = 0.08205.");
+        }
+      }
+
+      if (key === "2_2") {
+        const trapPlusA = ((p.p2_n * 0.08205 * p.p2_TK) / (p.p2_V - p.p2_n * 0.0371)) + 4.170 * Math.pow(p.p2_n / p.p2_V, 2);
+        const trapForgotN2 = ((p.p2_n * 0.08205 * p.p2_TK) / (p.p2_V - p.p2_n * 0.0371)) - 4.170 * (p.p2_n / Math.pow(p.p2_V, 2));
+        if (withinTol(val, p.p_vdW, 0.02)) {
+          setFeedback(key, true, "✅ Correct Van der Waals pressure!");
+        } else if (withinTol(val, trapPlusA, 0.02)) {
+          setFeedback(key, false, "⚠️ Sign Trap: The attractive term -a*(n/V)² must be subtracted, not added!", true);
+        } else if (withinTol(val, trapForgotN2, 0.02)) {
+          setFeedback(key, false, "⚠️ Formula Trap: Did you forget to square n in the second term a * n² / V²?", true);
+        } else {
+          setFeedback(key, false, "❌ Check both terms: nRT/(V - nb) minus a*(n/V)².");
+        }
+      }
+
+      if (key === "2_3") {
+        const trapInverted = p.p_id / p.p_vdW;
+        if (withinTol(val, p.Z_val, 0.02)) {
+          setFeedback(key, true, "✅ Correct! Since Z < 1, attractive forces predominate.");
+        } else if (withinTol(val, trapInverted, 0.02)) {
+          setFeedback(key, false, "⚠️ Inverted fraction! Z = p_real / p_id (not p_id / p_real).", true);
+        } else {
+          setFeedback(key, false, "❌ Divide your Van der Waals pressure (Step 2b) by your ideal pressure (Step 2a).");
+        }
+      }
+
+      if (key === "3_1") {
+        const trapNo100 = -1.20 * (p.p3_Vf - p.p3_Vi);
+        if (withinTol(val, p.w_irrev_J, 0.015)) {
+          setFeedback(key, true, "✅ Correct! Both the negative sign and bar·L → J conversion are right.");
+        } else if (withinTol(val, -p.w_irrev_J, 0.02)) {
+          setFeedback(key, false, "⚠️ Sign Convention Trap! In expansion (ΔV > 0), the gas does work on the surroundings: w = -p_ex * ΔV < 0!", true);
+        } else if (withinTol(Math.abs(val), Math.abs(trapNo100), 0.02)) {
+          setFeedback(key, false, "⚠️ Unit Trap! 1 bar·L is NOT 1 Joule! Multiply bar·L by 100 to convert to Joule.", true);
+        } else {
+          setFeedback(key, false, "❌ Use w = -p_ex * (V_f - V_i) and remember 1 bar·L = 100 J.");
+        }
+      }
+
+      if (key === "3_2") {
+        const trapJoules = p.w_rev_kJ * 1000;
+        const trapLog10 = -(p.p3_n * 8.314 * p.p3_TK * Math.log10(p.p3_Vf / p.p3_Vi)) / 1000;
+        if (withinTol(val, p.w_rev_kJ, 0.02)) {
+          setFeedback(key, true, "✅ Correct reversible expansion work in kJ!");
+        } else if (withinTol(val, -p.w_rev_kJ, 0.02)) {
+          setFeedback(key, false, "⚠️ Sign Trap! Since V_f > V_i, w_rev = -nRT ln(V_f/V_i) must be negative!", true);
+        } else if (withinTol(Math.abs(val), Math.abs(trapJoules), 0.03)) {
+          setFeedback(key, false, "⚠️ Unit Trap: Your value is in Joules (J). Divide by 1000 to get kJ!", true);
+        } else if (withinTol(Math.abs(val), Math.abs(trapLog10), 0.03)) {
+          setFeedback(key, false, "⚠️ Logarithm Trap: Use the natural logarithm (ln), not log10!", true);
+        } else {
+          setFeedback(key, false, "❌ Check T in Kelvin, R = 8.314 J/(mol K), and divide by 1000 for kJ.");
+        }
+      }
+
+      if (key === "3_3") {
+        if (withinTol(val, p.q_rev_kJ, 0.02)) {
+          setFeedback(key, true, "✅ Correct! ΔU = q + w = 0  ⇒  q = -w (positive!).");
+        } else if (withinTol(val, -p.q_rev_kJ, 0.02)) {
+          setFeedback(key, false, "⚠️ Sign Trap: Since ΔU = q + w = 0 and w is negative, heat q = -w must be POSITIVE!", true);
+        } else {
+          setFeedback(key, false, "❌ For an isothermal expansion of an ideal gas, q_rev = -w_rev.");
+        }
+      }
+
+      if (key === "4_1") {
+        const trapMonoatomic = 2.5 * 8.314;
+        if (withinTol(val, p.Cpm, 0.015)) {
+          setFeedback(key, true, "✅ Correct! Cp,m = 3.5 * R = 29.10 J/(mol K).");
+        } else if (withinTol(val, trapMonoatomic, 0.015)) {
+          setFeedback(key, false, "⚠️ That is Cv,m = 2.5*R (20.79). Add one R to get Cp,m = Cv,m + R!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate Cp,m = 2.5 * 8.314 + 8.314.");
+        }
+      }
+
+      if (key === "4_2") {
+        if (withinTol(val, p.p4_Vi_L, 0.02)) {
+          setFeedback(key, true, "✅ Correct initial volume in L!");
+        } else if (withinTol(val, p.p4_Vi_L / 1000, 0.03)) {
+          setFeedback(key, false, "⚠️ Unit Trap: That is V_i in m³. Multiply by 1000 to convert m³ to Liters (L)!", true);
+        } else {
+          setFeedback(key, false, "❌ Use V_i = n * R * T_i / p_i (Note: J / kPa directly gives Liters!).");
+        }
+      }
+
+      if (key === "4_3") {
+        const trapIsothermal = p.p4_Vi_L * (p.p4_pi / p.p4_pf);
+        const trapWrongExp = p.p4_Vi_L * Math.pow(p.p4_pi / p.p4_pf, p.gamma);
+        if (withinTol(val, p.p4_Vf_L, 0.02)) {
+          setFeedback(key, true, "✅ Excellent! Poisson's adiabatic law mastered.");
+        } else if (withinTol(val, trapIsothermal, 0.02)) {
+          setFeedback(key, false, "⚠️ Trap: You forgot the exponent 1/γ! For an adiabatic process, V_f = V_i * (p_i / p_f)^(1 / 1.40).", true);
+        } else if (withinTol(val, trapWrongExp, 0.02)) {
+          setFeedback(key, false, "⚠️ Exponent Trap: Raise (p_i / p_f) to the power of (1 / γ) = 1/1.40 ≈ 0.714, not γ!", true);
+        } else {
+          setFeedback(key, false, "❌ Calculate V_f = V_i * (p_i / p_f)^(1 / 1.40).");
+        }
+      }
+    }
+
+    function updateProgressUI() {
+      const total = 12;
+      const doneCount = Object.values(solved).filter(Boolean).length;
+      document.getElementById('progressCount').textContent = `${doneCount} / ${total}`;
+      document.getElementById('progressBar').style.width = `${(doneCount / total) * 100}%`;
+
+      if (doneCount > 0 && params.cleanId) {
+        const idNum = parseInt(params.cleanId.replace(/\D/g, '').slice(-4)) || 1357;
+        const hash = ((idNum * 17) + (doneCount * 31) + params.p1_TC).toString(16).toUpperCase();
+        document.getElementById('tokenDisplay').textContent = `PC1-U01-${params.cleanId}-${doneCount}of12-CHK${hash}`;
+      } else {
+        document.getElementById('tokenDisplay').textContent = "Solve at least 1 step to generate token...";
+      }
+    }
+
+    function copyToken() {
+      const tokenText = document.getElementById('tokenDisplay').textContent;
+      if (tokenText.startsWith("Solve")) return;
+      navigator.clipboard.writeText(tokenText);
+      const fb = document.getElementById('copyFeedback');
+      fb.classList.remove('hidden');
+      setTimeout(() => fb.classList.add('hidden'), 2500);
+    }
+
+    function saveState() {
+      if (!params.cleanId) return;
+      const inputs = {};
+      Object.keys(solved).forEach(k => {
+        inputs[k] = document.getElementById(`inp_${k}`).value;
+      });
+      const state = {
+        rawId: document.getElementById('studentIdInput').value.trim(),
+        solved,
+        inputs
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadSavedState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return;
+      try {
+        const state = JSON.parse(raw);
+        if (state.rawId) {
+          document.getElementById('studentIdInput').value = state.rawId;
+          if (state.solved) solved = state.solved;
+          initWorksheet(true);
+          if (state.inputs) {
+            Object.keys(state.inputs).forEach(k => {
+              const el = document.getElementById(`inp_${k}`);
+              if (el && state.inputs[k] !== undefined) el.value = state.inputs[k];
+              if (solved[k]) {
+                const fb = document.getElementById(`fb_${k}`);
+                fb.textContent = "✅ Solved (restored)";
+                fb.className = "text-xs font-semibold text-emerald-600";
+              }
+            });
+          }
+          updateProgressUI();
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function resetProgress() {
+      if (!confirm("Reset all saved inputs and progress for Unit 01?")) return;
+      localStorage.removeItem(STORAGE_KEY);
+      location.reload();
+    }
+
+    window.addEventListener('DOMContentLoaded', loadSavedState);
+  </script>
+</body>
+</html>

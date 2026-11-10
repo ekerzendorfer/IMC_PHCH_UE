@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 04 – Electrolysis, Faraday's Laws & Conductivity | Physical Chemistry IMC Krems</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- KaTeX CSS & JS (output: html only, no MathML duplication) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .katex-display {
+      margin: 0.65em 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .step-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .prof-box {
+      background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+      border-left: 5px solid #ca8a04;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- TOP HEADER & NAVIGATION -->
+  <header class="bg-slate-900 text-white shadow-lg border-b border-slate-700 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-600 transition">
+          <span>&larr;</span> Course Hub
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500 text-slate-950">Block 2 &bull; Unit 04</span>
+            <span class="text-xs text-slate-400 hidden sm:inline">FH IMC Krems &bull; Physical Chemistry Exercise</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">
+            Electrolysis, Faraday's Laws &amp; Electrolytic Conductivity
+          </h1>
+        </div>
+      </div>
+
+      <div class="text-xs text-slate-300 text-right hidden md:block">
+        <div><strong>UE Lecturer:</strong> Mag. Erich Kerzendorfer</div>
+        <div><strong>Main Lecture:</strong> Prof. Manfred Kerschbaumer</div>
+      </div>
+    </div>
+
+    <!-- STUDENT ID & CONTROL BAR -->
+    <div class="bg-slate-800/90 border-t border-slate-700">
+      <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="student-id-input" class="text-xs font-semibold uppercase tracking-wider text-amber-400">
+            Student ID:
+          </label>
+          <input
+            id="student-id-input"
+            type="text"
+            placeholder="e.g. 2510456012"
+            class="px-3 py-1.5 rounded bg-slate-900 border border-slate-600 text-white text-sm font-mono focus:outline-none focus:border-amber-400 w-48"
+          />
+          <button
+            onclick="loadWorksheet()"
+            class="px-3.5 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition shadow-sm"
+          >
+            Load My Worksheet
+          </button>
+          <button
+            onclick="resetWorksheet()"
+            class="px-3 py-1.5 rounded bg-slate-700 hover:bg-rose-600 text-slate-200 hover:text-white text-xs font-semibold transition"
+          >
+            Reset Saved Inputs
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="active-id-badge" class="px-2.5 py-1 rounded bg-slate-900 border border-slate-600 text-xs font-mono text-emerald-400">
+            Active ID: 2510456012
+          </span>
+          <span id="prof-mode-badge" class="hidden px-2.5 py-1 rounded bg-yellow-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">
+            PROF SOLUTIONS ACTIVE
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 mt-6 space-y-8">
+
+    <!-- SECTION 1: COLLAPSIBLE FORMULA SHEET -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <button
+        onclick="toggleFormulaSheet()"
+        class="w-full px-6 py-4 bg-slate-100 hover:bg-slate-200/70 flex items-center justify-between text-left transition"
+      >
+        <div class="flex items-center gap-3">
+          <span class="text-xl">📐</span>
+          <div>
+            <h2 class="font-bold text-slate-800 text-base sm:text-lg">Section 1: Unit 04 Formula Sheet, Constants &amp; Unit Conversions</h2>
+            <p class="text-xs text-slate-500">Click to expand/collapse reference equations for Electrolysis, Faraday's Laws, Conductivity &amp; Ostwald's Dilution Law</p>
+          </div>
+        </div>
+        <span id="formula-chevron" class="text-slate-600 font-bold text-lg transform transition-transform">▼</span>
+      </button>
+
+      <div id="formula-sheet-content" class="p-6 border-t border-slate-200 space-y-6">
+        <!-- 5 BY HEART FORMULAS -->
+        <div class="bg-rose-50 border border-rose-200 rounded-lg p-4">
+          <div class="text-xs font-bold uppercase tracking-wider text-rose-800 mb-2">
+            🧠 The 5 Fundamental "By Heart" Formulas (Required without Formula Sheet in Exams!)
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-sm bg-white p-3 rounded border border-rose-100">
+            <div>$$\rho = \frac{m}{V}$$</div>
+            <div>$$n = \frac{m}{M}$$</div>
+            <div>$$c = \frac{n}{V}$$</div>
+            <div>$$p \cdot V = n \cdot R \cdot T$$</div>
+            <div>$$x_i = \frac{n_i}{n_{\text{tot}}}$$</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Electrolysis & Faraday -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              1. Decomposition Voltage &amp; Faraday's Laws
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Theoretical Decomposition Voltage &amp; Terminal Voltage:</strong>
+            </p>
+            <div class="text-sm">
+              $$E_{\text{decomp}}^\circ = E_{\text{anode}}^\circ - E_{\text{cathode}}^\circ = |E_{\text{cell}}^\circ|$$
+              $$U_{\text{applied}} = E_{\text{decomp}}^\circ + \eta_{\text{anode}} + |\eta_{\text{cathode}}| + I \cdot R_{\text{cell}}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Faraday's First &amp; Second Laws (including Current Efficiency $\eta$):</strong>
+            </p>
+            <div class="text-sm">
+              $$Q = I \cdot t = n_e \cdot F = z \cdot n_{\text{theoretical}} \cdot F$$
+              $$m_{\text{actual}} = \eta \cdot \frac{I \cdot t \cdot M}{z \cdot F} \quad \Longleftrightarrow \quad \eta = \frac{m_{\text{actual}}}{m_{\text{theoretical}}}$$
+            </div>
+            <p class="text-xs text-slate-600">
+              <strong>Electrical Energy Consumption:</strong> $W_{\text{el}} = U_{\text{applied}} \cdot Q = U_{\text{applied}} \cdot I \cdot t$ (in $\text{J} = \text{V A s}$)
+            </p>
+          </div>
+
+          <!-- Conductivity & Ostwald -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              2. Electrolytic Conductivity &amp; Ostwald's Law
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Conductance $G$, Cell Constant $K_{\text{cell}}$ &amp; Specific Conductivity $\kappa$:</strong>
+            </p>
+            <div class="text-sm">
+              $$G = \frac{1}{R} = \kappa \cdot \frac{A}{l} = \frac{\kappa}{K_{\text{cell}}} \quad \Longrightarrow \quad \kappa = \frac{K_{\text{cell}}}{R} \quad \left(K_{\text{cell}} = \frac{l}{A}\right)$$
+            </div>
+            <p class="text-xs text-slate-600">
+              <strong>Molar ($\Lambda_m$) &amp; Equivalent Conductivity ($\Lambda_{\text{eq}}$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\Lambda_m = \frac{\kappa}{c}, \qquad \Lambda_{\text{eq}} = \frac{\kappa}{c_{\text{eq}}} = \frac{\Lambda_m}{z^*} \quad (z^* = \nu_+ |z_+| = \nu_- |z_-|)$$
+            </div>
+            <p class="text-xs text-slate-600">
+              <strong>Kohlrausch's Law &amp; Ostwald's Dilution Law (Weak Electrolytes):</strong>
+            </p>
+            <div class="text-sm">
+              $$\Lambda_m^\circ = \nu_+ \lambda_+^\circ + \nu_- \lambda_-^\circ, \qquad \alpha = \frac{\Lambda_m}{\Lambda_m^\circ}, \qquad K_c = \frac{\alpha^2 \cdot c}{1 - \alpha}$$
+            </div>
+          </div>
+        </div>
+
+        <!-- Constants & Critical Unit Conversions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs bg-amber-50/70 border border-amber-200 p-4 rounded-lg">
+          <div>
+            <strong class="text-amber-900 uppercase tracking-wider block mb-1">Constants &amp; Molar Masses:</strong>
+            <ul class="space-y-1 text-slate-700 list-disc list-inside">
+              <li>Faraday constant: $F = 96485\text{ C mol}^{-1} = 96485\text{ A s mol}^{-1}$</li>
+              <li>Molar masses: $M(\text{Al}) = 26.98\text{ g mol}^{-1}$, $M(\text{Ag}) = 107.87\text{ g mol}^{-1}$, $M(\text{Cu}) = 63.55\text{ g mol}^{-1}$</li>
+              <li>Standard potentials ($25\text{ }^\circ\text{C}$, $\text{pH } 0$): $E^\circ(\text{O}_2/\text{H}_2\text{O}) = +1.229\text{ V}$, $E^\circ(\text{Cl}_2/\text{Cl}^-) = +1.358\text{ V}$</li>
+            </ul>
+          </div>
+          <div>
+            <strong class="text-amber-900 uppercase tracking-wider block mb-1">⚠️ Golden Unit Conversion Rules for Conductivity:</strong>
+            <ul class="space-y-1 text-slate-700 list-disc list-inside">
+              <li>Lab formula: $\Lambda_m\text{ [S cm}^2\text{ mol}^{-1}\text{]} = \dfrac{\kappa\text{ [S cm}^{-1}\text{]} \cdot 1000}{c\text{ [mol L}^{-1}\text{]}} = \dfrac{\kappa\text{ [mS cm}^{-1}\text{]}}{c\text{ [mol L}^{-1}\text{]}}$</li>
+              <li>SI conversion: $1\text{ S cm}^2\text{ mol}^{-1} = 10^{-4}\text{ S m}^2\text{ mol}^{-1} = 0.1\text{ mS m}^2\text{ mol}^{-1}$</li>
+              <li>Concentration: $1\text{ mol L}^{-1} = 10^{-3}\text{ mol cm}^{-3} = 1000\text{ mol m}^{-3}$</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: IN-CLASS GUIDED MODELING -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-indigo-950 text-white flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-indigo-300">Section 2 &bull; 25-Min Board / Projector Walkthrough</span>
+          <h2 class="text-lg font-bold">👨‍🏫 Part 1: In-Class Guided Modeling</h2>
+        </div>
+        <button
+          onclick="toggleSpokenHints()"
+          id="btn-spoken-hints"
+          class="px-3.5 py-1.5 rounded-lg bg-indigo-800 hover:bg-indigo-700 text-indigo-100 text-xs font-semibold border border-indigo-600 transition"
+        >
+          🎙️ Show Spoken Explanation Hints
+        </button>
+      </div>
+
+      <div class="p-6 space-y-8">
+        <!-- Aqueous Electrolysis Quick Reference Table (from 08_Electrochemistry II) -->
+        <div class="bg-indigo-50/70 border border-indigo-200 rounded-lg p-4">
+          <h3 class="text-xs font-bold uppercase tracking-wider text-indigo-900 mb-2">
+            ⚡ Quick Board Overview: Competing Electrode Reactions in Aqueous Electrolysis (Inert Pt/C Electrodes)
+          </h3>
+          <div class="overflow-x-auto">
+            <table class="w-full text-xs text-left border-collapse bg-white rounded overflow-hidden">
+              <thead>
+                <tr class="bg-indigo-100 text-indigo-950 border-b border-indigo-200">
+                  <th class="p-2 font-bold">Electrolyte</th>
+                  <th class="p-2 font-bold">Ions in Solution (+ $\text{H}_2\text{O}$)</th>
+                  <th class="p-2 font-bold">Cathode ($-$, Reduction: highest $E$)</th>
+                  <th class="p-2 font-bold">Anode ($+$, Oxidation: lowest $E_{\text{ox}}$ + $\eta$)</th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-slate-200">
+                <tr>
+                  <td class="p-2 font-semibold">$\text{Na}_2\text{SO}_4\text{(aq)}$</td>
+                  <td class="p-2">$\text{Na}^+, \text{SO}_4^{2-}, \text{H}_2\text{O}$</td>
+                  <td class="p-2 text-emerald-800 font-medium">$2\text{H}_2\text{O} + 2e^- \rightarrow \text{H}_2\uparrow + 2\text{OH}^-$ ($\text{Na}^+$ too negative)</td>
+                  <td class="p-2 text-rose-800 font-medium">$2\text{H}_2\text{O} \rightarrow \text{O}_2\uparrow + 4\text{H}^+ + 4e^-$ ($\text{SO}_4^{2-}$ inert)</td>
+                </tr>
+                <tr>
+                  <td class="p-2 font-semibold">$\text{CuSO}_4\text{(aq)}$</td>
+                  <td class="p-2">$\text{Cu}^{2+}, \text{SO}_4^{2-}, \text{H}_2\text{O}$</td>
+                  <td class="p-2 text-emerald-800 font-medium">$\text{Cu}^{2+} + 2e^- \rightarrow \text{Cu(s)}$ ($+0.34\text{ V} > \text{H}_2\text{O}$)</td>
+                  <td class="p-2 text-rose-800 font-medium">$2\text{H}_2\text{O} \rightarrow \text{O}_2\uparrow + 4\text{H}^+ + 4e^-$</td>
+                </tr>
+                <tr>
+                  <td class="p-2 font-semibold">$\text{NaCl}\text{(aq, conc.)}$</td>
+                  <td class="p-2">$\text{Na}^+, \text{Cl}^-, \text{H}_2\text{O}$</td>
+                  <td class="p-2 text-emerald-800 font-medium">$2\text{H}_2\text{O} + 2e^- \rightarrow \text{H}_2\uparrow + 2\text{OH}^-$</td>
+                  <td class="p-2 text-rose-800 font-medium">$2\text{Cl}^- \rightarrow \text{Cl}_2\uparrow + 2e^-$ (due to high $\text{O}_2$ overpotential!)</td>
+                </tr>
+                <tr>
+                  <td class="p-2 font-semibold">$\text{CuCl}_2\text{(aq)}$</td>
+                  <td class="p-2">$\text{Cu}^{2+}, \text{Cl}^-, \text{H}_2\text{O}$</td>
+                  <td class="p-2 text-emerald-800 font-medium">$\text{Cu}^{2+} + 2e^- \rightarrow \text{Cu(s)}$</td>
+                  <td class="p-2 text-rose-800 font-medium">$2\text{Cl}^- \rightarrow \text{Cl}_2\uparrow + 2e^-$</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- GUIDED EXAMPLE 1 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 1 &bull; Ref: 08_Electrochemistry II.pdf &amp; Q01 (3rd Rep, Q1)</span>
+              <h3 class="text-base font-bold text-slate-900">Industrial Hall-Héroult Melt Electrolysis of $\text{Al}_2\text{O}_3$ ($1\text{ t}$ Aluminum &amp; Current Efficiency $\eta$)</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(1, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(1, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(1, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(1)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong> Metallic aluminum ($M = 26.98\text{ g mol}^{-1}$) is produced industrially via the <em>Hall-Héroult process</em> by electrolyzing $\text{Al}_2\text{O}_3$ dissolved in molten cryolite ($\text{Na}_3\text{AlF}_6$) at $\vartheta \approx 960\text{ }^\circ\text{C}$. An industrial electrolysis pot operates at a current efficiency of $\eta = 88.0\%$ over a $t = 24.0\text{ h}$ production shift to produce exactly $m_{\text{Al}} = 1.00\text{ metric ton}$ ($1.00 \times 10^6\text{ g}$) of aluminum at a cell voltage of $U = 4.20\text{ V}$.<br />
+            <strong>(a)</strong> Write the cathode reduction half-reaction, identify the stoichiometric electron number $z$, and calculate the theoretical charge $Q_{\text{theo}}$ (in $\text{C}$).<br />
+            <strong>(b)</strong> Account for the current efficiency $\eta = 88.0\%$ to determine the actual charge $Q_{\text{actual}}$ and the required continuous operating current $I$ (in $\text{kA}$).<br />
+            <strong>(c)</strong> Calculate the specific electrical energy consumption in $\text{kWh}$ per $\text{kg}$ of produced aluminum ($1\text{ kWh} = 3.60 \times 10^6\text{ J}$).
+          </p>
+
+          <!-- Spoken Hint 1 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 1):</strong>
+            <p>"First, ask students why we cannot electrolyze aqueous $\text{AlCl}_3$ to get aluminum metal: in water, $\text{H}_2\text{O}$ is reduced to $\text{H}_2$ long before $\text{Al}^{3+}$ ($E^\circ = -1.66\text{ V}$). Hence we need molten cryolite!"</p>
+            <p>"Second, highlight the classic exam trap with current efficiency $\eta$: If only $88\%$ of the electrons reduce $\text{Al}^{3+}$, do we need MORE or LESS total current from the power grid to produce $1\text{ ton}$ of Al? We need MORE current, so we divide $Q_{\text{theo}}$ by $\eta = 0.88$!"</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-1-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Stoichiometry &amp; Theoretical Charge $Q_{\text{theo}}$:</div>
+              <p>Cathode reduction: $\text{Al}^{3+} + 3e^- \longrightarrow \text{Al(l)} \implies z = 3$ moles of electrons per mole of $\text{Al}$.</p>
+              <p>Amount of aluminum for $m_{\text{Al}} = 1.00 \times 10^6\text{ g}$:</p>
+              $$n_{\text{Al}} = \frac{m_{\text{Al}}}{M_{\text{Al}}} = \frac{1.00 \times 10^6\text{ g}}{26.98\text{ g mol}^{-1}} = 3.7064 \times 10^4\text{ mol}$$
+              $$Q_{\text{theo}} = z \cdot n_{\text{Al}} \cdot F = 3 \cdot 3.7064 \times 10^4\text{ mol} \cdot 96485\text{ C mol}^{-1} = \mathbf{1.0728 \times 10^{10}\text{ C}}$$
+            </div>
+
+            <div id="guided-1-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Actual Charge $Q_{\text{actual}}$ &amp; Operating Current $I$:</div>
+              <p>Since $\eta = 0.880$, more total charge must pass through the cell ($t = 24.0\text{ h} = 86400\text{ s}$):</p>
+              $$Q_{\text{actual}} = \frac{Q_{\text{theo}}}{\eta} = \frac{1.0728 \times 10^{10}\text{ C}}{0.880} = \mathbf{1.2191 \times 10^{10}\text{ C}}$$
+              $$I = \frac{Q_{\text{actual}}}{t} = \frac{1.2191 \times 10^{10}\text{ A s}}{86400\text{ s}} = 1.4110 \times 10^5\text{ A} = \mathbf{141.1\text{ kA}}$$
+            </div>
+
+            <div id="guided-1-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – Specific Electrical Energy Consumption:</div>
+              <p>Total electrical work $W_{\text{el}}$ at $U = 4.20\text{ V}$ for $1000\text{ kg}$ of $\text{Al}$:</p>
+              $$W_{\text{el}} = U \cdot Q_{\text{actual}} = 4.20\text{ V} \cdot 1.2191 \times 10^{10}\text{ C} = 5.120 \times 10^{10}\text{ J}$$
+              $$W_{\text{el}}\text{ [kWh]} = \frac{5.120 \times 10^{10}\text{ J}}{3.60 \times 10^6\text{ J kWh}^{-1}} = 14223\text{ kWh} \implies w_{\text{spec}} = \frac{14223\text{ kWh}}{1000\text{ kg}} = \mathbf{14.22\text{ kWh kg}^{-1}}$$
+            </div>
+          </div>
+        </div>
+
+        <!-- GUIDED EXAMPLE 2 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 2 &bull; Ref: 09_Electrochemistry III.pdf, Q01 (3rd Rep, Q2) &amp; T01 (Q12)</span>
+              <h3 class="text-base font-bold text-slate-900">Electrolytic Conductivity ($\kappa, \Lambda_m$) &amp; Ostwald's Dilution Law for Acetic Acid</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(2, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(2, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(2, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(2)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong> A conductivity measurement cell with electrode spacing $l = 1.20\text{ cm}$ and effective area $A = 1.50\text{ cm}^2$ is filled with an aqueous acetic acid ($\text{CH}_3\text{COOH}$) solution of concentration $c = 0.0500\text{ mol L}^{-1}$ at $\vartheta = 25.0\text{ }^\circ\text{C}$. The measured resistance is $R = 2210\text{ }\Omega$. At $25.0\text{ }^\circ\text{C}$, the limiting molar ionic conductivities are $\lambda^\circ(\text{H}^+) = 349.8\text{ S cm}^2\text{ mol}^{-1}$ and $\lambda^\circ(\text{CH}_3\text{COO}^-) = 40.9\text{ S cm}^2\text{ mol}^{-1}$.<br />
+            <strong>(a)</strong> Calculate the cell constant $K_{\text{cell}}$ (in $\text{cm}^{-1}$) and the specific conductivity $\kappa$ (in $\mu\text{S cm}^{-1}$ and $\text{S cm}^{-1}$).<br />
+            <strong>(b)</strong> Determine the molar conductivity $\Lambda_m$ both in classical laboratory units ($\text{S cm}^2\text{ mol}^{-1}$) and in strict SI units ($\text{S m}^2\text{ mol}^{-1}$).<br />
+            <strong>(c)</strong> Calculate the limiting molar conductivity $\Lambda_m^\circ$, the degree of dissociation $\alpha$, and the acid dissociation constant $K_a$ via Ostwald's Dilution Law.
+          </p>
+
+          <!-- Spoken Hint 2 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 2):</strong>
+            <p>"Point out why $\Lambda_m = \kappa / c$ is the #1 unit trap in Physical Chemistry exams: $c$ is given in $\text{mol L}^{-1} = \text{mol dm}^{-3}$, whereas $\kappa$ uses $\text{cm}^{-1}$. Since $1\text{ L} = 1000\text{ cm}^3$, we MUST write $c\text{ [mol cm}^{-3}\text{]} = c\text{ [mol L}^{-1}\text{]} / 1000$."</p>
+            <p>"Then show the shortcut: if $\kappa$ is converted to $\text{mS cm}^{-1}$, the factor $1000$ cancels out directly: $\Lambda_m\text{ [S cm}^2\text{ mol}^{-1}\text{]} = \kappa\text{ [mS cm}^{-1}\text{]} / c\text{ [mol L}^{-1}\text{]}$!"</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-2-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Cell Constant $K_{\text{cell}}$ &amp; Specific Conductivity $\kappa$:</div>
+              $$K_{\text{cell}} = \frac{l}{A} = \frac{1.20\text{ cm}}{1.50\text{ cm}^2} = \mathbf{0.800\text{ cm}^{-1}}$$
+              $$\kappa = \frac{K_{\text{cell}}}{R} = \frac{0.800\text{ cm}^{-1}}{2210\text{ }\Omega} = \mathbf{3.620 \times 10^{-4}\text{ S cm}^{-1}} = \mathbf{362.0\text{ }\mu\text{S cm}^{-1}} = 0.3620\text{ mS cm}^{-1}$$
+            </div>
+
+            <div id="guided-2-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Molar Conductivity $\Lambda_m$ in Lab &amp; SI Units:</div>
+              <p>With $c = 0.0500\text{ mol L}^{-1} = 5.00 \times 10^{-5}\text{ mol cm}^{-3}$:</p>
+              $$\Lambda_m = \frac{\kappa}{c} = \frac{3.620 \times 10^{-4}\text{ S cm}^{-1}}{5.00 \times 10^{-5}\text{ mol cm}^{-3}} = \mathbf{7.240\text{ S cm}^2\text{ mol}^{-1}}$$
+              <p>Converting to SI ($\times 10^{-4}$ since $1\text{ cm}^2 = 10^{-4}\text{ m}^2$):</p>
+              $$\Lambda_m\text{ (SI)} = 7.240 \times 10^{-4}\text{ S m}^2\text{ mol}^{-1} = \mathbf{0.7240\text{ mS m}^2\text{ mol}^{-1}}$$
+            </div>
+
+            <div id="guided-2-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – Kohlrausch's Law, Dissociation Degree $\alpha$ &amp; Ostwald's Constant $K_a$:</div>
+              $$\Lambda_m^\circ = \lambda^\circ(\text{H}^+) + \lambda^\circ(\text{CH}_3\text{COO}^-) = 349.8 + 40.9 = \mathbf{390.7\text{ S cm}^2\text{ mol}^{-1}}$$
+              $$\alpha = \frac{\Lambda_m}{\Lambda_m^\circ} = \frac{7.240}{390.7} = \mathbf{0.01853} \quad (\mathbf{1.853\%})$$
+              $$K_a = \frac{\alpha^2 \cdot c}{1 - \alpha} = \frac{(0.01853)^2 \cdot 0.0500\text{ mol L}^{-1}}{1 - 0.01853} = \mathbf{1.749 \times 10^{-5}\text{ mol L}^{-1}}$$
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INDIVIDUALIZED EXERCISE WORKSHEET -->
+    <section class="space-y-6">
+      <div class="bg-slate-900 text-white rounded-xl px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-amber-400">Section 3 &bull; Individualized Student Worksheet</span>
+          <h2 class="text-lg font-bold">📝 Part 2: 4 Exercises (12 Graded Steps with Smart Error Diagnosis)</h2>
+          <p class="text-xs text-slate-300">Enter your calculated values (tolerance $\pm 1.5\%$). Use dot (`.`) or comma (`,`) as decimal separator.</p>
+        </div>
+        <div class="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 text-right">
+          <div class="text-xs text-slate-400">Overall Progress</div>
+          <div id="progress-counter" class="text-lg font-extrabold text-emerald-400 font-mono">0 / 12 Steps</div>
+        </div>
+      </div>
+
+      <!-- DYNAMIC EXERCISES CONTAINER -->
+      <div id="exercises-container" class="space-y-8"></div>
+
+      <!-- SUBMISSION VERIFICATION TOKEN BOX -->
+      <div class="bg-slate-900 text-white rounded-xl p-6 shadow-lg border border-slate-700 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">MS Forms / Moodle Verification</span>
+            <h3 class="text-base font-bold">🔐 Submission Verification Token</h3>
+            <p class="text-xs text-slate-300">Copy this token into the MS Forms submission field at the end of the exercise unit.</p>
+          </div>
+          <button
+            onclick="copyVerificationToken()"
+            class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow"
+          >
+            📋 Copy Token
+          </button>
+        </div>
+        <div class="bg-slate-950 border border-slate-700 rounded-lg p-3.5 flex items-center justify-between">
+          <code id="verification-token" class="text-sm sm:text-base font-mono text-emerald-400 font-bold select-all">
+            PC1-U04-2510456012-0of12-CHK0000
+          </code>
+          <span id="copy-feedback" class="text-xs text-amber-400 font-semibold hidden">Copied to clipboard!</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    const STORAGE_KEY = 'PC_IMC_UNIT04_STATE_V1';
+    const DEFAULT_ID = '2510456012';
+
+    let currentStudentId = DEFAULT_ID;
+    let isProfMode = false;
+    let currentProblems = [];
+    let userState = {
+      studentId: DEFAULT_ID,
+      inputs: {},
+      completed: {}
+    };
+
+    // Deterministic Seeded PRNG (FNV-1a hash h = 2166136261 + Mulberry32)
+    function createSeededRNG(str) {
+      let h = 2166136261 >>> 0;
+      const clean = String(str).trim();
+      for (let i = 0; i < clean.length; i++) {
+        h ^= clean.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return function() {
+        h += 0x6D2B79F5;
+        let t = Math.imul(h ^ (h >>> 15), 1 | h);
+        t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function randStep(rng, min, max, step) {
+      const steps = Math.round((max - min) / step);
+      const idx = Math.floor(rng() * (steps + 1));
+      return Number((min + idx * step).toFixed(6));
+    }
+
+    // Generate all 4 problems deterministically from Student ID
+    function buildUnit04Problems(studentId) {
+      const rng = createSeededRNG(studentId);
+      const F = 96485;
+
+      // =========================================================================
+      // EXERCISE 1: Decomposition Voltage, Overpotential & Electrical Work
+      // =========================================================================
+      const metalsEx1 = [
+        { formula: 'CuSO<sub>4</sub>', ion: 'Cu<sup>2+</sup>', metal: 'Cu', E_cat: 0.340 },
+        { formula: 'NiSO<sub>4</sub>', ion: 'Ni<sup>2+</sup>', metal: 'Ni', E_cat: -0.257 },
+        { formula: 'CdSO<sub>4</sub>', ion: 'Cd<sup>2+</sup>', metal: 'Cd', E_cat: -0.403 },
+        { formula: 'ZnSO<sub>4</sub>', ion: 'Zn<sup>2+</sup>', metal: 'Zn', E_cat: -0.762 }
+      ];
+      const m1 = metalsEx1[Math.floor(rng() * metalsEx1.length)];
+      const E_an_O2 = 1.229; // V at pH 0
+      const eta_an = randStep(rng, 0.45, 0.68, 0.01); // V oxygen overpotential on Pt
+      const eta_cat = randStep(rng, 0.05, 0.14, 0.01); // V cathodic overpotential magnitude
+      const I_ex1 = randStep(rng, 1.50, 4.20, 0.10); // A
+      const R_cell_ex1 = randStep(rng, 0.35, 0.85, 0.05); // Ohm
+      const t_min_ex1 = randStep(rng, 25, 65, 5); // min
+
+      // Calculations Ex 1
+      const E_decomp_0 = E_an_O2 - m1.E_cat; // V
+      const U_applied = E_decomp_0 + eta_an + eta_cat + I_ex1 * R_cell_ex1; // V
+      const W_el_kJ = (U_applied * I_ex1 * (t_min_ex1 * 60)) / 1000; // kJ
+
+      // =========================================================================
+      // EXERCISE 2: Faraday's Law, Silver Coulometry & Current Efficiency
+      // =========================================================================
+      const M_Ag = 107.87;
+      const M_Cu = 63.55;
+      const m_Ag = randStep(rng, 2.40, 5.80, 0.10); // g deposited in Ag coulometer (100% eff, z=1)
+      const t_min_ex2 = randStep(rng, 20, 50, 5); // min
+      const eta_target_pct = randStep(rng, 76.0, 93.5, 0.5); // %
+
+      const n_Ag = m_Ag / M_Ag;
+      const Q_ex2 = n_Ag * 1 * F; // C
+      const I_ex2 = Q_ex2 / (t_min_ex2 * 60); // A
+      const m_Cu_theo = (Q_ex2 * M_Cu) / (2 * F); // g (z=2 for Cu2+)
+      const m_Cu_actual = Number((m_Cu_theo * (eta_target_pct / 100)).toFixed(3));
+      const eta_Cu_pct = (m_Cu_actual / m_Cu_theo) * 100;
+
+      // =========================================================================
+      // EXERCISE 3: Specific, Molar & Equivalent Conductivity (MgCl2, z* = 2)
+      // =========================================================================
+      const K_cell_ex3 = randStep(rng, 0.65, 1.35, 0.05); // cm^-1
+      const c_ex3 = randStep(rng, 0.010, 0.045, 0.005); // mol L^-1 of MgCl2
+      const R_ex3 = randStep(rng, 180, 460, 10); // Ohm
+
+      const kappa_S_cm = K_cell_ex3 / R_ex3; // S cm^-1
+      const kappa_mS_cm = kappa_S_cm * 1000; // mS cm^-1
+      const Lambda_m_lab = (kappa_S_cm * 1000) / c_ex3; // S cm^2 mol^-1
+      const Lambda_eq_lab = Lambda_m_lab / 2; // S cm^2 eq^-1 (since MgCl2 -> Mg2+ + 2 Cl-, z* = 2)
+
+      // =========================================================================
+      // EXERCISE 4: Ostwald's Dilution Law & Weak Acid Dissociation Constant Ka
+      // =========================================================================
+      const acidsEx4 = [
+        { name: 'acetic acid (CH<sub>3</sub>COOH)', anion: 'CH<sub>3</sub>COO<sup>&minus;</sup>', lam_an: 40.9 },
+        { name: 'propionic acid (C<sub>2</sub>H<sub>5</sub>COOH)', anion: 'C<sub>2</sub>H<sub>5</sub>COO<sup>&minus;</sup>', lam_an: 35.8 },
+        { name: 'formic acid (HCOOH)', anion: 'HCOO<sup>&minus;</sup>', lam_an: 54.6 },
+        { name: 'lactic acid (CH<sub>3</sub>CH(OH)COOH)', anion: 'C<sub>3</sub>H<sub>5</sub>O<sub>3</sub><sup>&minus;</sup>', lam_an: 38.8 }
+      ];
+      const ac4 = acidsEx4[Math.floor(rng() * acidsEx4.length)];
+      const lam_H = 349.8; // S cm^2 mol^-1
+      const Lambda_0_ex4 = lam_H + ac4.lam_an; // S cm^2 mol^-1
+      const c_ex4 = randStep(rng, 0.020, 0.080, 0.005); // mol L^-1
+      const kappa_uS_cm = randStep(rng, 280, 620, 10); // uS cm^-1
+
+      const kappa_S_cm_ex4 = kappa_uS_cm * 1e-6;
+      const Lambda_m_ex4 = (kappa_S_cm_ex4 * 1000) / c_ex4; // S cm^2 mol^-1
+      const alpha_ex4 = Lambda_m_ex4 / Lambda_0_ex4;
+      const alpha_pct_ex4 = alpha_ex4 * 100;
+      const Ka_ex4 = (alpha_ex4 * alpha_ex4 * c_ex4) / (1 - alpha_ex4); // mol L^-1
+      const Ka_1e5_ex4 = Ka_ex4 * 1e5; // in units of 10^-5 mol L^-1
+
+      return [
+        // PROBLEM 1
+        {
+          id: 1,
+          title: 'Exercise 1: Decomposition Voltage, Overpotential & Electrical Work in Aqueous Electrolysis',
+          theoryRef: '<strong>08_Electrochemistry II.pdf</strong> (Slides 2–14: Electrolysis of aqueous electrolytes, minimum decomposition voltage $E_{\\text{decomp}}^\\circ$, anodic/cathodic overpotential $\\eta$, ohmic drop $I \\cdot R_{\\text{cell}}$).',
+          examplesRef: '<strong>08_Electrochemistry II.pdf</strong> (In-Slide Comparison $\\text{CuSO}_4$ vs. $\\text{Na}_2\\text{SO}_4$), <strong>Q01_Quizzes.pdf</strong> (3rd Rep, Q1).',
+          statement: `An aqueous solution of <strong>${m1.formula}</strong> (at standard activity $a = 1$ and $\\text{pH } 0$, $\\vartheta = 25.0\\text{ }&deg;\\text{C}$) is electrolyzed between inert platinum (Pt) electrodes. At the cathode, ${m1.ion} is reduced to metallic ${m1.metal} ($E^\\circ = ${m1.E_cat.toFixed(3)}\\text{ V}$), while at the anode water is oxidized to oxygen gas ($E^\\circ(\\text{O}_2/\\text{H}_2\\text{O}) = +1.229\\text{ V}$). Under operating conditions at a constant current of $I = ${I_ex1.toFixed(2)}\\text{ A}$, the oxygen overpotential on Pt is $\\eta_{\\text{anode}} = ${eta_an.toFixed(2)}\\text{ V}$, the cathodic overpotential magnitude is $|\\eta_{\\text{cathode}}| = ${eta_cat.toFixed(2)}\\text{ V}$, and the internal cell resistance is $R_{\\text{cell}} = ${R_cell_ex1.toFixed(2)}\\text{ }&Omega;$. The electrolysis runs for $t = ${t_min_ex1}\\text{ min}$.`,
+          profExplanation: `
+            <div><strong>Step 1a:</strong> $E_{\\text{decomp}}^\\circ = E_{\\text{anode}}^\\circ - E_{\\text{cathode}}^\\circ = 1.229 - (${m1.E_cat.toFixed(3)}) = \\mathbf{${E_decomp_0.toFixed(3)}\\text{ V}}$</div>
+            <div><strong>Step 1b:</strong> $U_{\\text{applied}} = E_{\\text{decomp}}^\\circ + \\eta_{\\text{anode}} + |\\eta_{\\text{cathode}}| + I \\cdot R_{\\text{cell}} = ${E_decomp_0.toFixed(3)} + ${eta_an.toFixed(2)} + ${eta_cat.toFixed(2)} + (${I_ex1.toFixed(2)} \\cdot ${R_cell_ex1.toFixed(2)}) = \\mathbf{${U_applied.toFixed(3)}\\text{ V}}$</div>
+            <div><strong>Step 1c:</strong> $W_{\\text{el}} = U_{\\text{applied}} \\cdot I \\cdot t = ${U_applied.toFixed(4)}\\text{ V} \\cdot ${I_ex1.toFixed(2)}\\text{ A} \\cdot (${t_min_ex1} \\cdot 60\\text{ s}) / 1000 = \\mathbf{${W_el_kJ.toFixed(2)}\\text{ kJ}}$</div>
+          `,
+          steps: [
+            {
+              key: '1a',
+              label: 'Step 1a: Calculate the theoretical minimum decomposition voltage \\(E_{\\text{decomp}}^\\circ = E_{\\text{anode}}^\\circ - E_{\\text{cathode}}^\\circ\\) (in V).',
+              unit: 'V',
+              answer: E_decomp_0,
+              traps: [
+                {
+                  val: 1.229 + m1.E_cat,
+                  msg: 'Watch the sign in E°_decomp = E°_anode - E°_cathode! Remember to subtract E°_cathode (including its algebraic sign).'
+                },
+                {
+                  val: m1.E_cat - 1.229,
+                  msg: 'Minimum decomposition voltage is defined as a positive driving voltage: E°_decomp = E°_anode - E°_cathode = |E°_cell|.'
+                }
+              ],
+              hint: 'Use E°_decomp = E°_anode(O2/H2O) - E°_cathode(M2+/M).'
+            },
+            {
+              key: '1b',
+              label: 'Step 1b: Calculate the actual required terminal voltage \\(U_{\\text{applied}}\\) including both overpotentials and the ohmic drop \\(I \\cdot R_{\\text{cell}}\\) (in V).',
+              unit: 'V',
+              answer: U_applied,
+              traps: [
+                {
+                  val: E_decomp_0 + eta_an + eta_cat,
+                  msg: 'You included the overpotentials, but forgot to add the ohmic voltage drop I * R_cell across the electrolyte!'
+                },
+                {
+                  val: E_decomp_0 - eta_an - eta_cat + I_ex1 * R_cell_ex1,
+                  msg: 'In an electrolysis cell (driven process), overpotentials and ohmic resistance always INCREASE the required external voltage U_applied!'
+                }
+              ],
+              hint: 'Add all energy barriers: U_applied = E°_decomp + eta_anode + |eta_cathode| + I * R_cell.'
+            },
+            {
+              key: '1c',
+              label: `Step 1c: Calculate the electrical energy \\(W_{\\text{el}}\\) consumed during $t = ${t_min_ex1}\\text{ min}$ (in kJ).`,
+              unit: 'kJ',
+              answer: W_el_kJ,
+              traps: [
+                {
+                  val: W_el_kJ * 1000,
+                  msg: 'Your result is in Joules (J = V A s). Divide by 1000 to convert to kilojoules (kJ)!'
+                },
+                {
+                  val: (U_applied * I_ex1 * t_min_ex1) / 1000,
+                  msg: 'Time unit trap! Convert t from minutes to seconds (multiply by 60) since 1 J = 1 V * 1 A * 1 s.'
+                },
+                {
+                  val: U_applied * I_ex1 * t_min_ex1,
+                  msg: 'Time & kJ trap! Multiply time in minutes by 60 to get seconds, then divide Joules by 1000 to obtain kJ.'
+                }
+              ],
+              hint: 'Compute W_el [J] = U_applied [V] * I [A] * (t [min] * 60 s/min), then divide by 1000 for kJ.'
+            }
+          ]
+        },
+
+        // PROBLEM 2
+        {
+          id: 2,
+          title: 'Exercise 2: Faraday\'s Laws, Silver Coulometry & Current Efficiency (\\(\\eta\\))',
+          theoryRef: '<strong>08_Electrochemistry II.pdf</strong> (Slides 15–28: Faraday\'s 1st & 2nd Laws, Coulometer in series, Current Efficiency $\\eta = m_{\\text{actual}} / m_{\\text{theo}}$).',
+          examplesRef: '<strong>08_Electrochemistry II.pdf</strong> (Silver Coulometer & Copper/Aluminum Electrolysis), <strong>Q01_Quizzes.pdf</strong> (3rd Rep, Q1).',
+          statement: `A silver coulometer ($\\text{Ag}^+ + e^- \\rightarrow \\text{Ag}$, $M(\\text{Ag}) = 107.87\\text{ g mol}^{-1}$, current efficiency $\\eta_{\\text{Ag}} = 100\\%$) is connected in series with an industrial copper electroplating bath ($\\text{Cu}^{2+} + 2e^- \\rightarrow \\text{Cu}$, $M(\\text{Cu}) = 63.55\\text{ g mol}^{-1}$). After a run time of $t = ${t_min_ex2}\\text{ min}$, exactly $m_{\\text{Ag}} = ${m_Ag.toFixed(2)}\\text{ g}$ of silver has been deposited on the coulometer cathode, while $m_{\\text{Cu,actual}} = ${m_Cu_actual.toFixed(3)}\\text{ g}$ of copper is deposited in the second cell (due to parallel $\\text{H}_2$ evolution).`,
+          profExplanation: `
+            <div><strong>Step 2a:</strong> $n_{\\text{Ag}} = \\frac{${m_Ag.toFixed(2)}}{107.87} = ${n_Ag.toFixed(5)}\\text{ mol} \\implies Q = 1 \\cdot n_{\\text{Ag}} \\cdot 96485 = \\mathbf{${Q_ex2.toFixed(1)}\\text{ C}}$</div>
+            <div><strong>Step 2b:</strong> $I = \\frac{Q}{t} = \\frac{${Q_ex2.toFixed(1)}\\text{ C}}{${t_min_ex2 * 60}\\text{ s}} = \\mathbf{${I_ex2.toFixed(3)}\\text{ A}}$</div>
+            <div><strong>Step 2c:</strong> $m_{\\text{Cu,theo}} = \\frac{Q \\cdot M(\\text{Cu})}{2 \\cdot F} = ${m_Cu_theo.toFixed(4)}\\text{ g} \\implies \\eta = \\frac{${m_Cu_actual.toFixed(3)}}{${m_Cu_theo.toFixed(4)}} \\cdot 100 = \\mathbf{${eta_Cu_pct.toFixed(1)}\\%}$</div>
+          `,
+          steps: [
+            {
+              key: '2a',
+              label: 'Step 2a: Calculate the total electric charge \\(Q\\) that passed through the series circuit (in C).',
+              unit: 'C',
+              answer: Q_ex2,
+              traps: [
+                {
+                  val: Q_ex2 * 2,
+                  msg: 'For silver reduction (Ag+ + e- -> Ag), the stoichiometric electron number is z = 1 (not 2)!'
+                },
+                {
+                  val: n_Ag,
+                  msg: 'That is the molar amount n(Ag) in mol. Multiply by Faraday\'s constant F = 96485 C mol^-1 to obtain charge Q in Coulombs!'
+                }
+              ],
+              hint: 'First find n(Ag) = m(Ag) / M(Ag) with M(Ag) = 107.87 g/mol, then Q = 1 * n(Ag) * 96485 C/mol.'
+            },
+            {
+              key: '2b',
+              label: `Step 2b: Calculate the average electric current \\(I\\) during the $t = ${t_min_ex2}\\text{ min}$ electrolysis (in A).`,
+              unit: 'A',
+              answer: I_ex2,
+              traps: [
+                {
+                  val: Q_ex2 / t_min_ex2,
+                  msg: 'Time unit trap! Convert t from minutes to seconds (t [s] = t [min] * 60) because 1 Ampere = 1 Coulomb per second.'
+                }
+              ],
+              hint: 'Use I = Q / t with t in seconds (t_sec = t_min * 60).'
+            },
+            {
+              key: '2c',
+              label: 'Step 2c: Calculate the current efficiency \\(\\eta\\) for copper deposition in the second cell (in %).',
+              unit: '%',
+              answer: eta_Cu_pct,
+              traps: [
+                {
+                  val: eta_Cu_pct / 2,
+                  msg: 'Stoichiometry trap! Copper is deposited from Cu2+ (Cu2+ + 2e- -> Cu), so z = 2 moles of electrons are required per mole of Cu.'
+                },
+                {
+                  val: eta_Cu_pct / 100,
+                  msg: 'You entered the decimal fraction. Multiply by 100 to express the current efficiency in percent (%)!'
+                },
+                {
+                  val: (100 / eta_Cu_pct) * 100,
+                  msg: 'Current efficiency is m_actual / m_theoretical * 100% (always <= 100%), not the inverse!'
+                }
+              ],
+              hint: 'Calculate m_Cu,theo = (Q * 63.55) / (2 * 96485), then eta [%] = (m_Cu,actual / m_Cu,theo) * 100.'
+            }
+          ]
+        },
+
+        // PROBLEM 3
+        {
+          id: 3,
+          title: 'Exercise 3: Specific (\\(\\kappa\\)), Molar (\\(\\Lambda_m\\)) & Equivalent Conductivity (\\(\\Lambda_{\\text{eq}}\\))',
+          theoryRef: '<strong>09_Electrochemistry III.pdf</strong> (Slides 2–16: Cell constant $K_{\\text{cell}}$, specific conductivity $\\kappa$, molar conductivity $\\Lambda_m = \\kappa/c$, equivalent conductivity $\\Lambda_{\\text{eq}} = \\Lambda_m / z^*$).',
+          examplesRef: '<strong>09_Electrochemistry III.pdf</strong> (Conductivity Unit Conversions), <strong>Q01_Quizzes.pdf</strong> (3rd Rep, Q2), <strong>T01_TryTests.pdf</strong> (Q12).',
+          statement: `A conductivity cell has a calibrated cell constant of $K_{\\text{cell}} = ${K_cell_ex3.toFixed(2)}\\text{ cm}^{-1}$. When filled with an aqueous <strong>magnesium chloride ($\\text{MgCl}_2$)</strong> solution of molar concentration $c = ${c_ex3.toFixed(3)}\\text{ mol L}^{-1}$ at $\\vartheta = 25.0\\text{ }&deg;\\text{C}$, an AC bridge measures a resistance of $R = ${R_ex3}\\text{ }&Omega;$.`,
+          profExplanation: `
+            <div><strong>Step 3a:</strong> $\\kappa = \\frac{K_{\\text{cell}}}{R} = \\frac{${K_cell_ex3.toFixed(2)}}{${R_ex3}} = ${kappa_S_cm.toExponential(4)}\\text{ S cm}^{-1} = \\mathbf{${kappa_mS_cm.toFixed(3)}\\text{ mS cm}^{-1}}$</div>
+            <div><strong>Step 3b:</strong> $\\Lambda_m = \\frac{\\kappa\\text{ [S cm}^{-1}\\text{]} \\cdot 1000}{c\\text{ [mol L}^{-1}\\text{]}} = \\frac{${kappa_mS_cm.toFixed(4)}}{${c_ex3.toFixed(3)}} = \\mathbf{${Lambda_m_lab.toFixed(2)}\\text{ S cm}^2\\text{ mol}^{-1}}$ (in SI: ${(Lambda_m_lab * 1e-4).toExponential(4)}\\text{ S m}^2\\text{ mol}^{-1}$)</div>
+            <div><strong>Step 3c:</strong> For $\\text{MgCl}_2 \\rightarrow \\text{Mg}^{2+} + 2\\text{Cl}^-$, $z^* = 2$: $\\Lambda_{\\text{eq}} = \\frac{\\Lambda_m}{2} = \\mathbf{${Lambda_eq_lab.toFixed(2)}\\text{ S cm}^2\\text{ eq}^{-1}}$</div>
+          `,
+          steps: [
+            {
+              key: '3a',
+              label: 'Step 3a: Calculate the specific conductivity \\(\\kappa\\) of the solution (in mS cm\\(^{-1}\\)).',
+              unit: 'mS cm⁻¹',
+              answer: kappa_mS_cm,
+              traps: [
+                {
+                  val: kappa_S_cm,
+                  msg: 'That is kappa in S cm^-1. Multiply by 1000 to convert to millisiemens per centimeter (mS cm^-1)!'
+                },
+                {
+                  val: 1 / (K_cell_ex3 * R_ex3) * 1000,
+                  msg: 'Check the cell constant formula: kappa = G * K_cell = K_cell / R.'
+                }
+              ],
+              hint: 'Use kappa [S cm^-1] = K_cell [cm^-1] / R [Ohm], then multiply by 1000 to get mS cm^-1.'
+            },
+            {
+              key: '3b',
+              label: 'Step 3b: Calculate the molar conductivity \\(\\Lambda_m\\) in classical laboratory units (S cm\\(^2\\) mol\\(^{-1}\\)).',
+              unit: 'S cm² mol⁻¹',
+              answer: Lambda_m_lab,
+              traps: [
+                {
+                  val: Lambda_m_lab / 1000,
+                  msg: 'Volume conversion trap! Because 1 L = 1000 cm^3, Lambda_m [S cm^2 mol^-1] = (kappa [S cm^-1] * 1000) / c [mol L^-1] = kappa [mS cm^-1] / c [mol L^-1].'
+                },
+                {
+                  val: Lambda_m_lab * 1e-4,
+                  msg: 'You converted to SI units (S m^2 mol^-1). Here the classical unit S cm^2 mol^-1 is requested (factor 10^4 larger)!'
+                }
+              ],
+              hint: 'Shortcut: Lambda_m [S cm^2 mol^-1] = kappa [mS cm^-1] / c [mol L^-1].'
+            },
+            {
+              key: '3c',
+              label: 'Step 3c: Calculate the equivalent conductivity \\(\\Lambda_{\\text{eq}}\\) of the \\(\\text{MgCl}_2\\) solution (in S cm\\(^2\\) eq\\(^{-1}\\)).',
+              unit: 'S cm² eq⁻¹',
+              answer: Lambda_eq_lab,
+              traps: [
+                {
+                  val: Lambda_m_lab,
+                  msg: 'For MgCl2 -> Mg2+ + 2 Cl^-, the electrochemical equivalence number is z* = 2. Divide Lambda_m by z* = 2!'
+                },
+                {
+                  val: Lambda_m_lab * 2,
+                  msg: 'Careful: Equivalent conductivity is SMALLER than molar conductivity for multivalent salts: Lambda_eq = Lambda_m / z* (divide by 2, do not multiply)!'
+                }
+              ],
+              hint: 'For MgCl2, one mole of salt carries z* = 2 moles of positive/negative elementary charges, so Lambda_eq = Lambda_m / 2.'
+            }
+          ]
+        },
+
+        // PROBLEM 4
+        {
+          id: 4,
+          title: 'Exercise 4: Kohlrausch\'s Law & Ostwald\'s Dilution Law for a Weak Electrolyte',
+          theoryRef: '<strong>09_Electrochemistry III.pdf</strong> (Slides 17–28: Independent ion migration $\\Lambda_m^\\circ = \\nu_+ \\lambda_+^\\circ + \\nu_- \\lambda_-^\\circ$, degree of dissociation $\\alpha = \\Lambda_m / \\Lambda_m^\\circ$, Ostwald\'s Dilution Law $K_a = \\frac{\\alpha^2 c}{1 - \\alpha}$).',
+          examplesRef: '<strong>09_Electrochemistry III.pdf</strong> (Weak Acid Dissociation Constant from Conductivity), <strong>T01_TryTests.pdf</strong> (Q12).',
+          statement: `An aqueous solution of the weak monoprotic <strong>${ac4.name}</strong> with initial concentration $c = ${c_ex4.toFixed(3)}\\text{ mol L}^{-1}$ has a measured specific conductivity of $\\kappa = ${kappa_uS_cm}\\text{ }&mu;\\text{S cm}^{-1}$ at $\\vartheta = 25.0\\text{ }&deg;\\text{C}$. The limiting molar ionic conductivities at infinite dilution are $\\lambda^\\circ(\\text{H}^+) = 349.8\\text{ S cm}^2\\text{ mol}^{-1}$ and $\\lambda^\\circ(\\text{${ac4.anion}}) = ${ac4.lam_an.toFixed(1)}\\text{ S cm}^2\\text{ mol}^{-1}$.`,
+          profExplanation: `
+            <div><strong>Step 4a:</strong> $\\Lambda_m^\\circ = \\lambda^\\circ(\\text{H}^+) + \\lambda^\\circ(\\text{A}^-) = 349.8 + ${ac4.lam_an.toFixed(1)} = \\mathbf{${Lambda_0_ex4.toFixed(1)}\\text{ S cm}^2\\text{ mol}^{-1}}$</div>
+            <div><strong>Step 4b:</strong> $\\Lambda_m = \\frac{\\kappa\\text{ [S cm}^{-1}\\text{]} \\cdot 1000}{c} = \\frac{${(kappa_uS_cm * 1e-3).toFixed(3)}}{${c_ex4.toFixed(3)}} = ${Lambda_m_ex4.toFixed(3)}\\text{ S cm}^2\\text{ mol}^{-1} \\implies \\alpha = \\frac{${Lambda_m_ex4.toFixed(3)}}{${Lambda_0_ex4.toFixed(1)}} \\cdot 100 = \\mathbf{${alpha_pct_ex4.toFixed(2)}\\%}$</div>
+            <div><strong>Step 4c:</strong> $K_a = \\frac{\\alpha^2 \\cdot c}{1 - \\alpha} = \\frac{(${alpha_ex4.toFixed(5)})^2 \\cdot ${c_ex4.toFixed(3)}}{1 - ${alpha_ex4.toFixed(5)}} = ${Ka_ex4.toExponential(4)}\\text{ mol L}^{-1} = \\mathbf{${Ka_1e5_ex4.toFixed(3)}} \\times 10^{-5}\\text{ mol L}^{-1}$</div>
+          `,
+          steps: [
+            {
+              key: '4a',
+              label: 'Step 4a: Calculate the limiting molar conductivity \\(\\Lambda_m^\\circ\\) of the acid at infinite dilution (in S cm\\(^2\\) mol\\(^{-1}\\)).',
+              unit: 'S cm² mol⁻¹',
+              answer: Lambda_0_ex4,
+              traps: [
+                {
+                  val: lam_H - ac4.lam_an,
+                  msg: 'Both cations and anions contribute positively to charge transport! Add the limiting ionic conductivities: Lambda_m^0 = lambda^0(H+) + lambda^0(A-).'
+                }
+              ],
+              hint: 'By Kohlrausch\'s law of independent migration of ions: Lambda_m^0 = lambda^0(H+) + lambda^0(Anion).'
+            },
+            {
+              key: '4b',
+              label: 'Step 4b: First find \\(\\Lambda_m\\) from \\(\\kappa\\) and \\(c\\), then calculate the degree of dissociation \\(\\alpha\\) (in %).',
+              unit: '%',
+              answer: alpha_pct_ex4,
+              traps: [
+                {
+                  val: alpha_ex4,
+                  msg: 'That is the dimensionless degree of dissociation alpha. Multiply by 100 to enter alpha in percent (%)!'
+                },
+                {
+                  val: Lambda_m_ex4,
+                  msg: 'That is the molar conductivity Lambda_m in S cm^2 mol^-1. Now divide Lambda_m by Lambda_m^0 and multiply by 100 to get alpha in %!'
+                }
+              ],
+              hint: 'Convert kappa from uS cm^-1 to mS cm^-1 (divide by 1000), compute Lambda_m = kappa [mS cm^-1] / c [mol L^-1], then alpha [%] = (Lambda_m / Lambda_m^0) * 100.'
+            },
+            {
+              key: '4c',
+              label: 'Step 4c: Calculate the acid dissociation constant \\(K_a\\) using Ostwald\'s Dilution Law (enter the value in units of \\(10^{-5}\\text{ mol L}^{-1}\\), e.g. enter 1.75 for \\(1.75 \\times 10^{-5}\\)).',
+              unit: '× 10⁻⁵ mol L⁻¹',
+              answer: Ka_1e5_ex4,
+              traps: [
+                {
+                  val: Ka_ex4,
+                  msg: 'Unit scale notice: Please enter the coefficient in units of 10^-5 mol L^-1 (multiply your raw Ka value by 10^5)!'
+                },
+                {
+                  val: (alpha_pct_ex4 * alpha_pct_ex4 * c_ex4) / (1 - alpha_ex4),
+                  msg: 'Remember to use the dimensionless fraction alpha (not alpha in %) inside Ka = (alpha^2 * c) / (1 - alpha)!'
+                }
+              ],
+              hint: 'Use dimensionless alpha = alpha[%] / 100 in Ka = (alpha^2 * c) / (1 - alpha), then multiply the result by 10^5.'
+            }
+          ]
+        }
+      ];
+    }
+
+    // Render all 4 exercises into DOM
+    function renderExercises() {
+      const container = document.getElementById('exercises-container');
+      container.innerHTML = '';
+
+      currentProblems.forEach((prob) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';
+
+        let stepsHtml = '';
+        prob.steps.forEach((st) => {
+          const savedVal = userState.inputs[st.key] !== undefined ? userState.inputs[st.key] : '';
+          const isDone = !!userState.completed[st.key];
+          stepsHtml += `
+            <div id="step-card-${st.key}" class="step-card p-4 rounded-lg border ${isDone ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50 border-slate-200'} space-y-2">
+              <label class="block text-sm font-semibold text-slate-800" for="input-${st.key}">
+                ${st.label}
+              </label>
+              <div class="flex flex-wrap items-center gap-2">
+                <input
+                  id="input-${st.key}"
+                  type="text"
+                  value="${savedVal}"
+                  placeholder="Enter value..."
+                  onkeydown="if(event.key==='Enter') checkStep('${st.key}')"
+                  class="px-3 py-1.5 rounded border border-slate-300 bg-white text-sm font-mono w-44 focus:outline-none focus:border-indigo-500"
+                />
+                <span class="text-xs font-bold text-slate-600 bg-slate-200/80 px-2.5 py-1.5 rounded">${st.unit}</span>
+                <button
+                  onclick="checkStep('${st.key}')"
+                  class="px-3.5 py-1.5 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider transition"
+                >
+                  Check
+                </button>
+                <button
+                  onclick="toggleStepHint('${st.key}')"
+                  class="px-2.5 py-1.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold transition"
+                >
+                  💡 Hint
+                </button>
+              </div>
+              <div id="hint-${st.key}" class="hidden text-xs text-indigo-900 bg-indigo-50 border border-indigo-200 rounded p-2.5">
+                <strong>Formula / Hint:</strong> ${st.hint}
+              </div>
+              <div id="feedback-${st.key}" class="text-xs font-semibold ${isDone ? 'text-emerald-700' : 'hidden'}">
+                ${isDone ? '✅ Correct! Step verified and saved.' : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="px-6 py-4 bg-slate-800 text-white flex items-center justify-between">
+            <h3 class="font-bold text-base">${prob.title}</h3>
+            <span class="text-xs font-mono text-amber-400">3 Steps</span>
+          </div>
+
+          <div class="p-6 space-y-5">
+            <!-- Blue Reference Service Box -->
+            <div class="bg-sky-50 border-l-4 border-sky-500 rounded-r-lg p-3.5 text-xs text-sky-950 space-y-1">
+              <div>📖 <strong>Lecture Theory:</strong> ${prob.theoryRef}</div>
+              <div>🔍 <strong>Similar Worked Examples:</strong> ${prob.examplesRef}</div>
+            </div>
+
+            <!-- Problem Statement -->
+            <div class="text-sm text-slate-800 leading-relaxed bg-white p-1">
+              ${prob.statement}
+            </div>
+
+            <!-- Instructor Mode Solution Box -->
+            <div class="prof-box ${isProfMode ? '' : 'hidden'} rounded-lg p-4 text-xs text-slate-900 space-y-1.5 shadow-inner">
+              <div class="font-extrabold uppercase tracking-wider text-amber-900 flex items-center justify-between">
+                <span>👨‍🏫 [PROF SOLUTIONS] – Exact Key for Student ID: ${currentStudentId}</span>
+                <span class="font-mono">Tol: ±1.5%</span>
+              </div>
+              ${prob.profExplanation}
+            </div>
+
+            <!-- 3 Interactive Sub-Steps -->
+            <div class="space-y-3">
+              ${stepsHtml}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      renderMath();
+      updateProgressUI();
+    }
+
+    // Check individual step with Smart Traps
+    function checkStep(stepKey) {
+      let targetStep = null;
+      currentProblems.forEach((p) => {
+        p.steps.forEach((s) => {
+          if (s.key === stepKey) targetStep = s;
+        });
+      });
+      if (!targetStep) return;
+
+      const inputEl = document.getElementById(`input-${stepKey}`);
+      const fbEl = document.getElementById(`feedback-${stepKey}`);
+      const cardEl = document.getElementById(`step-card-${stepKey}`);
+
+      const raw = inputEl.value.trim().replace(',', '.');
+      userState.inputs[stepKey] = inputEl.value.trim();
+
+      const val = parseFloat(raw);
+      if (isNaN(val)) {
+        fbEl.className = 'text-xs font-semibold text-rose-600';
+        fbEl.textContent = '⚠️ Please enter a valid numerical value.';
+        saveState();
+        return;
+      }
+
+      const ans = targetStep.answer;
+      const relErr = Math.abs(val - ans) / (Math.abs(ans) || 1);
+
+      if (relErr <= 0.015) {
+        userState.completed[stepKey] = true;
+        fbEl.className = 'text-xs font-semibold text-emerald-700';
+        fbEl.innerHTML = `✅ Correct! (Exact reference value: <span class="font-mono">${ans.toPrecision(4)} ${targetStep.unit}</span>)`;
+        cardEl.className = 'step-card p-4 rounded-lg border bg-emerald-50/60 border-emerald-300 space-y-2';
+        saveState();
+        updateProgressUI();
+        return;
+      }
+
+      // Check Smart Traps
+      let trapMsg = null;
+      if (targetStep.traps) {
+        for (const trap of targetStep.traps) {
+          const tErr = Math.abs(val - trap.val) / (Math.abs(trap.val) || 1);
+          if (tErr <= 0.025) {
+            trapMsg = trap.msg;
+            break;
+          }
+        }
+      }
+
+      fbEl.className = 'text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 p-2 rounded';
+      if (trapMsg) {
+        fbEl.innerHTML = `❌ <strong>Smart Trap Detected:</strong> ${trapMsg}`;
+      } else {
+        fbEl.innerHTML = `❌ Not quite right yet. Check your formula and units (use the 💡 Hint button if needed).`;
+      }
+      saveState();
+      updateProgressUI();
+    }
+
+    function toggleStepHint(stepKey) {
+      const el = document.getElementById(`hint-${stepKey}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function updateProgressUI() {
+      const total = 12;
+      const done = Object.keys(userState.completed).filter((k) => userState.completed[k]).length;
+      document.getElementById('progress-counter').textContent = `${done} / ${total} Steps`;
+
+      // Compute deterministic verification checksum
+      const seedStr = `U04-${currentStudentId}-${done}`;
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        h ^= seedStr.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      const hex = (h >>> 0).toString(16).toUpperCase().padStart(8, '0').slice(0, 4);
+      const token = `PC1-U04-${currentStudentId}-${done}of12-CHK${hex}`;
+      document.getElementById('verification-token').textContent = token;
+    }
+
+    function copyVerificationToken() {
+      const token = document.getElementById('verification-token').textContent.trim();
+      navigator.clipboard.writeText(token).then(() => {
+        const fb = document.getElementById('copy-feedback');
+        fb.classList.remove('hidden');
+        setTimeout(() => fb.classList.add('hidden'), 2500);
+      });
+    }
+
+    // Guided Modeling Controls
+    function toggleFormulaSheet() {
+      const content = document.getElementById('formula-sheet-content');
+      const chev = document.getElementById('formula-chevron');
+      content.classList.toggle('hidden');
+      chev.textContent = content.classList.contains('hidden') ? '▶' : '▼';
+    }
+
+    function toggleSpokenHints() {
+      const hints = document.querySelectorAll('.spoken-hint');
+      const btn = document.getElementById('btn-spoken-hints');
+      let anyHidden = false;
+      hints.forEach((h) => {
+        if (h.classList.contains('hidden')) anyHidden = true;
+      });
+      hints.forEach((h) => {
+        if (anyHidden) h.classList.remove('hidden');
+        else h.classList.add('hidden');
+      });
+      btn.textContent = anyHidden ? '🎙️ Hide Spoken Explanation Hints' : '🎙️ Show Spoken Explanation Hints';
+    }
+
+    function toggleGuidedStep(exNum, stepChar) {
+      const el = document.getElementById(`guided-${exNum}-${stepChar}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function toggleAllGuided(exNum) {
+      const steps = ['a', 'b', 'c'];
+      const anyHidden = steps.some((ch) => document.getElementById(`guided-${exNum}-${ch}`).classList.contains('hidden'));
+      steps.forEach((ch) => {
+        const el = document.getElementById(`guided-${exNum}-${ch}`);
+        if (anyHidden) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+    }
+
+    // Student ID & LocalStorage Management
+    function parseStudentInput(rawInput) {
+      const trimmed = (rawInput || '').trim();
+      if (!trimmed) return { id: DEFAULT_ID, prof: false };
+      if (trimmed.toUpperCase().startsWith('PROF-')) {
+        const cleanId = trimmed.slice(5).trim() || DEFAULT_ID;
+        return { id: cleanId, prof: true };
+      }
+      if (trimmed.toUpperCase() === 'PROF') {
+        return { id: DEFAULT_ID, prof: true };
+      }
+      return { id: trimmed, prof: false };
+    }
+
+    function loadWorksheet() {
+      const raw = document.getElementById('student-id-input').value;
+      const parsed = parseStudentInput(raw);
+      const idChanged = parsed.id !== currentStudentId;
+
+      currentStudentId = parsed.id;
+      isProfMode = parsed.prof;
+
+      if (idChanged) {
+        userState = {
+          studentId: currentStudentId,
+          inputs: {},
+          completed: {}
+        };
+        saveState();
+      }
+
+      updateHeaderBadges();
+      currentProblems = buildUnit04Problems(currentStudentId);
+      renderExercises();
+    }
+
+    function resetWorksheet() {
+      if (!confirm('Reset all saved answers and progress for this worksheet?')) return;
+      userState = {
+        studentId: currentStudentId,
+        inputs: {},
+        completed: {}
+      };
+      saveState();
+      renderExercises();
+    }
+
+    function updateHeaderBadges() {
+      document.getElementById('active-id-badge').textContent = `Active ID: ${currentStudentId}`;
+      const profBadge = document.getElementById('prof-mode-badge');
+      if (isProfMode) profBadge.classList.remove('hidden');
+      else profBadge.classList.add('hidden');
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
+      } catch (e) {}
+    }
+
+    function loadStateFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.studentId) {
+            userState = parsed;
+            currentStudentId = parsed.studentId;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function renderMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '$', right: '$', display: false }
+          ],
+          output: 'html',
+          throwOnError: false
+        });
+      }
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStateFromStorage();
+      document.getElementById('student-id-input').value = currentStudentId;
+      updateHeaderBadges();
+      currentProblems = buildUnit04Problems(currentStudentId);
+      renderExercises();
+    });
+  </script>
+</body>
+</html>

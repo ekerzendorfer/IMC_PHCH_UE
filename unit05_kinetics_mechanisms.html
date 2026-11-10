@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 05 – Chemical Kinetics I & II: Rate Laws & Mechanisms | Physical Chemistry IMC Krems</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- KaTeX CSS & JS (output: html only, no MathML duplication) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .katex-display {
+      margin: 0.65em 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .step-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .prof-box {
+      background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+      border-left: 5px solid #ca8a04;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- TOP HEADER & NAVIGATION -->
+  <header class="bg-slate-900 text-white shadow-lg border-b border-slate-700 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-600 transition">
+          <span>&larr;</span> Course Hub
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500 text-slate-950">Block 2 &bull; Unit 05</span>
+            <span class="text-xs text-slate-400 hidden sm:inline">FH IMC Krems &bull; Physical Chemistry Exercise</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">
+            Chemical Kinetics I &amp; II: Integrated Rate Laws, Pre-Equilibria &amp; Steady-State Mechanisms
+          </h1>
+        </div>
+      </div>
+
+      <div class="text-xs text-slate-300 text-right hidden md:block">
+        <div><strong>UE Lecturer:</strong> Mag. Erich Kerzendorfer</div>
+        <div><strong>Main Lecture:</strong> Prof. Manfred Kerschbaumer</div>
+      </div>
+    </div>
+
+    <!-- STUDENT ID & CONTROL BAR -->
+    <div class="bg-slate-800/90 border-t border-slate-700">
+      <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="student-id-input" class="text-xs font-semibold uppercase tracking-wider text-amber-400">
+            Student ID:
+          </label>
+          <input
+            id="student-id-input"
+            type="text"
+            placeholder="e.g. 2510456012"
+            class="px-3 py-1.5 rounded bg-slate-900 border border-slate-600 text-white text-sm font-mono focus:outline-none focus:border-amber-400 w-48"
+          />
+          <button
+            onclick="loadWorksheet()"
+            class="px-3.5 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition shadow-sm"
+          >
+            Load My Worksheet
+          </button>
+          <button
+            onclick="resetWorksheet()"
+            class="px-3 py-1.5 rounded bg-slate-700 hover:bg-rose-600 text-slate-200 hover:text-white text-xs font-semibold transition"
+          >
+            Reset Saved Inputs
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="active-id-badge" class="px-2.5 py-1 rounded bg-slate-900 border border-slate-600 text-xs font-mono text-emerald-400">
+            Active ID: 2510456012
+          </span>
+          <span id="prof-mode-badge" class="hidden px-2.5 py-1 rounded bg-yellow-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">
+            PROF SOLUTIONS ACTIVE
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 mt-6 space-y-8">
+
+    <!-- SECTION 1: COLLAPSIBLE FORMULA SHEET -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <button
+        onclick="toggleFormulaSheet()"
+        class="w-full px-6 py-4 bg-slate-100 hover:bg-slate-200/70 flex items-center justify-between text-left transition"
+      >
+        <div class="flex items-center gap-3">
+          <span class="text-xl">📐</span>
+          <div>
+            <h2 class="font-bold text-slate-800 text-base sm:text-lg">Section 1: Unit 05 Formula Sheet, Integrated Rate Laws &amp; Kinetic Mechanisms</h2>
+            <p class="text-xs text-slate-500">Click to expand/collapse reference equations for Initial Rates, 1st/2nd Order Kinetics, Reversible Binding &amp; Steady-State (QSSA)</p>
+          </div>
+        </div>
+        <span id="formula-chevron" class="text-slate-600 font-bold text-lg transform transition-transform">▼</span>
+      </button>
+
+      <div id="formula-sheet-content" class="p-6 border-t border-slate-200 space-y-6">
+        <!-- 5 BY HEART FORMULAS -->
+        <div class="bg-rose-50 border border-rose-200 rounded-lg p-4">
+          <div class="text-xs font-bold uppercase tracking-wider text-rose-800 mb-2">
+            🧠 The 5 Fundamental "By Heart" Formulas (Required without Formula Sheet in Exams!)
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-sm bg-white p-3 rounded border border-rose-100">
+            <div>$$\rho = \frac{m}{V}$$</div>
+            <div>$$n = \frac{m}{M}$$</div>
+            <div>$$c = \frac{n}{V}$$</div>
+            <div>$$p \cdot V = n \cdot R \cdot T$$</div>
+            <div>$$x_i = \frac{n_i}{n_{\text{tot}}}$$</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Rate Laws & Integrated Equations -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              1. Differential &amp; Integrated Rate Laws (Kinetics I)
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Rate Definition &amp; Method of Initial Rates:</strong>
+            </p>
+            <div class="text-sm">
+              $$v = -\frac{1}{|\nu_i|}\frac{\text{d}c_i}{\text{d}t} = k \cdot c_A^a \cdot c_B^b \qquad (n_{\text{tot}} = a + b)$$
+              $$\text{For } c_B = \text{const: } \frac{v_2}{v_1} = \left(\frac{c_{A,2}}{c_{A,1}}\right)^a \implies a = \frac{\ln(v_2/v_1)}{\ln(c_{A,2}/c_{A,1})}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>First-Order Reaction ($A \rightarrow P$, $v = k \cdot c_t$):</strong>
+            </p>
+            <div class="text-sm">
+              $$c_t = c_0 \cdot e^{-k t} \quad \Longleftrightarrow \quad k = \frac{1}{t}\ln\left(\frac{c_0}{c_t}\right), \qquad \tau_{1/2} = \frac{\ln 2}{k} \approx \frac{0.6931}{k}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Second-Order Reaction ($2A \rightarrow P$ or $A+B \rightarrow P$ with $c_{A,0}=c_{B,0}$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\frac{1}{c_t} - \frac{1}{c_0} = k \cdot t \quad \Longleftrightarrow \quad k = \frac{1}{t}\left(\frac{1}{c_t} - \frac{1}{c_0}\right), \qquad \tau_{1/2} = \frac{1}{k \cdot c_0}$$
+            </div>
+          </div>
+
+          <!-- Mechanisms: Pre-Equilibrium & Steady State -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              2. Complex Mechanisms, Pre-Equilibria &amp; QSSA (Kinetics II)
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Reversible Drug–Target / Protein–Ligand Binding ($P + L \underset{k_{\text{off}}}{\overset{k_{\text{on}}}{\rightleftharpoons}} PL$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\text{At equilibrium } (v_{\text{on}} = v_{\text{off}}): \quad K_a = \frac{[PL]_{\text{eq}}}{[P]_{\text{eq}}[L]_{\text{eq}}} = \frac{k_{\text{on}}}{k_{\text{off}}}, \qquad K_d = \frac{1}{K_a} = \frac{k_{\text{off}}}{k_{\text{on}}}$$
+              $$\text{Complex dissociation half-life (1st order): } \tau_{1/2,\text{diss}} = \frac{\ln 2}{k_{\text{off}}}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Quasi-Steady-State Approximation (QSSA, $\frac{\text{d}[\text{Intermediate}]}{\text{d}t} \approx 0$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\text{Lindemann } (A + M \underset{k_{-1}}{\overset{k_1}{\rightleftharpoons}} A^* + M, \; A^* \overset{k_2}{\to} P): \quad v = \frac{k_1 k_2 [A][M]}{k_{-1}[M] + k_2}$$
+              $$\text{Michaelis-Menten } (E + S \underset{k_{-1}}{\overset{k_1}{\rightleftharpoons}} ES \overset{k_2}{\to} E + P): \quad K_M = \frac{k_{-1} + k_2}{k_1}, \quad v_0 = \frac{k_2[E]_0[S]}{K_M + [S]}$$
+            </div>
+          </div>
+        </div>
+
+        <!-- Summary Table of Orders & Units -->
+        <div class="overflow-x-auto bg-amber-50/70 border border-amber-200 p-4 rounded-lg">
+          <div class="text-xs font-bold uppercase tracking-wider text-amber-900 mb-2">
+            📊 Quick Reference Table: Reaction Orders, Linear Plots, Half-Lives &amp; Units of $k$
+          </div>
+          <table class="w-full text-xs text-left border-collapse bg-white rounded overflow-hidden">
+            <thead>
+              <tr class="bg-amber-100 text-amber-950 border-b border-amber-200">
+                <th class="p-2 font-bold">Order $n$</th>
+                <th class="p-2 font-bold">Differential Rate Law</th>
+                <th class="p-2 font-bold">Integrated Law</th>
+                <th class="p-2 font-bold">Linear Plot (Slope)</th>
+                <th class="p-2 font-bold">Half-Life $\tau_{1/2}$</th>
+                <th class="p-2 font-bold">Unit of $k$ ($\text{mol}^{1-n}\text{ L}^{n-1}\text{ s}^{-1}$)</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-slate-200">
+              <tr>
+                <td class="p-2 font-bold">0th Order ($n=0$)</td>
+                <td class="p-2">$v = k$</td>
+                <td class="p-2">$c_t = c_0 - k \cdot t$</td>
+                <td class="p-2">$c_t$ vs. $t$ ($\text{slope} = -k$)</td>
+                <td class="p-2">$\tau_{1/2} = \dfrac{c_0}{2k}$</td>
+                <td class="p-2 font-mono">$\text{mol L}^{-1}\text{ s}^{-1}$</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold">1st Order ($n=1$)</td>
+                <td class="p-2">$v = k \cdot c_t$</td>
+                <td class="p-2">$\ln c_t = \ln c_0 - k \cdot t$</td>
+                <td class="p-2">$\ln c_t$ vs. $t$ ($\text{slope} = -k$)</td>
+                <td class="p-2">$\tau_{1/2} = \dfrac{\ln 2}{k}$ (independent of $c_0$!)</td>
+                <td class="p-2 font-mono">$\text{s}^{-1}$ (or $\text{min}^{-1}$)</td>
+              </tr>
+              <tr>
+                <td class="p-2 font-bold">2nd Order ($n=2$)</td>
+                <td class="p-2">$v = k \cdot c_t^2$</td>
+                <td class="p-2">$\dfrac{1}{c_t} = \dfrac{1}{c_0} + k \cdot t$</td>
+                <td class="p-2">$\dfrac{1}{c_t}$ vs. $t$ ($\text{slope} = +k$)</td>
+                <td class="p-2">$\tau_{1/2} = \dfrac{1}{k \cdot c_0}$ ($\propto 1/c_0$!)</td>
+                <td class="p-2 font-mono">$\text{L mol}^{-1}\text{ s}^{-1}$</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: IN-CLASS GUIDED MODELING -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-indigo-950 text-white flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-indigo-300">Section 2 &bull; 25-Min Board / Projector Walkthrough</span>
+          <h2 class="text-lg font-bold">👨‍🏫 Part 1: In-Class Guided Modeling</h2>
+        </div>
+        <button
+          onclick="toggleSpokenHints()"
+          id="btn-spoken-hints"
+          class="px-3.5 py-1.5 rounded-lg bg-indigo-800 hover:bg-indigo-700 text-indigo-100 text-xs font-semibold border border-indigo-600 transition"
+        >
+          🎙️ Show Spoken Explanation Hints
+        </button>
+      </div>
+
+      <div class="p-6 space-y-8">
+        <!-- GUIDED EXAMPLE 1 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 1 &bull; Ref: 10_Kinetics-I.pdf, Q01 (3rd Rep, Q3 &amp; Q5) &amp; T01 (Q15)</span>
+              <h3 class="text-base font-bold text-slate-900">Alkaline Ester Hydrolysis (Saponification): Second-Order Rate Constant $k$ &amp; Half-Life $\tau_{1/2}$ from Titration Data</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(1, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(1, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(1, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(1)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong> The alkaline hydrolysis of ethyl acetate ($\text{CH}_3\text{COOC}_2\text{H}_5 + \text{OH}^- \rightarrow \text{CH}_3\text{COO}^- + \text{C}_2\text{H}_5\text{OH}$) is investigated at $\vartheta = 25.0\text{ }^\circ\text{C}$ using equimolar initial concentrations $c_0(\text{Ester}) = c_0(\text{OH}^-) = 0.0500\text{ mol L}^{-1}$. Because both reactants are present in a $1:1$ ratio, the reaction follows overall <strong>second-order kinetics</strong> ($v = k \cdot c^2$). At $t_1 = 600\text{ s}$ ($10.0\text{ min}$), titration of a quenched aliquot shows that the remaining $\text{OH}^-$ concentration is $c(600\text{ s}) = 0.0253\text{ mol L}^{-1}$; at $t_2 = 1200\text{ s}$ ($20.0\text{ min}$), it is $c(1200\text{ s}) = 0.0169\text{ mol L}^{-1}$.<br />
+            <strong>(a)</strong> Verify that the data follow a second-order rate law by computing $k$ at both $t_1 = 600\text{ s}$ and $t_2 = 1200\text{ s}$ (including proper units!).<br />
+            <strong>(b)</strong> Calculate the initial half-life $\tau_{1/2}$ (in $\text{s}$ and $\text{min}$) for $c_0 = 0.0500\text{ mol L}^{-1}$.<br />
+            <strong>(c)</strong> Calculate the remaining ester concentration $c(t)$ after $t = 30.0\text{ min}$ ($1800\text{ s}$).
+          </p>
+
+          <!-- Spoken Hint 1 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 1):</strong>
+            <p>"Point out why we calculate $k$ at two different time points when a table is given in Prof. Kerschbaumer's quizzes (like Q01 3rd Rep Q5 / T01 Q15): if $k = \frac{1}{t}(\frac{1}{c_t} - \frac{1}{c_0})$ remains constant across time points, that proves 2nd-order behavior!"</p>
+            <p>"Also emphasize the contrast between 1st and 2nd order half-lives: in 1st order (radioactive decay), $\tau_{1/2}$ is constant. In 2nd order, $\tau_{1/2} = \frac{1}{k \cdot c_0}$ doubles every time the concentration drops by half because collisions become much rarer at low concentrations!"</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-1-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Second-Order Rate Constant $k$ from Experimental Data:</div>
+              <p>Using $k = \dfrac{1}{t}\left(\dfrac{1}{c_t} - \dfrac{1}{c_0}\right)$ with $\dfrac{1}{c_0} = \dfrac{1}{0.0500\text{ mol L}^{-1}} = 20.00\text{ L mol}^{-1}$:</p>
+              $$k(600\text{ s}) = \frac{1}{600\text{ s}}\left(\frac{1}{0.0253\text{ mol L}^{-1}} - 20.00\text{ L mol}^{-1}\right) = \frac{39.526 - 20.00}{600\text{ s}} = \mathbf{0.03254\text{ L mol}^{-1}\text{ s}^{-1}}$$
+              $$k(1200\text{ s}) = \frac{1}{1200\text{ s}}\left(\frac{1}{0.0169\text{ mol L}^{-1}} - 20.00\text{ L mol}^{-1}\right) = \frac{59.172 - 20.00}{1200\text{ s}} = \mathbf{0.03264\text{ L mol}^{-1}\text{ s}^{-1}}$$
+              <p class="text-xs text-slate-600">Mean rate constant: $\bar{k} = \mathbf{3.26 \times 10^{-2}\text{ L mol}^{-1}\text{ s}^{-1}}$ (constant value confirms 2nd order!).</p>
+            </div>
+
+            <div id="guided-1-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Second-Order Half-Life $\tau_{1/2}$:</div>
+              $$\tau_{1/2} = \frac{1}{k \cdot c_0} = \frac{1}{0.0326\text{ L mol}^{-1}\text{ s}^{-1} \cdot 0.0500\text{ mol L}^{-1}} = \mathbf{613.5\text{ s}} = \mathbf{10.2\text{ min}}$$
+            </div>
+
+            <div id="guided-1-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – Remaining Concentration after $t = 1800\text{ s}$ ($30.0\text{ min}$):</div>
+              $$\frac{1}{c_t} = \frac{1}{c_0} + k \cdot t = 20.00\text{ L mol}^{-1} + 0.0326\text{ L mol}^{-1}\text{ s}^{-1} \cdot 1800\text{ s} = 78.68\text{ L mol}^{-1}$$
+              $$c(1800\text{ s}) = \frac{1}{78.68\text{ L mol}^{-1}} = \mathbf{0.01271\text{ mol L}^{-1}}$$
+            </div>
+          </div>
+        </div>
+
+        <!-- GUIDED EXAMPLE 2 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 2 &bull; Ref: 12_Kinetics-II.pdf &amp; T01 (Q17)</span>
+              <h3 class="text-base font-bold text-slate-900">Reversible Drug–Protein Binding ($K_a, K_d$) &amp; Quasi-Steady-State Approximation (QSSA)</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(2, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(2, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(2, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(2)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong> In biophysical pharmacology, a kinase inhibitor $L$ binds reversibly to its target enzyme $E$ according to $E + L \underset{k_{\text{off}}}{\overset{k_{\text{on}}}{\rightleftharpoons}} EL$ with a second-order association rate constant $k_{\text{on}} = 4.00 \times 10^6\text{ L mol}^{-1}\text{ s}^{-1}$ and a first-order dissociation rate constant $k_{\text{off}} = 0.0200\text{ s}^{-1}$. When the natural substrate $S$ binds instead ($E + S \underset{k_{-1}}{\overset{k_1}{\rightleftharpoons}} ES \overset{k_2}{\longrightarrow} E + P$), the elementary rate constants are $k_1 = 2.50 \times 10^7\text{ L mol}^{-1}\text{ s}^{-1}$, $k_{-1} = 500\text{ s}^{-1}$, and catalytic turnover number $k_2 = k_{\text{cat}} = 150\text{ s}^{-1}$.<br />
+            <strong>(a)</strong> Calculate the thermodynamic association constant $K_a$ (in $\text{L mol}^{-1}$), the dissociation constant $K_d$ (in $\text{nmol L}^{-1}$), and the residence half-life $\tau_{1/2,\text{diss}}$ of the drug–target complex $EL$.<br />
+            <strong>(b)</strong> Apply Bodenstein's <em>Quasi-Steady-State Approximation</em> ($\text{d}[ES]/\text{d}t \approx 0$) to calculate the Michaelis constant $K_M$ of the enzyme for substrate $S$ (in $\mu\text{mol L}^{-1}$).<br />
+            <strong>(c)</strong> For a total enzyme concentration $[E]_0 = 2.00 \times 10^{-8}\text{ mol L}^{-1}$ and substrate concentration $[S] = 52.0\text{ }\mu\text{mol L}^{-1}$, calculate $v_{\max}$ and the initial catalytic rate $v_0$ (in $\mu\text{mol L}^{-1}\text{ s}^{-1}$).
+          </p>
+
+          <!-- Spoken Hint 2 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 2):</strong>
+            <p>"Show the students the physical meaning of the units: $k_{\text{on}}$ is 2nd order ($\text{L mol}^{-1}\text{ s}^{-1}$) and $k_{\text{off}}$ is 1st order ($\text{s}^{-1}$). Therefore, $K_d = k_{\text{off}} / k_{\text{on}}$ automatically has the unit $\text{mol L}^{-1}$ — it is literally the ligand concentration at which exactly $50\%$ of all protein binding sites are occupied!"</p>
+            <p>"Then point out the difference between true pre-equilibrium ($K_d = k_{-1}/k_1$) and Steady-State ($K_M = (k_{-1} + k_2)/k_1$): only when $k_2 \ll k_{-1}$ does $K_M$ simplify to $K_d$!"</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-2-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Drug Binding Constants $K_a, K_d$ &amp; Complex Residence Half-Life:</div>
+              $$K_a = \frac{k_{\text{on}}}{k_{\text{off}}} = \frac{4.00 \times 10^6\text{ L mol}^{-1}\text{ s}^{-1}}{0.0200\text{ s}^{-1}} = \mathbf{2.00 \times 10^8\text{ L mol}^{-1}}$$
+              $$K_d = \frac{k_{\text{off}}}{k_{\text{on}}} = \frac{1}{K_a} = 5.00 \times 10^{-9}\text{ mol L}^{-1} = \mathbf{5.00\text{ nmol L}^{-1}}$$
+              $$\tau_{1/2,\text{diss}} = \frac{\ln 2}{k_{\text{off}}} = \frac{0.69315}{0.0200\text{ s}^{-1}} = \mathbf{34.66\text{ s}}$$
+            </div>
+
+            <div id="guided-2-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Steady-State Condition $\frac{\text{d}[ES]}{\text{d}t} = k_1[E][S] - (k_{-1} + k_2)[ES] \approx 0$:</div>
+              $$K_M = \frac{k_{-1} + k_2}{k_1} = \frac{500\text{ s}^{-1} + 150\text{ s}^{-1}}{2.50 \times 10^7\text{ L mol}^{-1}\text{ s}^{-1}} = 2.60 \times 10^{-5}\text{ mol L}^{-1} = \mathbf{26.0\text{ }\mu\text{mol L}^{-1}}$$
+            </div>
+
+            <div id="guided-2-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – Maximum Rate $v_{\max}$ &amp; Initial Rate $v_0$:</div>
+              $$v_{\max} = k_2 \cdot [E]_0 = 150\text{ s}^{-1} \cdot 2.00 \times 10^{-8}\text{ mol L}^{-1} = 3.00 \times 10^{-6}\text{ mol L}^{-1}\text{ s}^{-1} = \mathbf{3.00\text{ }\mu\text{mol L}^{-1}\text{ s}^{-1}}$$
+              $$v_0 = \frac{v_{\max} \cdot [S]}{K_M + [S]} = \frac{3.00\text{ }\mu\text{mol L}^{-1}\text{ s}^{-1} \cdot 52.0\text{ }\mu\text{mol L}^{-1}}{26.0 + 52.0\text{ }\mu\text{mol L}^{-1}} = \mathbf{2.00\text{ }\mu\text{mol L}^{-1}\text{ s}^{-1}}$$
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INDIVIDUALIZED EXERCISE WORKSHEET -->
+    <section class="space-y-6">
+      <div class="bg-slate-900 text-white rounded-xl px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-amber-400">Section 3 &bull; Individualized Student Worksheet</span>
+          <h2 class="text-lg font-bold">📝 Part 2: 4 Exercises (12 Graded Steps with Smart Error Diagnosis)</h2>
+          <p class="text-xs text-slate-300">Enter your calculated values (tolerance $\pm 1.5\%$). Use dot (`.`) or comma (`,`) as decimal separator.</p>
+        </div>
+        <div class="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 text-right">
+          <div class="text-xs text-slate-400">Overall Progress</div>
+          <div id="progress-counter" class="text-lg font-extrabold text-emerald-400 font-mono">0 / 12 Steps</div>
+        </div>
+      </div>
+
+      <!-- DYNAMIC EXERCISES CONTAINER -->
+      <div id="exercises-container" class="space-y-8"></div>
+
+      <!-- SUBMISSION VERIFICATION TOKEN BOX -->
+      <div class="bg-slate-900 text-white rounded-xl p-6 shadow-lg border border-slate-700 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">MS Forms / Moodle Verification</span>
+            <h3 class="text-base font-bold">🔐 Submission Verification Token</h3>
+            <p class="text-xs text-slate-300">Copy this token into the MS Forms submission field at the end of the exercise unit.</p>
+          </div>
+          <button
+            onclick="copyVerificationToken()"
+            class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow"
+          >
+            📋 Copy Token
+          </button>
+        </div>
+        <div class="bg-slate-950 border border-slate-700 rounded-lg p-3.5 flex items-center justify-between">
+          <code id="verification-token" class="text-sm sm:text-base font-mono text-emerald-400 font-bold select-all">
+            PC1-U05-2510456012-0of12-CHK0000
+          </code>
+          <span id="copy-feedback" class="text-xs text-amber-400 font-semibold hidden">Copied to clipboard!</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    const STORAGE_KEY = 'PC_IMC_UNIT05_STATE_V1';
+    const DEFAULT_ID = '2510456012';
+
+    let currentStudentId = DEFAULT_ID;
+    let isProfMode = false;
+    let currentProblems = [];
+    let userState = {
+      studentId: DEFAULT_ID,
+      inputs: {},
+      completed: {}
+    };
+
+    // Deterministic Seeded PRNG (FNV-1a hash h = 2166136261 + Mulberry32)
+    function createSeededRNG(str) {
+      let h = 2166136261 >>> 0;
+      const clean = String(str).trim();
+      for (let i = 0; i < clean.length; i++) {
+        h ^= clean.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return function() {
+        h += 0x6D2B79F5;
+        let t = Math.imul(h ^ (h >>> 15), 1 | h);
+        t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function randStep(rng, min, max, step) {
+      const steps = Math.round((max - min) / step);
+      const idx = Math.floor(rng() * (steps + 1));
+      return Number((min + idx * step).toFixed(6));
+    }
+
+    // Generate all 4 problems deterministically from Student ID
+    function buildUnit05Problems(studentId) {
+      const rng = createSeededRNG(studentId);
+
+      // =========================================================================
+      // EXERCISE 1: Method of Initial Rates (v0 = k * [A]^a * [B]^b)
+      // =========================================================================
+      // Always make partial order a = 2 with respect to A and b = 1 with respect to B
+      // so overall order n_tot = 3, or vary clearly while keeping units explicit:
+      // Let's fix a = 2 (with respect to NO) and b = 1 (with respect to Cl2 or O2)
+      // Reaction: 2 NO(g) + Cl2(g) -> 2 NOCl(g), v = k * [NO]^a * [Cl2]^b
+      const cA1 = randStep(rng, 0.010, 0.030, 0.005); // mol L^-1
+      const cB1 = randStep(rng, 0.010, 0.025, 0.005); // mol L^-1
+      const multA = (rng() < 0.5) ? 2 : 3; // concentration multiplier for Exp 2
+      const multB = (rng() < 0.5) ? 2 : 3; // concentration multiplier for Exp 3
+      const k_ex1 = randStep(rng, 12.0, 38.0, 2.0); // L^2 mol^-2 s^-1
+
+      const order_a = 2;
+      const order_b = 1;
+      const n_tot_ex1 = order_a + order_b; // 3
+
+      const v1 = k_ex1 * Math.pow(cA1, order_a) * Math.pow(cB1, order_b); // mol L^-1 s^-1
+      const cA2 = cA1 * multA;
+      const cB2 = cB1;
+      const v2 = k_ex1 * Math.pow(cA2, order_a) * Math.pow(cB2, order_b);
+
+      const cA3 = cA1;
+      const cB3 = cB1 * multB;
+      const v3 = k_ex1 * Math.pow(cA3, order_a) * Math.pow(cB3, order_b);
+
+      // New concentrations for Step 1c prediction
+      const cA_test = randStep(rng, 0.040, 0.080, 0.010);
+      const cB_test = randStep(rng, 0.030, 0.060, 0.010);
+      const v_test_mM = k_ex1 * Math.pow(cA_test, order_a) * Math.pow(cB_test, order_b) * 1000; // in mmol L^-1 s^-1
+
+      // =========================================================================
+      // EXERCISE 2: Integrated 2nd-Order Rate Law from Concentration/Titration Table
+      // =========================================================================
+      const c0_ex2 = randStep(rng, 0.040, 0.100, 0.010); // mol L^-1
+      const k_ex2 = randStep(rng, 0.015, 0.045, 0.003); // L mol^-1 s^-1
+      const t1_ex2 = randStep(rng, 300, 600, 60); // s
+      const t2_ex2 = t1_ex2 * 2; // s
+      const t_target_min = randStep(rng, 25, 45, 5); // min
+      const t_target_sec = t_target_min * 60;
+
+      const c_t1 = 1 / ((1 / c0_ex2) + k_ex2 * t1_ex2);
+      const c_t2 = 1 / ((1 / c0_ex2) + k_ex2 * t2_ex2);
+
+      // Re-calculate k from rounded table values so student gets exact match from table numbers
+      const c_t1_disp = Number(c_t1.toFixed(4));
+      const c_t2_disp = Number(c_t2.toFixed(4));
+      const k_calc_t1 = (1 / t1_ex2) * ((1 / c_t1_disp) - (1 / c0_ex2));
+      const tau_half_ex2 = 1 / (k_calc_t1 * c0_ex2); // s
+      const c_target_ex2 = 1 / ((1 / c0_ex2) + k_calc_t1 * t_target_sec); // mol L^-1
+
+      // =========================================================================
+      // EXERCISE 3: Reversible Protein-Ligand Pre-Equilibrium (P + L <=> PL)
+      // =========================================================================
+      const k_on_e6 = randStep(rng, 1.5, 8.5, 0.5); // in 10^6 L mol^-1 s^-1
+      const k_on_ex3 = k_on_e6 * 1e6; // L mol^-1 s^-1
+      const k_off_ex3 = randStep(rng, 0.012, 0.068, 0.004); // s^-1
+      const c_L_nM = randStep(rng, 8.0, 35.0, 1.0); // nmol L^-1 free ligand at equilibrium
+
+      const Kd_M = k_off_ex3 / k_on_ex3; // mol L^-1
+      const Kd_nM = Kd_M * 1e9; // nmol L^-1
+      const tau_diss_ex3 = Math.LN2 / k_off_ex3; // s
+      // Fractional receptor occupancy theta = [PL] / ([P] + [PL]) = [L] / (Kd + [L]) in %
+      const theta_pct_ex3 = (c_L_nM / (Kd_nM + c_L_nM)) * 100;
+
+      // =========================================================================
+      // EXERCISE 4: Quasi-Steady-State Approximation (QSSA: Michaelis-Menten / Lindemann)
+      // =========================================================================
+      const k1_e7 = randStep(rng, 1.2, 4.8, 0.4); // in 10^7 L mol^-1 s^-1
+      const k1_ex4 = k1_e7 * 1e7; // L mol^-1 s^-1
+      const km1_ex4 = randStep(rng, 300, 900, 50); // s^-1
+      const k2_ex4 = randStep(rng, 100, 350, 25); // s^-1 (k_cat)
+      const E0_nM = randStep(rng, 10, 45, 5); // nmol L^-1 total enzyme
+      const S_uM = randStep(rng, 20, 90, 10); // umol L^-1 substrate
+
+      const KM_M = (km1_ex4 + k2_ex4) / k1_ex4; // mol L^-1
+      const KM_uM = KM_M * 1e6; // umol L^-1
+      const vmax_uM_s = k2_ex4 * (E0_nM * 1e-3); // umol L^-1 s^-1 (since 1 nM = 10^-3 uM)
+      const v0_uM_s = (vmax_uM_s * S_uM) / (KM_uM + S_uM); // umol L^-1 s^-1
+
+      return [
+        // PROBLEM 1
+        {
+          id: 1,
+          title: 'Exercise 1: Method of Initial Rates – Reaction Orders & Rate Constant \\(k\\)',
+          theoryRef: '<strong>10_Kinetics-I.pdf</strong> (Slides 4–18: Definition of reaction rate $v$, partial reaction orders $a, b$, overall order $n_{\\text{tot}} = a + b$, isolation / initial rate method).',
+          examplesRef: '<strong>10_Kinetics-I.pdf</strong> (Initial Rate Table Examples), <strong>Q01_Quizzes.pdf</strong> (3rd Rep, Q3), <strong>T01_TryTests.pdf</strong> (Q15).',
+          statement: `The gas-phase reaction $2\\,\\text{NO(g)} + \\text{Cl}_2\\text{(g)} \\longrightarrow 2\\,\\text{NOCl(g)}$ is studied at constant temperature via the <em>method of initial rates</em> ($v_0 = k \\cdot [\\text{NO}]_0^a \\cdot [\\text{Cl}_2]_0^b$). Three kinetic runs yield the following initial rate table:
+            <div class="overflow-x-auto my-3">
+              <table class="w-full max-w-xl text-xs text-center border-collapse border border-slate-300 bg-slate-50 rounded">
+                <thead>
+                  <tr class="bg-slate-200 text-slate-900 border-b border-slate-300">
+                    <th class="p-2 border-r border-slate-300">Experiment</th>
+                    <th class="p-2 border-r border-slate-300">$[\\text{NO}]_0$ ($\\text{mol L}^{-1}$)</th>
+                    <th class="p-2 border-r border-slate-300">$[\\text{Cl}_2]_0$ ($\\text{mol L}^{-1}$)</th>
+                    <th class="p-2">Initial Rate $v_0$ ($\\text{mol L}^{-1}\\text{ s}^{-1}$)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-300 font-mono">
+                  <tr>
+                    <td class="p-1.5 border-r border-slate-300 font-sans font-bold">Run 1</td>
+                    <td class="p-1.5 border-r border-slate-300">${cA1.toFixed(3)}</td>
+                    <td class="p-1.5 border-r border-slate-300">${cB1.toFixed(3)}</td>
+                    <td class="p-1.5">${v1.toExponential(4)}</td>
+                  </tr>
+                  <tr>
+                    <td class="p-1.5 border-r border-slate-300 font-sans font-bold">Run 2</td>
+                    <td class="p-1.5 border-r border-slate-300">${cA2.toFixed(3)}</td>
+                    <td class="p-1.5 border-r border-slate-300">${cB2.toFixed(3)}</td>
+                    <td class="p-1.5">${v2.toExponential(4)}</td>
+                  </tr>
+                  <tr>
+                    <td class="p-1.5 border-r border-slate-300 font-sans font-bold">Run 3</td>
+                    <td class="p-1.5 border-r border-slate-300">${cA3.toFixed(3)}</td>
+                    <td class="p-1.5 border-r border-slate-300">${cB3.toFixed(3)}</td>
+                    <td class="p-1.5">${v3.toExponential(4)}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>`,
+          profExplanation: `
+            <div><strong>Step 1a:</strong> From Run 2 / Run 1 ($[\\text{Cl}_2]_0 = \\text{const}$): $\\frac{v_2}{v_1} = ${Math.pow(multA, order_a)} = ${multA}^a \\implies a = 2$. From Run 3 / Run 1 ($[\\text{NO}]_0 = \\text{const}$): $\\frac{v_3}{v_1} = ${multB} = ${multB}^b \\implies b = 1$. Overall order $n_{\\text{tot}} = a + b = \\mathbf{3}$.</div>
+            <div><strong>Step 1b:</strong> $k = \\frac{v_1}{[\\text{NO}]_0^2 \\cdot [\\text{Cl}_2]_0^1} = \\frac{${v1.toExponential(4)}}{(${cA1.toFixed(3)})^2 \\cdot ${cB1.toFixed(3)}} = \\mathbf{${k_ex1.toFixed(2)}\\text{ L}^2\\text{ mol}^{-2}\\text{ s}^{-1}}$</div>
+            <div><strong>Step 1c:</strong> For $[\\text{NO}]_0 = ${cA_test.toFixed(3)}\\text{ mol L}^{-1}$ and $[\\text{Cl}_2]_0 = ${cB_test.toFixed(3)}\\text{ mol L}^{-1}$: $v_0 = ${k_ex1.toFixed(2)} \\cdot (${cA_test.toFixed(3)})^2 \\cdot ${cB_test.toFixed(3)} = ${(v_test_mM / 1000).toExponential(4)}\\text{ mol L}^{-1}\\text{ s}^{-1} = \\mathbf{${v_test_mM.toFixed(3)}\\text{ mmol L}^{-1}\\text{ s}^{-1}}$</div>
+          `,
+          steps: [
+            {
+              key: '1a',
+              label: 'Step 1a: Determine the partial orders \\(a\\) (for NO) and \\(b\\) (for \\(\\text{Cl}_2\\)) and enter the overall reaction order \\(n_{\\text{tot}} = a + b\\).',
+              unit: '(dimensionless)',
+              answer: n_tot_ex1,
+              traps: [
+                {
+                  val: order_a,
+                  msg: 'That is the partial order a = 2 with respect to NO alone. Add the partial order b with respect to Cl2 to get the overall order n_tot = a + b!'
+                },
+                {
+                  val: order_b,
+                  msg: 'That is the partial order b = 1 with respect to Cl2 alone. Add a + b to enter the overall reaction order!'
+                }
+              ],
+              hint: 'Compare Run 2 vs. Run 1 to find a = ln(v2/v1)/ln([NO]2/[NO]1), then compare Run 3 vs. Run 1 to find b = ln(v3/v1)/ln([Cl2]3/[Cl2]1), and sum n_tot = a + b.'
+            },
+            {
+              key: '1b',
+              label: 'Step 1b: Calculate the rate constant \\(k\\) from the experimental data (in \\(\\text{L}^2\\text{ mol}^{-2}\\text{ s}^{-1}\\)).',
+              unit: 'L² mol⁻² s⁻¹',
+              answer: k_ex1,
+              traps: [
+                {
+                  val: v1 / (cA1 * cB1),
+                  msg: 'Exponent trap! Since the partial order with respect to NO is a = 2, you must square [NO]_0 in the denominator: k = v_0 / ([NO]_0^2 * [Cl2]_0).'
+                },
+                {
+                  val: (cA1 * cA1 * cB1) / v1,
+                  msg: 'Inverted ratio! Solve v_0 = k * [NO]_0^2 * [Cl2]_0 for k = v_0 / ([NO]_0^2 * [Cl2]_0).'
+                }
+              ],
+              hint: 'Substitute Run 1 into k = v_1 / ([NO]_1^a * [Cl2]_1^b).'
+            },
+            {
+              key: '1c',
+              label: `Step 1c: Predict the initial reaction rate \\(v_0\\) if $[\\text{NO}]_0 = ${cA_test.toFixed(3)}\\text{ mol L}^{-1}$ and $[\\text{Cl}_2]_0 = ${cB_test.toFixed(3)}\\text{ mol L}^{-1}$ (enter in $\\text{mmol L}^{-1}\\text{ s}^{-1}$).`,
+              unit: 'mmol L⁻¹ s⁻¹',
+              answer: v_test_mM,
+              traps: [
+                {
+                  val: v_test_mM / 1000,
+                  msg: 'Unit prefix notice: Your value is in mol L^-1 s^-1. Multiply by 1000 to convert to mmol L^-1 s^-1!'
+                },
+                {
+                  val: k_ex1 * cA_test * cB_test * 1000,
+                  msg: 'Don\'t forget to raise [NO]_0 to the power a = 2 when computing v_0 = k * [NO]_0^2 * [Cl2]_0!'
+                }
+              ],
+              hint: 'Compute v_0 [mol L^-1 s^-1] = k * [NO]_0^2 * [Cl2]_0, then multiply by 1000 to obtain mmol L^-1 s^-1.'
+            }
+          ]
+        },
+
+        // PROBLEM 2
+        {
+          id: 2,
+          title: 'Exercise 2: Integrated Second-Order Rate Law & Half-Life (\\(\\tau_{1/2}\\)) from Concentration Data',
+          theoryRef: '<strong>10_Kinetics-I.pdf</strong> (Slides 19–34: Integrated 1st and 2nd order rate laws, linear plots $\\ln c_t$ vs. $t$ and $1/c_t$ vs. $t$, half-life $\\tau_{1/2}$).',
+          examplesRef: '<strong>10_Kinetics-I.pdf</strong> (Saponification / Dimerization Kinetics), <strong>Q01_Quizzes.pdf</strong> (3rd Rep, Q5), <strong>T01_TryTests.pdf</strong> (Q15).',
+          statement: `A bimolecular reaction $2\\,\\text{A} \\longrightarrow \\text{Products}$ in solution follows <strong>second-order kinetics</strong> ($v = k \\cdot c_{\\text{A}}^2$). Starting from an initial concentration $c_0 = ${c0_ex2.toFixed(3)}\\text{ mol L}^{-1}$ at $t = 0\\text{ s}$, concentration measurements by titration yield:
+            <ul class="list-disc list-inside my-2 font-mono text-xs bg-slate-50 p-3 rounded border border-slate-200">
+              <li>At $t_0 = 0\\text{ s}$: $c_0 = ${c0_ex2.toFixed(4)}\\text{ mol L}^{-1}$</li>
+              <li>At $t_1 = ${t1_ex2}\\text{ s}$: $c(t_1) = ${c_t1_disp.toFixed(4)}\\text{ mol L}^{-1}$</li>
+              <li>At $t_2 = ${t2_ex2}\\text{ s}$: $c(t_2) = ${c_t2_disp.toFixed(4)}\\text{ mol L}^{-1}$</li>
+            </ul>`,
+          profExplanation: `
+            <div><strong>Step 2a:</strong> $k = \\frac{1}{t_1}\\left(\\frac{1}{c(t_1)} - \\frac{1}{c_0}\\right) = \\frac{1}{${t1_ex2}\\text{ s}}\\left(\\frac{1}{${c_t1_disp.toFixed(4)}} - \\frac{1}{${c0_ex2.toFixed(4)}}\\right) = \\mathbf{${k_calc_t1.toFixed(4)}\\text{ L mol}^{-1}\\text{ s}^{-1}}$</div>
+            <div><strong>Step 2b:</strong> $\\tau_{1/2} = \\frac{1}{k \\cdot c_0} = \\frac{1}{${k_calc_t1.toFixed(4)} \\cdot ${c0_ex2.toFixed(4)}} = \\mathbf{${tau_half_ex2.toFixed(1)}\\text{ s}}$</div>
+            <div><strong>Step 2c:</strong> At $t = ${t_target_min}\\text{ min} = ${t_target_sec}\\text{ s}$: $\\frac{1}{c_t} = \\frac{1}{${c0_ex2.toFixed(4)}} + ${k_calc_t1.toFixed(4)} \\cdot ${t_target_sec} \\implies c_t = \\mathbf{${c_target_ex2.toFixed(4)}\\text{ mol L}^{-1}}$</div>
+          `,
+          steps: [
+            {
+              key: '2a',
+              label: 'Step 2a: Calculate the second-order rate constant \\(k\\) from the concentration table (in \\(\\text{L mol}^{-1}\\text{ s}^{-1}\\)).',
+              unit: 'L mol⁻¹ s⁻¹',
+              answer: k_calc_t1,
+              traps: [
+                {
+                  val: (1 / t1_ex2) * Math.log(c0_ex2 / c_t1_disp),
+                  msg: 'Wrong reaction order formula! You used the 1st-order equation k = (1/t)*ln(c0/ct). For a 2nd-order reaction, use k = (1/t)*(1/ct - 1/c0)!'
+                },
+                {
+                  val: k_calc_t1 * 60,
+                  msg: 'Time unit check: The table times t1 and t2 are already given in seconds (s), so do not multiply by 60!'
+                }
+              ],
+              hint: 'Use the integrated 2nd-order law: k = (1 / t_1) * (1 / c(t_1) - 1 / c_0).'
+            },
+            {
+              key: '2b',
+              label: `Step 2b: Calculate the initial half-life \\(\\tau_{1/2}\\) of this second-order reaction for $c_0 = ${c0_ex2.toFixed(3)}\\text{ mol L}^{-1}$ (in s).`,
+              unit: 's',
+              answer: tau_half_ex2,
+              traps: [
+                {
+                  val: Math.LN2 / k_calc_t1,
+                  msg: 'Formula trap! tau_1/2 = ln(2)/k is only valid for 1st-order reactions. For 2nd order, half-life depends on initial concentration: tau_1/2 = 1 / (k * c_0)!'
+                },
+                {
+                  val: tau_half_ex2 / 60,
+                  msg: 'That is the half-life in minutes. Please enter the value in seconds (s)!'
+                }
+              ],
+              hint: 'For a second-order reaction, use tau_1/2 = 1 / (k * c_0).'
+            },
+            {
+              key: '2c',
+              label: `Step 2c: Calculate the remaining reactant concentration \\(c(t)\\) after $t = ${t_target_min}\\text{ min}$ (in $\\text{mol L}^{-1}$).`,
+              unit: 'mol L⁻¹',
+              answer: c_target_ex2,
+              traps: [
+                {
+                  val: 1 / ((1 / c0_ex2) + k_calc_t1 * t_target_min),
+                  msg: 'Time unit trap! Since k is in L mol^-1 s^-1, convert t from minutes to seconds first (t [s] = t [min] * 60)!'
+                },
+                {
+                  val: (1 / c0_ex2) + k_calc_t1 * t_target_sec,
+                  msg: 'You calculated 1/c_t (in L mol^-1). Take the reciprocal 1 / (1/c_t) to obtain the concentration c_t in mol L^-1!'
+                },
+                {
+                  val: c0_ex2 * Math.exp(-k_calc_t1 * t_target_sec),
+                  msg: 'You used the 1st-order exponential decay formula. Use the 2nd-order equation: c_t = 1 / (1/c_0 + k * t)!'
+                }
+              ],
+              hint: 'First convert t to seconds (t_sec = t_min * 60), then compute c_t = 1 / (1/c_0 + k * t_sec).'
+            }
+          ]
+        },
+
+        // PROBLEM 3
+        {
+          id: 3,
+          title: 'Exercise 3: Reversible Protein–Ligand Binding Equilibrium (\\(K_d = k_{\\text{off}} / k_{\\text{on}}\\))',
+          theoryRef: '<strong>12_Kinetics-II.pdf</strong> (Slides 2–15: Reversible opposing reactions, dynamic kinetic equilibrium $v_{\\text{on}} = v_{\\text{off}}$, link between thermodynamics and kinetics $K_a = k_{\\text{on}}/k_{\\text{off}}$ and $K_d = k_{\\text{off}}/k_{\\text{on}}$).',
+          examplesRef: '<strong>12_Kinetics-II.pdf</strong> (Drug–Receptor Binding Kinetics), <strong>T01_TryTests.pdf</strong> (Q17).',
+          statement: `A pharmaceutical ligand $\\text{L}$ binds reversibly to a target receptor protein $\\text{P}$ in buffered aqueous solution at $\\vartheta = 37.0\\text{ }&deg;\\text{C}$ according to:
+            $$\\text{P} + \\text{L} \\underset{k_{\\text{off}}}{\\overset{k_{\\text{on}}}{\\rightleftharpoons}} \\text{PL}$$
+            Surface plasmon resonance (SPR) measurements yield an association ("on") rate constant of $k_{\\text{on}} = ${k_on_e6.toFixed(2)} \\times 10^6\\text{ L mol}^{-1}\\text{ s}^{-1}$ and a dissociation ("off") rate constant of $k_{\\text{off}} = ${k_off_ex3.toFixed(3)}\\text{ s}^{-1}$.`,
+          profExplanation: `
+            <div><strong>Step 3a:</strong> $K_d = \\frac{k_{\\text{off}}}{k_{\\text{on}}} = \\frac{${k_off_ex3.toFixed(3)}\\text{ s}^{-1}}{${k_on_e6.toFixed(2)} \\times 10^6\\text{ L mol}^{-1}\\text{ s}^{-1}} = ${Kd_M.toExponential(4)}\\text{ mol L}^{-1} = \\mathbf{${Kd_nM.toFixed(2)}\\text{ nmol L}^{-1}}$</div>
+            <div><strong>Step 3b:</strong> $\\tau_{1/2,\\text{diss}} = \\frac{\\ln 2}{k_{\\text{off}}} = \\frac{0.69315}{${k_off_ex3.toFixed(3)}\\text{ s}^{-1}} = \\mathbf{${tau_diss_ex3.toFixed(2)}\\text{ s}}$</div>
+            <div><strong>Step 3c:</strong> At equilibrium with free ligand $[\\text{L}] = ${c_L_nM.toFixed(1)}\\text{ nmol L}^{-1}$: $\\theta = \\frac{[\\text{PL}]}{[\\text{P}]_{\\text{tot}}} = \\frac{[\\text{L}]}{K_d + [\\text{L}]} \\cdot 100 = \\frac{${c_L_nM.toFixed(1)}}{${Kd_nM.toFixed(2)} + ${c_L_nM.toFixed(1)}} \\cdot 100 = \\mathbf{${theta_pct_ex3.toFixed(1)}\\%}$</div>
+          `,
+          steps: [
+            {
+              key: '3a',
+              label: 'Step 3a: Calculate the equilibrium dissociation constant \\(K_d = k_{\\text{off}} / k_{\\text{on}}\\) of the protein–ligand complex (in \\(\\text{nmol L}^{-1}\\)).',
+              unit: 'nmol L⁻¹',
+              answer: Kd_nM,
+              traps: [
+                {
+                  val: Kd_M,
+                  msg: 'That is K_d in mol L^-1. Multiply by 10^9 to express K_d in nanomoles per liter (nmol L^-1)!'
+                },
+                {
+                  val: k_on_ex3 / k_off_ex3,
+                  msg: 'You calculated the association constant K_a = k_on / k_off (in L mol^-1). For the dissociation constant K_d, divide k_off by k_on!'
+                }
+              ],
+              hint: 'Compute K_d [mol L^-1] = k_off / k_on, then multiply by 10^9 to convert from mol L^-1 to nmol L^-1.'
+            },
+            {
+              key: '3b',
+              label: 'Step 3b: Calculate the dissociation half-life (residence time half-life) \\(\\tau_{1/2,\\text{diss}}\\) of the complex \\(\\text{PL}\\) (in s).',
+              unit: 's',
+              answer: tau_diss_ex3,
+              traps: [
+                {
+                  val: 1 / k_off_ex3,
+                  msg: '1 / k_off is the mean lifetime tau. For the half-life tau_1/2 of a first-order dissociation, multiply by ln(2) ≈ 0.69315: tau_1/2 = ln(2) / k_off!'
+                }
+              ],
+              hint: 'Unimolecular dissociation PL -> P + L is a first-order process, so tau_1/2 = ln(2) / k_off.'
+            },
+            {
+              key: '3c',
+              label: `Step 3c: Calculate the percentage of occupied receptor proteins $\\theta = \\frac{[\\text{PL}]}{[\\text{P}] + [\\text{PL}]} = \\frac{[\\text{L}]}{K_d + [\\text{L}]}$ at equilibrium when the free ligand concentration is $[\\text{L}] = ${c_L_nM.toFixed(1)}\\text{ nmol L}^{-1}$ (in %).`,
+              unit: '%',
+              answer: theta_pct_ex3,
+              traps: [
+                {
+                  val: theta_pct_ex3 / 100,
+                  msg: 'You entered the decimal fraction. Multiply by 100 to give the receptor occupancy in percent (%)!'
+                },
+                {
+                  val: (Kd_nM / (Kd_nM + c_L_nM)) * 100,
+                  msg: 'That is the fraction of FREE (unoccupied) receptor [P]/[P]_tot. Occupied fraction is [L] / (K_d + [L]) * 100%!'
+                }
+              ],
+              hint: 'Use both [L] and K_d in nmol L^-1 inside theta [%] = ([L] / (K_d + [L])) * 100.'
+            }
+          ]
+        },
+
+        // PROBLEM 4
+        {
+          id: 4,
+          title: 'Exercise 4: Quasi-Steady-State Approximation (QSSA) – Consecutive Enzyme / Lindemann Mechanism',
+          theoryRef: '<strong>12_Kinetics-II.pdf</strong> (Slides 16–32: Consecutive reactions with reversible 1st step, Bodenstein\'s Quasi-Steady-State Approximation $\\text{d}[I]/\\text{d}t \\approx 0$, Lindemann & Michaelis-Menten rate equations).',
+          examplesRef: '<strong>12_Kinetics-II.pdf</strong> (Derivation of Steady-State Rate Law), <strong>T01_TryTests.pdf</strong> (Q17).',
+          statement: `Consider the two-step catalytic mechanism with a reactive intermediate complex $\\text{ES}$ treated under Bodenstein's <em>Quasi-Steady-State Approximation</em> ($\\text{d}[\\text{ES}]/\\text{d}t \\approx 0$):
+            $$\\text{E} + \\text{S} \\underset{k_{-1}}{\\overset{k_1}{\\rightleftharpoons}} \\text{ES} \\overset{k_2}{\\longrightarrow} \\text{E} + \\text{P}$$
+            At $\\vartheta = 25.0\\text{ }&deg;\\text{C}$, the elementary rate constants are $k_1 = ${k1_e7.toFixed(1)} \\times 10^7\\text{ L mol}^{-1}\\text{ s}^{-1}$, $k_{-1} = ${km1_ex4}\\text{ s}^{-1}$, and $k_2 = ${k2_ex4}\\text{ s}^{-1}$. The total catalyst concentration is $[\\text{E}]_0 = ${E0_nM}\\text{ nmol L}^{-1}$ ($${(E0_nM * 1e-3).toFixed(3)}\\text{ }&mu;\\text{mol L}^{-1}$) and the substrate concentration is $[\\text{S}] = ${S_uM}\\text{ }&mu;\\text{mol L}^{-1}$.`,
+          profExplanation: `
+            <div><strong>Step 4a:</strong> $K_M = \\frac{k_{-1} + k_2}{k_1} = \\frac{${km1_ex4} + ${k2_ex4}}{${k1_e7.toFixed(1)} \\times 10^7} = ${KM_M.toExponential(4)}\\text{ mol L}^{-1} = \\mathbf{${KM_uM.toFixed(2)}\\text{ }\\mu\\text{mol L}^{-1}}$</div>
+            <div><strong>Step 4b:</strong> $v_{\\max} = k_2 \\cdot [\\text{E}]_0 = ${k2_ex4}\\text{ s}^{-1} \\cdot ${(E0_nM * 1e-3).toFixed(3)}\\text{ }\\mu\\text{mol L}^{-1} = \\mathbf{${vmax_uM_s.toFixed(3)}\\text{ }\\mu\\text{mol L}^{-1}\\text{ s}^{-1}}$</div>
+            <div><strong>Step 4c:</strong> $v_0 = \\frac{v_{\\max} \\cdot [\\text{S}]}{K_M + [\\text{S}]} = \\frac{${vmax_uM_s.toFixed(3)} \\cdot ${S_uM}}{${KM_uM.toFixed(2)} + ${S_uM}} = \\mathbf{${v0_uM_s.toFixed(3)}\\text{ }\\mu\\text{mol L}^{-1}\\text{ s}^{-1}}$</div>
+          `,
+          steps: [
+            {
+              key: '4a',
+              label: 'Step 4a: Apply the QSSA (\\(\\text{d}[\\text{ES}]/\\text{d}t \\approx 0\\)) to calculate the steady-state Michaelis constant \\(K_M = (k_{-1} + k_2)/k_1\\) (in \\(\\mu\\text{mol L}^{-1}\\)).',
+              unit: 'μmol L⁻¹',
+              answer: KM_uM,
+              traps: [
+                {
+                  val: (km1_ex4 / k1_ex4) * 1e6,
+                  msg: 'Pre-equilibrium trap! You calculated K_d = k_-1 / k_1, ignoring k_2. Under the steady-state approximation (QSSA), both decay pathways of ES count: K_M = (k_-1 + k_2) / k_1!'
+                },
+                {
+                  val: KM_M,
+                  msg: 'That is K_M in mol L^-1. Multiply by 10^6 to convert to micromoles per liter (umol L^-1)!'
+                }
+              ],
+              hint: 'Compute K_M [mol L^-1] = (k_-1 + k_2) / k_1, then multiply by 10^6 to obtain umol L^-1.'
+            },
+            {
+              key: '4b',
+              label: `Step 4b: Calculate the maximum reaction rate \\(v_{\\max} = k_2 \\cdot [\\text{E}]_0\\) at enzyme saturation (in $\\mu\\text{mol L}^{-1}\\text{ s}^{-1}$).`,
+              unit: 'μmol L⁻¹ s⁻¹',
+              answer: vmax_uM_s,
+              traps: [
+                {
+                  val: vmax_uM_s * 1000,
+                  msg: 'Unit conversion trap! [E]_0 is given in nmol L^-1 (10^-9 M), while v_max is requested in umol L^-1 s^-1 (10^-6 M s^-1). Divide [E]_0 in nmol L^-1 by 1000 to get umol L^-1!'
+                },
+                {
+                  val: vmax_uM_s * 1e-6,
+                  msg: 'That is v_max in mol L^-1 s^-1. Multiply by 10^6 to express it in umol L^-1 s^-1!'
+                }
+              ],
+              hint: 'Convert [E]_0 from nmol L^-1 to umol L^-1 (divide by 1000), then multiply by k_2 [s^-1].'
+            },
+            {
+              key: '4c',
+              label: `Step 4c: Calculate the initial steady-state reaction rate \\(v_0 = \\frac{v_{\\max} \\cdot [\\text{S}]}{K_M + [\\text{S}]}\\) at $[\\text{S}] = ${S_uM}\\text{ }\\mu\\text{mol L}^{-1}$ (in $\\mu\\text{mol L}^{-1}\\text{ s}^{-1}$).`,
+              unit: 'μmol L⁻¹ s⁻¹',
+              answer: v0_uM_s,
+              traps: [
+                {
+                  val: (vmax_uM_s * S_uM) / KM_uM,
+                  msg: 'First-order approximation trap! You used v_0 = (v_max / K_M) * [S], which is only valid when [S] << K_M. Use the full denominator K_M + [S]!'
+                }
+              ],
+              hint: 'Use both K_M and [S] in umol L^-1 inside v_0 = (v_max * [S]) / (K_M + [S]).'
+            }
+          ]
+        }
+      ];
+    }
+
+    // Render all 4 exercises into DOM
+    function renderExercises() {
+      const container = document.getElementById('exercises-container');
+      container.innerHTML = '';
+
+      currentProblems.forEach((prob) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';
+
+        let stepsHtml = '';
+        prob.steps.forEach((st) => {
+          const savedVal = userState.inputs[st.key] !== undefined ? userState.inputs[st.key] : '';
+          const isDone = !!userState.completed[st.key];
+          stepsHtml += `
+            <div id="step-card-${st.key}" class="step-card p-4 rounded-lg border ${isDone ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50 border-slate-200'} space-y-2">
+              <label class="block text-sm font-semibold text-slate-800" for="input-${st.key}">
+                ${st.label}
+              </label>
+              <div class="flex flex-wrap items-center gap-2">
+                <input
+                  id="input-${st.key}"
+                  type="text"
+                  value="${savedVal}"
+                  placeholder="Enter value..."
+                  onkeydown="if(event.key==='Enter') checkStep('${st.key}')"
+                  class="px-3 py-1.5 rounded border border-slate-300 bg-white text-sm font-mono w-44 focus:outline-none focus:border-indigo-500"
+                />
+                <span class="text-xs font-bold text-slate-600 bg-slate-200/80 px-2.5 py-1.5 rounded">${st.unit}</span>
+                <button
+                  onclick="checkStep('${st.key}')"
+                  class="px-3.5 py-1.5 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider transition"
+                >
+                  Check
+                </button>
+                <button
+                  onclick="toggleStepHint('${st.key}')"
+                  class="px-2.5 py-1.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold transition"
+                >
+                  💡 Hint
+                </button>
+              </div>
+              <div id="hint-${st.key}" class="hidden text-xs text-indigo-900 bg-indigo-50 border border-indigo-200 rounded p-2.5">
+                <strong>Formula / Hint:</strong> ${st.hint}
+              </div>
+              <div id="feedback-${st.key}" class="text-xs font-semibold ${isDone ? 'text-emerald-700' : 'hidden'}">
+                ${isDone ? '✅ Correct! Step verified and saved.' : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="px-6 py-4 bg-slate-800 text-white flex items-center justify-between">
+            <h3 class="font-bold text-base">${prob.title}</h3>
+            <span class="text-xs font-mono text-amber-400">3 Steps</span>
+          </div>
+
+          <div class="p-6 space-y-5">
+            <!-- Blue Reference Service Box -->
+            <div class="bg-sky-50 border-l-4 border-sky-500 rounded-r-lg p-3.5 text-xs text-sky-950 space-y-1">
+              <div>📖 <strong>Lecture Theory:</strong> ${prob.theoryRef}</div>
+              <div>🔍 <strong>Similar Worked Examples:</strong> ${prob.examplesRef}</div>
+            </div>
+
+            <!-- Problem Statement -->
+            <div class="text-sm text-slate-800 leading-relaxed bg-white p-1">
+              ${prob.statement}
+            </div>
+
+            <!-- Instructor Mode Solution Box -->
+            <div class="prof-box ${isProfMode ? '' : 'hidden'} rounded-lg p-4 text-xs text-slate-900 space-y-1.5 shadow-inner">
+              <div class="font-extrabold uppercase tracking-wider text-amber-900 flex items-center justify-between">
+                <span>👨‍🏫 [PROF SOLUTIONS] – Exact Key for Student ID: ${currentStudentId}</span>
+                <span class="font-mono">Tol: ±1.5%</span>
+              </div>
+              ${prob.profExplanation}
+            </div>
+
+            <!-- 3 Interactive Sub-Steps -->
+            <div class="space-y-3">
+              ${stepsHtml}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      renderMath();
+      updateProgressUI();
+    }
+
+    // Check individual step with Smart Traps
+    function checkStep(stepKey) {
+      let targetStep = null;
+      currentProblems.forEach((p) => {
+        p.steps.forEach((s) => {
+          if (s.key === stepKey) targetStep = s;
+        });
+      });
+      if (!targetStep) return;
+
+      const inputEl = document.getElementById(`input-${stepKey}`);
+      const fbEl = document.getElementById(`feedback-${stepKey}`);
+      const cardEl = document.getElementById(`step-card-${stepKey}`);
+
+      const raw = inputEl.value.trim().replace(',', '.');
+      userState.inputs[stepKey] = inputEl.value.trim();
+
+      const val = parseFloat(raw);
+      if (isNaN(val)) {
+        fbEl.className = 'text-xs font-semibold text-rose-600';
+        fbEl.textContent = '⚠️ Please enter a valid numerical value.';
+        saveState();
+        return;
+      }
+
+      const ans = targetStep.answer;
+      const relErr = Math.abs(val - ans) / (Math.abs(ans) || 1);
+
+      if (relErr <= 0.015) {
+        userState.completed[stepKey] = true;
+        fbEl.className = 'text-xs font-semibold text-emerald-700';
+        fbEl.innerHTML = `✅ Correct! (Exact reference value: <span class="font-mono">${ans.toPrecision(4)} ${targetStep.unit}</span>)`;
+        cardEl.className = 'step-card p-4 rounded-lg border bg-emerald-50/60 border-emerald-300 space-y-2';
+        saveState();
+        updateProgressUI();
+        return;
+      }
+
+      // Check Smart Traps
+      let trapMsg = null;
+      if (targetStep.traps) {
+        for (const trap of targetStep.traps) {
+          const tErr = Math.abs(val - trap.val) / (Math.abs(trap.val) || 1);
+          if (tErr <= 0.025) {
+            trapMsg = trap.msg;
+            break;
+          }
+        }
+      }
+
+      fbEl.className = 'text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 p-2 rounded';
+      if (trapMsg) {
+        fbEl.innerHTML = `❌ <strong>Smart Trap Detected:</strong> ${trapMsg}`;
+      } else {
+        fbEl.innerHTML = `❌ Not quite right yet. Check your formula and units (use the 💡 Hint button if needed).`;
+      }
+      saveState();
+      updateProgressUI();
+    }
+
+    function toggleStepHint(stepKey) {
+      const el = document.getElementById(`hint-${stepKey}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function updateProgressUI() {
+      const total = 12;
+      const done = Object.keys(userState.completed).filter((k) => userState.completed[k]).length;
+      document.getElementById('progress-counter').textContent = `${done} / ${total} Steps`;
+
+      // Compute deterministic verification checksum
+      const seedStr = `U05-${currentStudentId}-${done}`;
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        h ^= seedStr.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      const hex = (h >>> 0).toString(16).toUpperCase().padStart(8, '0').slice(0, 4);
+      const token = `PC1-U05-${currentStudentId}-${done}of12-CHK${hex}`;
+      document.getElementById('verification-token').textContent = token;
+    }
+
+    function copyVerificationToken() {
+      const token = document.getElementById('verification-token').textContent.trim();
+      navigator.clipboard.writeText(token).then(() => {
+        const fb = document.getElementById('copy-feedback');
+        fb.classList.remove('hidden');
+        setTimeout(() => fb.classList.add('hidden'), 2500);
+      });
+    }
+
+    // Guided Modeling Controls
+    function toggleFormulaSheet() {
+      const content = document.getElementById('formula-sheet-content');
+      const chev = document.getElementById('formula-chevron');
+      content.classList.toggle('hidden');
+      chev.textContent = content.classList.contains('hidden') ? '▶' : '▼';
+    }
+
+    function toggleSpokenHints() {
+      const hints = document.querySelectorAll('.spoken-hint');
+      const btn = document.getElementById('btn-spoken-hints');
+      let anyHidden = false;
+      hints.forEach((h) => {
+        if (h.classList.contains('hidden')) anyHidden = true;
+      });
+      hints.forEach((h) => {
+        if (anyHidden) h.classList.remove('hidden');
+        else h.classList.add('hidden');
+      });
+      btn.textContent = anyHidden ? '🎙️ Hide Spoken Explanation Hints' : '🎙️ Show Spoken Explanation Hints';
+    }
+
+    function toggleGuidedStep(exNum, stepChar) {
+      const el = document.getElementById(`guided-${exNum}-${stepChar}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function toggleAllGuided(exNum) {
+      const steps = ['a', 'b', 'c'];
+      const anyHidden = steps.some((ch) => document.getElementById(`guided-${exNum}-${ch}`).classList.contains('hidden'));
+      steps.forEach((ch) => {
+        const el = document.getElementById(`guided-${exNum}-${ch}`);
+        if (anyHidden) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+    }
+
+    // Student ID & LocalStorage Management
+    function parseStudentInput(rawInput) {
+      const trimmed = (rawInput || '').trim();
+      if (!trimmed) return { id: DEFAULT_ID, prof: false };
+      if (trimmed.toUpperCase().startsWith('PROF-')) {
+        const cleanId = trimmed.slice(5).trim() || DEFAULT_ID;
+        return { id: cleanId, prof: true };
+      }
+      if (trimmed.toUpperCase() === 'PROF') {
+        return { id: DEFAULT_ID, prof: true };
+      }
+      return { id: trimmed, prof: false };
+    }
+
+    function loadWorksheet() {
+      const raw = document.getElementById('student-id-input').value;
+      const parsed = parseStudentInput(raw);
+      const idChanged = parsed.id !== currentStudentId;
+
+      currentStudentId = parsed.id;
+      isProfMode = parsed.prof;
+
+      if (idChanged) {
+        userState = {
+          studentId: currentStudentId,
+          inputs: {},
+          completed: {}
+        };
+        saveState();
+      }
+
+      updateHeaderBadges();
+      currentProblems = buildUnit05Problems(currentStudentId);
+      renderExercises();
+    }
+
+    function resetWorksheet() {
+      if (!confirm('Reset all saved answers and progress for this worksheet?')) return;
+      userState = {
+        studentId: currentStudentId,
+        inputs: {},
+        completed: {}
+      };
+      saveState();
+      renderExercises();
+    }
+
+    function updateHeaderBadges() {
+      document.getElementById('active-id-badge').textContent = `Active ID: ${currentStudentId}`;
+      const profBadge = document.getElementById('prof-mode-badge');
+      if (isProfMode) profBadge.classList.remove('hidden');
+      else profBadge.classList.add('hidden');
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
+      } catch (e) {}
+    }
+
+    function loadStateFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.studentId) {
+            userState = parsed;
+            currentStudentId = parsed.studentId;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function renderMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '$', right: '$', display: false }
+          ],
+          output: 'html',
+          throwOnError: false
+        });
+      }
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStateFromStorage();
+      document.getElementById('student-id-input').value = currentStudentId;
+      updateHeaderBadges();
+      currentProblems = buildUnit05Problems(currentStudentId);
+      renderExercises();
+    });
+  </script>
+</body>
+</html>

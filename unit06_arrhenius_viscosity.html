@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 06 – Kinetics III (Arrhenius) & Viscosity | Physical Chemistry IMC Krems</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- KaTeX CSS & JS (output: html only, no MathML duplication) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .katex-display {
+      margin: 0.65em 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .step-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .prof-box {
+      background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+      border-left: 5px solid #ca8a04;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- TOP HEADER & NAVIGATION -->
+  <header class="bg-slate-900 text-white shadow-lg border-b border-slate-700 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-600 transition">
+          <span>&larr;</span> Course Hub
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500 text-slate-950">Block 2 &bull; Unit 06</span>
+            <span class="text-xs text-slate-400 hidden sm:inline">FH IMC Krems &bull; Physical Chemistry Exercise</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">
+            Chemical Kinetics III (Arrhenius Law) &amp; Viscosity of Liquids
+          </h1>
+        </div>
+      </div>
+
+      <div class="text-xs text-slate-300 text-right hidden md:block">
+        <div><strong>UE Lecturer:</strong> Mag. Erich Kerzendorfer</div>
+        <div><strong>Main Lecture:</strong> Prof. Manfred Kerschbaumer</div>
+      </div>
+    </div>
+
+    <!-- STUDENT ID & CONTROL BAR -->
+    <div class="bg-slate-800/90 border-t border-slate-700">
+      <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="student-id-input" class="text-xs font-semibold uppercase tracking-wider text-amber-400">
+            Student ID:
+          </label>
+          <input
+            id="student-id-input"
+            type="text"
+            placeholder="e.g. 2510456012"
+            class="px-3 py-1.5 rounded bg-slate-900 border border-slate-600 text-white text-sm font-mono focus:outline-none focus:border-amber-400 w-48"
+          />
+          <button
+            onclick="loadWorksheet()"
+            class="px-3.5 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition shadow-sm"
+          >
+            Load My Worksheet
+          </button>
+          <button
+            onclick="resetWorksheet()"
+            class="px-3 py-1.5 rounded bg-slate-700 hover:bg-rose-600 text-slate-200 hover:text-white text-xs font-semibold transition"
+          >
+            Reset Saved Inputs
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="active-id-badge" class="px-2.5 py-1 rounded bg-slate-900 border border-slate-600 text-xs font-mono text-emerald-400">
+            Active ID: 2510456012
+          </span>
+          <span id="prof-mode-badge" class="hidden px-2.5 py-1 rounded bg-yellow-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">
+            PROF SOLUTIONS ACTIVE
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 mt-6 space-y-8">
+
+    <!-- SECTION 1: COLLAPSIBLE FORMULA SHEET -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <button
+        onclick="toggleFormulaSheet()"
+        class="w-full px-6 py-4 bg-slate-100 hover:bg-slate-200/70 flex items-center justify-between text-left transition"
+      >
+        <div class="flex items-center gap-3">
+          <span class="text-xl">📐</span>
+          <div>
+            <h2 class="font-bold text-slate-800 text-base sm:text-lg">Section 1: Unit 06 Formula Sheet, Arrhenius Equations &amp; Viscosity Conversions</h2>
+            <p class="text-xs text-slate-500">Click to expand/collapse reference equations for Reaction Order Units, Two-Point Arrhenius Law, Dynamic/Kinematic Viscosity &amp; Ostwald Viscometer</p>
+          </div>
+        </div>
+        <span id="formula-chevron" class="text-slate-600 font-bold text-lg transform transition-transform">▼</span>
+      </button>
+
+      <div id="formula-sheet-content" class="p-6 border-t border-slate-200 space-y-6">
+        <!-- 5 BY HEART FORMULAS -->
+        <div class="bg-rose-50 border border-rose-200 rounded-lg p-4">
+          <div class="text-xs font-bold uppercase tracking-wider text-rose-800 mb-2">
+            🧠 The 5 Fundamental "By Heart" Formulas (Required without Formula Sheet in Exams!)
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-sm bg-white p-3 rounded border border-rose-100">
+            <div>$$\rho = \frac{m}{V}$$</div>
+            <div>$$n = \frac{m}{M}$$</div>
+            <div>$$c = \frac{n}{V}$$</div>
+            <div>$$p \cdot V = n \cdot R \cdot T$$</div>
+            <div>$$x_i = \frac{n_i}{n_{\text{tot}}}$$</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Kinetics III: Units of k & Arrhenius -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              1. Reaction Order from Unit of $k$ &amp; Arrhenius Law (Kinetics III)
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>General Unit of Rate Constant $k$ for Overall Order $n$:</strong>
+            </p>
+            <div class="text-sm">
+              $$[k] = \frac{[v]}{[c]^n} = \text{mol}^{1-n}\cdot \text{L}^{n-1}\cdot \text{s}^{-1} = \text{M}^{1-n}\cdot \text{s}^{-1}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Arrhenius Equation &amp; Linearized Form ($R = 8.3145\text{ J mol}^{-1}\text{ K}^{-1}$):</strong>
+            </p>
+            <div class="text-sm">
+              $$k = A \cdot \exp\left(-\frac{E_a}{R \cdot T}\right) \quad \Longleftrightarrow \quad \ln k = \ln A - \frac{E_a}{R} \cdot \frac{1}{T}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Two-Point Arrhenius Equations (for $k$ and Half-Life $\tau_{1/2} \propto 1/k$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\ln\left(\frac{k_2}{k_1}\right) = \ln\left(\frac{\tau_{1/2}(T_1)}{\tau_{1/2}(T_2)}\right) = \frac{E_a}{R}\left(\frac{1}{T_1} - \frac{1}{T_2}\right) = \frac{E_a}{R}\left(\frac{T_2 - T_1}{T_1 \cdot T_2}\right)$$
+              $$E_a = \frac{R \cdot T_1 \cdot T_2}{T_2 - T_1} \cdot \ln\left(\frac{k_2}{k_1}\right), \qquad A = k_1 \cdot \exp\left(\frac{E_a}{R \cdot T_1}\right)$$
+            </div>
+          </div>
+
+          <!-- Viscosity & Ostwald Viscometer -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              2. Dynamic ($\eta$) vs. Kinematic Viscosity ($\nu$) &amp; Viscometry
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Newton's Shear Law &amp; Kinematic Viscosity Definition:</strong>
+            </p>
+            <div class="text-sm">
+              $$\tau = \frac{F}{A} = \eta \cdot \frac{\text{d}v}{\text{d}y}, \qquad \nu = \frac{\eta}{\rho} \quad \Longleftrightarrow \quad \eta = \nu \cdot \rho$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Hagen–Poiseuille Law &amp; Ostwald Capillary Viscometer:</strong>
+            </p>
+            <div class="text-sm">
+              $$\frac{\text{d}V}{\text{d}t} = \frac{\pi \cdot r^4 \cdot \Delta p}{8 \cdot \eta \cdot l}, \qquad \text{With hydrostatic } \Delta p = \rho \cdot g \cdot h:$$
+              $$\nu = \frac{\eta}{\rho} = K_{\text{visc}} \cdot t \quad \Longrightarrow \quad \frac{\eta_A}{\eta_B} = \frac{\rho_A \cdot t_A}{\rho_B \cdot t_B}$$
+            </div>
+            <p class="text-xs text-slate-600">
+              <strong>Arrhenius–Andrade Temperature Dependence of Viscosity:</strong> $\eta(T) = \eta_0 \cdot \exp\left(\frac{E_{\text{visc}}}{R \cdot T}\right)$ (liquids become <em>less</em> viscous as $T$ rises!).
+            </p>
+          </div>
+        </div>
+
+        <!-- Golden Unit Conversion Table for Viscosity & Kinetics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs bg-amber-50/70 border border-amber-200 p-4 rounded-lg">
+          <div>
+            <strong class="text-amber-900 uppercase tracking-wider block mb-1">⚡ Reaction Order Quick-Check from $[k]$:</strong>
+            <ul class="space-y-1 text-slate-700 list-disc list-inside">
+              <li>$n = 0$: $[k] = \text{mol L}^{-1}\text{ s}^{-1} = \text{mol dm}^{-3}\text{ s}^{-1}$</li>
+              <li>$n = 1$: $[k] = \text{s}^{-1}$ (or $\text{min}^{-1}, \text{h}^{-1}$)</li>
+              <li>$n = 2$: $[k] = \text{L mol}^{-1}\text{ s}^{-1} = \text{dm}^3\text{ mol}^{-1}\text{ s}^{-1} = \text{M}^{-1}\text{ s}^{-1}$</li>
+              <li>$n = 3$: $[k] = \text{L}^2\text{ mol}^{-2}\text{ s}^{-1} = \text{dm}^6\text{ mol}^{-2}\text{ s}^{-1}$</li>
+              <li>$n = 1.5$: $[k] = \text{L}^{0.5}\text{ mol}^{-0.5}\text{ s}^{-1}$ (always check exponent of $\text{L}$: $n = \text{exp}(\text{L}) + 1$!)</li>
+            </ul>
+          </div>
+          <div>
+            <strong class="text-amber-900 uppercase tracking-wider block mb-1">⚠️ Golden CGS $\leftrightarrow$ SI Conversions for Viscosity:</strong>
+            <ul class="space-y-1 text-slate-700 list-disc list-inside">
+              <li><strong>Dynamic Viscosity $\eta$:</strong> SI unit is $\text{Pa s} = \text{kg m}^{-1}\text{ s}^{-1} = \text{N s m}^{-2}$</li>
+              <li>$1\text{ Poise (P)} = 1\text{ g cm}^{-1}\text{ s}^{-1} = 0.1\text{ Pa s} = 100\text{ mPa s}$</li>
+              <li>$1\text{ centipoise (cP)} = 10^{-2}\text{ P} = 1\text{ mPa s} = 10^{-3}\text{ Pa s}$</li>
+              <li><strong>Kinematic Viscosity $\nu$:</strong> SI unit is $\text{m}^2\text{ s}^{-1}$</li>
+              <li>$1\text{ Stokes (St)} = 1\text{ cm}^2\text{ s}^{-1} = 10^{-4}\text{ m}^2\text{ s}^{-1} = 100\text{ mm}^2\text{ s}^{-1}$</li>
+              <li>$1\text{ centistokes (cSt)} = 10^{-2}\text{ St} = 1\text{ mm}^2\text{ s}^{-1} = 10^{-6}\text{ m}^2\text{ s}^{-1}$</li>
+              <li><strong>Density $\rho$:</strong> $1\text{ g cm}^{-3} = 1000\text{ kg m}^{-3}$</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: IN-CLASS GUIDED MODELING -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-indigo-950 text-white flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-indigo-300">Section 2 &bull; 25-Min Board / Projector Walkthrough</span>
+          <h2 class="text-lg font-bold">👨‍🏫 Part 1: In-Class Guided Modeling</h2>
+        </div>
+        <button
+          onclick="toggleSpokenHints()"
+          id="btn-spoken-hints"
+          class="px-3.5 py-1.5 rounded-lg bg-indigo-800 hover:bg-indigo-700 text-indigo-100 text-xs font-semibold border border-indigo-600 transition"
+        >
+          🎙️ Show Spoken Explanation Hints
+        </button>
+      </div>
+
+      <div class="p-6 space-y-8">
+        <!-- GUIDED EXAMPLE 1 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 1 &bull; Ref: 13_Kinetics-III.pdf, Q01 (3rd Rep, Q4) &amp; T01 (Q16)</span>
+              <h3 class="text-base font-bold text-slate-900">Reaction Order from the Unit of $k$, Two-Point Arrhenius Equation ($E_a, A$) &amp; Half-Life Shift</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(1, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(1, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(1, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(1)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong> The thermal decomposition of an active pharmaceutical ingredient in solution has a rate constant of $k_1 = 1.40 \times 10^{-4}\text{ s}^{-1}$ at $\vartheta_1 = 25.0\text{ }^\circ\text{C}$ and $k_2 = 1.12 \times 10^{-3}\text{ s}^{-1}$ at $\vartheta_2 = 45.0\text{ }^\circ\text{C}$.<br />
+            <strong>(a)</strong> Deduce the overall reaction order $n$ from the unit of $k$, and calculate the activation energy $E_a$ (in $\text{kJ mol}^{-1}$) using the two-point Arrhenius equation.<br />
+            <strong>(b)</strong> Calculate the pre-exponential frequency factor $A$ (with proper units!).<br />
+            <strong>(c)</strong> Predict the rate constant $k_3$ and the reaction half-life $\tau_{1/2}$ (in $\text{min}$) under accelerated stability testing at $\vartheta_3 = 60.0\text{ }^\circ\text{C}$.
+          </p>
+
+          <!-- Spoken Hint 1 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 1):</strong>
+            <p>"First, show the universal formula $[k] = \text{mol}^{1-n}\text{ L}^{n-1}\text{ s}^{-1}$. Whenever $\text{mol}$ and $\text{L}$ cancel out completely ($[k] = \text{s}^{-1}$), $1 - n = 0 \implies n = 1$ (first order). In Quiz Q01 (3rd Rep, Q4), students had to identify orders directly from units like $\text{L}^2\text{ mol}^{-2}\text{ s}^{-1}$ ($n=3$) or $\text{mol L}^{-1}\text{ s}^{-1}$ ($n=0$)."</p>
+            <p>"Second, warn them about the two deadly Arrhenius traps: (1) NEVER plug Celsius temperatures into $\frac{1}{T_1} - \frac{1}{T_2}$ — always convert to Kelvin ($+273.15$) first! (2) $R = 8.3145\text{ J mol}^{-1}\text{ K}^{-1}$ yields $E_a$ in $\text{J mol}^{-1}$, typically around $50\,000$ to $100\,000\text{ J mol}^{-1}$ ($50\text{–}100\text{ kJ mol}^{-1}$)."</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-1-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Reaction Order $n$ &amp; Activation Energy $E_a$:</div>
+              <p>From $[k] = \text{s}^{-1} = \text{mol}^{1-n}\text{ L}^{n-1}\text{ s}^{-1} \implies 1 - n = 0 \implies \mathbf{n = 1}$ (first-order reaction).</p>
+              <p>Convert temperatures to Kelvin: $T_1 = 298.15\text{ K}$, $T_2 = 318.15\text{ K}$. With $\frac{k_2}{k_1} = \frac{1.12 \times 10^{-3}}{1.40 \times 10^{-4}} = 8.00$:</p>
+              $$E_a = \frac{R \cdot T_1 \cdot T_2}{T_2 - T_1} \cdot \ln\left(\frac{k_2}{k_1}\right) = \frac{8.3145\text{ J mol}^{-1}\text{ K}^{-1} \cdot 298.15\text{ K} \cdot 318.15\text{ K}}{20.00\text{ K}} \cdot \ln(8.00)$$
+              $$E_a = 39434\text{ J mol}^{-1} \cdot 2.07944 = 8.200 \times 10^4\text{ J mol}^{-1} = \mathbf{82.00\text{ kJ mol}^{-1}}$$
+            </div>
+
+            <div id="guided-1-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Pre-Exponential Frequency Factor $A$:</div>
+              <p>Remember to use $E_a = 82000\text{ J mol}^{-1}$ (in Joules!) in the exponent $\frac{E_a}{R \cdot T_1} = \frac{82000}{8.3145 \cdot 298.15} = 33.078$:</p>
+              $$A = k_1 \cdot \exp\left(\frac{E_a}{R \cdot T_1}\right) = 1.40 \times 10^{-4}\text{ s}^{-1} \cdot e^{33.078} = \mathbf{3.29 \times 10^{10}\text{ s}^{-1}}$$
+            </div>
+
+            <div id="guided-1-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – Rate Constant $k_3$ &amp; Half-Life $\tau_{1/2}$ at $\vartheta_3 = 60.0\text{ }^\circ\text{C}$ ($T_3 = 333.15\text{ K}$):</div>
+              $$k_3 = k_2 \cdot \exp\left[\frac{E_a}{R}\left(\frac{1}{T_2} - \frac{1}{T_3}\right)\right] = 1.12 \times 10^{-3}\text{ s}^{-1} \cdot \exp\left[\frac{82000}{8.3145}\left(\frac{1}{318.15} - \frac{1}{333.15}\right)\right] = \mathbf{4.52 \times 10^{-3}\text{ s}^{-1}}$$
+              $$\tau_{1/2}(60\text{ }^\circ\text{C}) = \frac{\ln 2}{k_3} = \frac{0.69315}{4.52 \times 10^{-3}\text{ s}^{-1}} = 153.4\text{ s} = \mathbf{2.56\text{ min}}$$
+            </div>
+          </div>
+        </div>
+
+        <!-- GUIDED EXAMPLE 2 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 2 &bull; Ref: 14_Viscosity.pdf &amp; T01 (Q18)</span>
+              <h3 class="text-base font-bold text-slate-900">Dynamic ($\eta$) vs. Kinematic Viscosity ($\nu$) &amp; Ostwald Capillary Viscometer</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(2, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(2, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(2, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(2)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong> In an Ostwald capillary viscometer thermostatted at $\vartheta = 20.0\text{ }^\circ\text{C}$, pure water ($\rho_w = 0.9982\text{ g cm}^{-3}$, dynamic viscosity $\eta_w = 1.002\text{ cP}$) requires a flow time of $t_w = 85.0\text{ s}$ to pass between the two timing marks. When the same viscometer is filled with an equal volume of pure ethanol ($\rho_{\text{EtOH}} = 0.7893\text{ g cm}^{-3}$), the measured flow time is $t_{\text{EtOH}} = 129.0\text{ s}$.<br />
+            <strong>(a)</strong> Convert the dynamic viscosity of water $\eta_w = 1.002\text{ cP}$ into $\text{Poise (P)}$ and strict SI units ($\text{Pa s}$), and calculate the viscometer apparatus constant $K_{\text{visc}}$ (in $\text{cSt s}^{-1} = \text{mm}^2\text{ s}^{-2}$).<br />
+            <strong>(b)</strong> Calculate the dynamic viscosity $\eta_{\text{EtOH}}$ of ethanol in $\text{mPa s}$ ($\text{cP}$) and in $\text{Pa s}$.<br />
+            <strong>(c)</strong> Calculate the kinematic viscosity $\nu_{\text{EtOH}}$ of ethanol in $\text{cSt}$ ($\text{mm}^2\text{ s}^{-1}$), in $\text{St}$ ($\text{cm}^2\text{ s}^{-1}$), and in strict SI units ($\text{m}^2\text{ s}^{-1}$).
+          </p>
+
+          <!-- Spoken Hint 2 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 2):</strong>
+            <p>"Ask the class why density $\rho$ appears in the Ostwald viscometer equation $\frac{\eta_A}{\eta_B} = \frac{\rho_A t_A}{\rho_B t_B}$: because in a gravity-fed capillary viscometer, the liquid's own hydrostatic weight $\Delta p = \rho \cdot g \cdot h$ drives the flow! A denser liquid pushes itself faster through the capillary."</p>
+            <p>"Give them the two-second unit anchor: Water at $20\text{ }^\circ\text{C}$ has $\eta \approx 1\text{ cP} = 1\text{ mPa s} = 10^{-3}\text{ Pa s}$ and $\nu \approx 1\text{ cSt} = 1\text{ mm}^2\text{ s}^{-1} = 10^{-6}\text{ m}^2\text{ s}^{-1}$. If you remember water at $20\text{ }^\circ\text{C}$, you can never mix up $\text{cP}/\text{Pa s}$ or $\text{cSt}/\text{m}^2\text{ s}^{-1}$ in the exam!"</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-2-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Water Viscosity in SI &amp; Viscometer Constant $K_{\text{visc}}$:</div>
+              $$\eta_w = 1.002\text{ cP} = \mathbf{0.01002\text{ P}} = 1.002\text{ mPa s} = \mathbf{1.002 \times 10^{-3}\text{ Pa s}}$$
+              $$\nu_w = \frac{\eta_w\text{ [mPa s]}}{\rho_w\text{ [g cm}^{-3}\text{]}} = \frac{1.002}{0.9982} = 1.0038\text{ cSt (mm}^2\text{ s}^{-1}\text{)}$$
+              $$K_{\text{visc}} = \frac{\nu_w}{t_w} = \frac{1.0038\text{ cSt}}{85.0\text{ s}} = \mathbf{0.01181\text{ cSt s}^{-1}} \quad (\text{or } 1.181 \times 10^{-8}\text{ m}^2\text{ s}^{-2})$$
+            </div>
+
+            <div id="guided-2-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Dynamic Viscosity $\eta_{\text{EtOH}}$ via Ostwald Ratio:</div>
+              $$\eta_{\text{EtOH}} = \eta_w \cdot \frac{\rho_{\text{EtOH}} \cdot t_{\text{EtOH}}}{\rho_w \cdot t_w} = 1.002\text{ mPa s} \cdot \frac{0.7893 \cdot 129.0}{0.9982 \cdot 85.0} = \mathbf{1.202\text{ mPa s (cP)}} = \mathbf{1.202 \times 10^{-3}\text{ Pa s}}$$
+            </div>
+
+            <div id="guided-2-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – Kinematic Viscosity $\nu_{\text{EtOH}}$ in CGS &amp; SI Units:</div>
+              $$\nu_{\text{EtOH}} = \frac{\eta_{\text{EtOH}}}{\rho_{\text{EtOH}}} = \frac{1.202\text{ mPa s}}{0.7893\text{ g cm}^{-3}} = \mathbf{1.523\text{ cSt (mm}^2\text{ s}^{-1}\text{)}} = \mathbf{0.01523\text{ St (cm}^2\text{ s}^{-1}\text{)}}$$
+              $$\nu_{\text{EtOH}}\text{ (SI)} = \frac{1.202 \times 10^{-3}\text{ Pa s}}{789.3\text{ kg m}^{-3}} = \mathbf{1.523 \times 10^{-6}\text{ m}^2\text{ s}^{-1}}$$
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INDIVIDUALIZED EXERCISE WORKSHEET -->
+    <section class="space-y-6">
+      <div class="bg-slate-900 text-white rounded-xl px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-amber-400">Section 3 &bull; Individualized Student Worksheet</span>
+          <h2 class="text-lg font-bold">📝 Part 2: 4 Exercises (12 Graded Steps with Smart Error Diagnosis)</h2>
+          <p class="text-xs text-slate-300">Enter your calculated values (tolerance $\pm 1.5\%$). Use dot (`.`) or comma (`,`) as decimal separator.</p>
+        </div>
+        <div class="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 text-right">
+          <div class="text-xs text-slate-400">Overall Progress</div>
+          <div id="progress-counter" class="text-lg font-extrabold text-emerald-400 font-mono">0 / 12 Steps</div>
+        </div>
+      </div>
+
+      <!-- DYNAMIC EXERCISES CONTAINER -->
+      <div id="exercises-container" class="space-y-8"></div>
+
+      <!-- SUBMISSION VERIFICATION TOKEN BOX -->
+      <div class="bg-slate-900 text-white rounded-xl p-6 shadow-lg border border-slate-700 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">MS Forms / Moodle Verification</span>
+            <h3 class="text-base font-bold">🔐 Submission Verification Token</h3>
+            <p class="text-xs text-slate-300">Copy this token into the MS Forms submission field at the end of the exercise unit.</p>
+          </div>
+          <button
+            onclick="copyVerificationToken()"
+            class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow"
+          >
+            📋 Copy Token
+          </button>
+        </div>
+        <div class="bg-slate-950 border border-slate-700 rounded-lg p-3.5 flex items-center justify-between">
+          <code id="verification-token" class="text-sm sm:text-base font-mono text-emerald-400 font-bold select-all">
+            PC1-U06-2510456012-0of12-CHK0000
+          </code>
+          <span id="copy-feedback" class="text-xs text-amber-400 font-semibold hidden">Copied to clipboard!</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    const STORAGE_KEY = 'PC_IMC_UNIT06_STATE_V1';
+    const DEFAULT_ID = '2510456012';
+
+    let currentStudentId = DEFAULT_ID;
+    let isProfMode = false;
+    let currentProblems = [];
+    let userState = {
+      studentId: DEFAULT_ID,
+      inputs: {},
+      completed: {}
+    };
+
+    // Deterministic Seeded PRNG (FNV-1a hash h = 2166136261 + Mulberry32)
+    function createSeededRNG(str) {
+      let h = 2166136261 >>> 0;
+      const clean = String(str).trim();
+      for (let i = 0; i < clean.length; i++) {
+        h ^= clean.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return function() {
+        h += 0x6D2B79F5;
+        let t = Math.imul(h ^ (h >>> 15), 1 | h);
+        t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function randStep(rng, min, max, step) {
+      const steps = Math.round((max - min) / step);
+      const idx = Math.floor(rng() * (steps + 1));
+      return Number((min + idx * step).toFixed(6));
+    }
+
+    // Generate all 4 problems deterministically from Student ID
+    function buildUnit06Problems(studentId) {
+      const rng = createSeededRNG(studentId);
+      const R = 8.3145; // J mol^-1 K^-1
+
+      // =========================================================================
+      // EXERCISE 1: Reaction Order from Unit of k & Two-Point Arrhenius (Ea, A)
+      // =========================================================================
+      // Second-order reaction so unit of k is L mol^-1 s^-1 (n = 2)
+      const order_ex1 = 2;
+      const theta1_ex1 = randStep(rng, 20, 30, 5); // deg C
+      const theta2_ex1 = theta1_ex1 + randStep(rng, 20, 30, 5); // deg C
+      const T1_ex1 = theta1_ex1 + 273.15;
+      const T2_ex1 = theta2_ex1 + 273.15;
+
+      const k1_ex1 = randStep(rng, 0.012, 0.036, 0.002); // L mol^-1 s^-1
+      const mult_k_ex1 = randStep(rng, 4.5, 9.5, 0.5);
+      const k2_ex1 = Number((k1_ex1 * mult_k_ex1).toFixed(5)); // L mol^-1 s^-1
+
+      const Ea_J_ex1 = (R * T1_ex1 * T2_ex1 / (T2_ex1 - T1_ex1)) * Math.log(k2_ex1 / k1_ex1);
+      const Ea_kJ_ex1 = Ea_J_ex1 / 1000;
+      const A_ex1 = k1_ex1 * Math.exp(Ea_J_ex1 / (R * T1_ex1));
+      const ln_A_ex1 = Math.log(A_ex1); // ask for ln(A) to avoid 10^9 exponent entry ambiguity, or ask A in 10^8
+
+      // =========================================================================
+      // EXERCISE 2: Temperature Dependence of Half-Life (tau_1/2) via Arrhenius
+      // =========================================================================
+      const Ea_kJ_ex2 = randStep(rng, 65.0, 95.0, 2.5); // kJ mol^-1
+      const Ea_J_ex2 = Ea_kJ_ex2 * 1000;
+      const theta1_ex2 = randStep(rng, 25, 35, 5); // deg C
+      const theta2_ex2 = theta1_ex2 + randStep(rng, 15, 25, 5); // deg C
+      const T1_ex2 = theta1_ex2 + 273.15;
+      const T2_ex2 = theta2_ex2 + 273.15;
+      const tau1_min_ex2 = randStep(rng, 120, 360, 20); // min at T1
+
+      const k1_min_ex2 = Math.LN2 / tau1_min_ex2; // min^-1
+      const k1_s_ex2 = k1_min_ex2 / 60; // s^-1
+      const k1_e5_s_ex2 = k1_s_ex2 * 1e5; // in 10^-5 s^-1
+
+      const ratio_k2_k1 = Math.exp((Ea_J_ex2 / R) * ((1 / T1_ex2) - (1 / T2_ex2)));
+      const tau2_min_ex2 = tau1_min_ex2 / ratio_k2_k1; // min at T2
+
+      // Target temperature T3 where half-life drops to tau3 = 15.0 min
+      const tau3_min_ex2 = 15.0;
+      const inv_T3 = (1 / T1_ex2) - (R / Ea_J_ex2) * Math.log(tau1_min_ex2 / tau3_min_ex2);
+      const T3_K_ex2 = 1 / inv_T3;
+      const theta3_C_ex2 = T3_K_ex2 - 273.15;
+
+      // =========================================================================
+      // EXERCISE 3: Dynamic (eta) vs. Kinematic Viscosity (nu) & CGS <-> SI Units
+      // =========================================================================
+      const oilsEx3 = [
+        { name: 'silicone calibration fluid', rho: 0.960 },
+        { name: 'pharmaceutical glycerol–water mixture', rho: 1.150 },
+        { name: 'mineral hydraulic oil', rho: 0.875 },
+        { name: 'propylene glycol solution', rho: 1.036 }
+      ];
+      const oil3 = oilsEx3[Math.floor(rng() * oilsEx3.length)];
+      const eta_P_ex3 = randStep(rng, 0.24, 0.86, 0.02); // Poise (P)
+
+      const eta_Pa_s_ex3 = eta_P_ex3 * 0.1; // Pa s (since 1 P = 0.1 Pa s)
+      const eta_mPa_s_ex3 = eta_P_ex3 * 100; // mPa s (= cP)
+      const nu_St_ex3 = eta_P_ex3 / oil3.rho; // Stokes (cm^2 s^-1)
+      const nu_cSt_ex3 = nu_St_ex3 * 100; // cSt (mm^2 s^-1)
+      const nu_SI_e6_ex3 = nu_cSt_ex3; // in 10^-6 m^2 s^-1 (since 1 cSt = 10^-6 m^2 s^-1)
+
+      // =========================================================================
+      // EXERCISE 4: Ostwald Capillary Viscometer (K_visc, Relative & Absolute Viscosity)
+      // =========================================================================
+      const rho_w = 0.9982; // g cm^-3 at 20 deg C
+      const eta_w_cP = 1.002; // cP (mPa s) at 20 deg C
+      const t_w_ex4 = randStep(rng, 70.0, 110.0, 2.0); // s flow time for water
+
+      const liquidsEx4 = [
+        { name: 'aqueous sucrose solution', rho: 1.082 },
+        { name: '1-propanol', rho: 0.803 },
+        { name: 'ethylene glycol solution', rho: 1.055 },
+        { name: 'isobutanol', rho: 0.802 }
+      ];
+      const liq4 = liquidsEx4[Math.floor(rng() * liquidsEx4.length)];
+      const t_x_ex4 = randStep(rng, 145.0, 245.0, 5.0); // s flow time for sample
+
+      const nu_w_cSt = eta_w_cP / rho_w; // cSt (mm^2 s^-1)
+      const K_visc_ex4 = nu_w_cSt / t_w_ex4; // cSt s^-1 (mm^2 s^-2)
+      const eta_x_cP = eta_w_cP * (liq4.rho * t_x_ex4) / (rho_w * t_w_ex4); // mPa s (cP)
+      const nu_x_cSt = eta_x_cP / liq4.rho; // cSt (mm^2 s^-1)
+
+      return [
+        // PROBLEM 1
+        {
+          id: 1,
+          title: 'Exercise 1: Reaction Order from Unit of \\(k\\) & Two-Point Arrhenius Equation',
+          theoryRef: '<strong>13_Kinetics-III.pdf</strong> (Slides 2–18: Units of $k$ for reaction order $n$, collision theory, Arrhenius equation $k = A \\cdot e^{-E_a/(RT)}$, two-point logarithmic form).',
+          examplesRef: '<strong>13_Kinetics-III.pdf</strong> (Arrhenius Plot & Two-Temperature Activation Energy), <strong>Q01_Quizzes.pdf</strong> (3rd Rep, Q4), <strong>T01_TryTests.pdf</strong> (Q16).',
+          statement: `A homogeneous chemical reaction in solution has a rate constant of $k_1 = ${k1_ex1.toFixed(3)}\\text{ L mol}^{-1}\\text{ s}^{-1}$ at $\\vartheta_1 = ${theta1_ex1.toFixed(1)}\\text{ }&deg;\\text{C}$ and increases to $k_2 = ${k2_ex1.toFixed(4)}\\text{ L mol}^{-1}\\text{ s}^{-1}$ when the temperature is raised to $\\vartheta_2 = ${theta2_ex1.toFixed(1)}\\text{ }&deg;\\text{C}$ ($R = 8.3145\\text{ J mol}^{-1}\\text{ K}^{-1}$).`,
+          profExplanation: `
+            <div><strong>Step 1a:</strong> From $[k] = \\text{L mol}^{-1}\\text{ s}^{-1} = \\text{mol}^{1-n}\\text{ L}^{n-1}\\text{ s}^{-1}$, we read $n - 1 = 1 \\implies \\mathbf{n = 2}$ (second-order reaction).</div>
+            <div><strong>Step 1b:</strong> With $T_1 = ${T1_ex1.toFixed(2)}\\text{ K}$ and $T_2 = ${T2_ex1.toFixed(2)}\\text{ K}$: $E_a = \\frac{8.3145 \\cdot ${T1_ex1.toFixed(2)} \\cdot ${T2_ex1.toFixed(2)}}{${(T2_ex1 - T1_ex1).toFixed(2)}} \\cdot \\ln\\left(\\frac{${k2_ex1.toFixed(4)}}{${k1_ex1.toFixed(3)}}\\right) = ${Ea_J_ex1.toFixed(0)}\\text{ J mol}^{-1} = \\mathbf{${Ea_kJ_ex1.toFixed(2)}\\text{ kJ mol}^{-1}}$</div>
+            <div><strong>Step 1c:</strong> $\\ln A = \\ln k_1 + \\frac{E_a}{R \\cdot T_1} = \\ln(${k1_ex1.toFixed(3)}) + \\frac{${Ea_J_ex1.toFixed(1)}}{8.3145 \\cdot ${T1_ex1.toFixed(2)}} = \\mathbf{${ln_A_ex1.toFixed(2)}}$ (corresponding to $A = ${A_ex1.toExponential(3)}\\text{ L mol}^{-1}\\text{ s}^{-1}$).</div>
+          `,
+          steps: [
+            {
+              key: '1a',
+              label: 'Step 1a: Deduce the overall reaction order \\(n\\) from the unit of the rate constant \\([k] = \\text{L mol}^{-1}\\text{ s}^{-1}\\).',
+              unit: '(dimensionless)',
+              answer: order_ex1,
+              traps: [
+                {
+                  val: 1,
+                  msg: 'For a 1st-order reaction (n = 1), the unit of k is s^-1. Compare [k] = L^1 mol^-1 s^-1 with L^(n-1) mol^(1-n) s^-1!'
+                },
+                {
+                  val: 0,
+                  msg: 'For a 0th-order reaction (n = 0), the unit of k is mol L^-1 s^-1. Here L is in the numerator and mol^-1 in the denominator!'
+                }
+              ],
+              hint: 'Match [k] = L^1 mol^-1 s^-1 with the general unit formula mol^(1-n) L^(n-1) s^-1: since n - 1 = 1, solve for n.'
+            },
+            {
+              key: '1b',
+              label: 'Step 1b: Calculate the activation energy \\(E_a\\) of the reaction using the two-point Arrhenius equation (in \\(\\text{kJ mol}^{-1}\\)).',
+              unit: 'kJ mol⁻¹',
+              answer: Ea_kJ_ex1,
+              traps: [
+                {
+                  val: Ea_J_ex1,
+                  msg: 'Your result is in J mol^-1. Divide by 1000 to express the activation energy E_a in kJ mol^-1!'
+                },
+                {
+                  val: ((R * theta1_ex1 * theta2_ex1) / (theta2_ex1 - theta1_ex1)) * Math.log(k2_ex1 / k1_ex1) / 1000,
+                  msg: 'Celsius trap! Never use temperatures in °C inside the Arrhenius equation. Convert both T1 and T2 to Kelvin (+ 273.15) first!'
+                },
+                {
+                  val: Ea_kJ_ex1 / Math.LN10,
+                  msg: 'Logarithm trap! Use the natural logarithm ln(k2/k1), not the decadic logarithm log10(k2/k1)!'
+                }
+              ],
+              hint: 'First convert T1 and T2 to Kelvin (T [K] = theta [°C] + 273.15). Then compute E_a [J/mol] = (R * T1 * T2 / (T2 - T1)) * ln(k2 / k1) and divide by 1000.'
+            },
+            {
+              key: '1c',
+              label: 'Step 1c: Calculate the natural logarithm of the pre-exponential factor, \\(\\ln A = \\ln k_1 + \\frac{E_a}{R \\cdot T_1}\\) (dimensionless).',
+              unit: '(ln A)',
+              answer: ln_A_ex1,
+              traps: [
+                {
+                  val: Math.log(k1_ex1) + (Ea_kJ_ex1 / (R * T1_ex1)),
+                  msg: 'Unit mismatch in E_a / (R * T1)! Since R = 8.3145 J mol^-1 K^-1 is in Joules, you must plug E_a in J mol^-1 (multiply kJ mol^-1 by 1000) into the fraction!'
+                },
+                {
+                  val: Math.log(k1_ex1) - (Ea_J_ex1 / (R * T1_ex1)),
+                  msg: 'Sign trap! Since ln(k1) = ln(A) - E_a/(R*T1), solving for ln(A) gives ln(A) = ln(k1) + E_a/(R*T1)!'
+                }
+              ],
+              hint: 'Use E_a in J mol^-1 and T1 in Kelvin inside ln(A) = ln(k1) + E_a / (8.3145 * T1).'
+            }
+          ]
+        },
+
+        // PROBLEM 2
+        {
+          id: 2,
+          title: 'Exercise 2: Temperature Dependence of First-Order Half-Life (\\(\\tau_{1/2}\\)) via Arrhenius',
+          theoryRef: '<strong>13_Kinetics-III.pdf</strong> (Slides 10–22: Temperature dependence of reaction rates and half-lives, RGT rule vs. exact Arrhenius calculation).',
+          examplesRef: '<strong>13_Kinetics-III.pdf</strong> (Shelf-Life & Thermal Decomposition Examples), <strong>T01_TryTests.pdf</strong> (Q16).',
+          statement: `A first-order thermal decomposition of a biopharmaceutical compound has an activation energy of $E_a = ${Ea_kJ_ex2.toFixed(1)}\\text{ kJ mol}^{-1}$. At $\\vartheta_1 = ${theta1_ex2.toFixed(1)}\\text{ }&deg;\\text{C}$, the measured half-life is $\\tau_{1/2}(T_1) = ${tau1_min_ex2.toFixed(0)}\\text{ min}$ ($R = 8.3145\\text{ J mol}^{-1}\\text{ K}^{-1}$).`,
+          profExplanation: `
+            <div><strong>Step 2a:</strong> $k_1 = \\frac{\\ln 2}{\\tau_{1/2}(T_1) \\cdot 60} = \\frac{0.69315}{${tau1_min_ex2 * 60}\\text{ s}} = ${k1_s_ex2.toExponential(4)}\\text{ s}^{-1} = \\mathbf{${k1_e5_s_ex2.toFixed(3)}} \\times 10^{-5}\\text{ s}^{-1}$</div>
+            <div><strong>Step 2b:</strong> At $T_2 = ${T2_ex2.toFixed(2)}\\text{ K}$ ($${theta2_ex2.toFixed(1)}\\text{ }^\\circ\\text{C}$): $\\frac{k_2}{k_1} = \\exp\\left[\\frac{${Ea_J_ex2.toFixed(0)}}{8.3145}\\left(\\frac{1}{${T1_ex2.toFixed(2)}} - \\frac{1}{${T2_ex2.toFixed(2)}}\\right)\\right] = ${ratio_k2_k1.toFixed(3)} \\implies \\tau_{1/2}(T_2) = \\frac{${tau1_min_ex2.toFixed(0)}}{${ratio_k2_k1.toFixed(3)}} = \\mathbf{${tau2_min_ex2.toFixed(2)}\\text{ min}}$</div>
+            <div><strong>Step 2c:</strong> For $\\tau_{1/2}(T_3) = 15.0\\text{ min}$: $\\frac{1}{T_3} = \\frac{1}{${T1_ex2.toFixed(2)}} - \\frac{8.3145}{${Ea_J_ex2.toFixed(0)}}\\ln\\left(\\frac{${tau1_min_ex2.toFixed(0)}}{15.0}\\right) \\implies T_3 = ${T3_K_ex2.toFixed(2)}\\text{ K} \\implies \\vartheta_3 = \\mathbf{${theta3_C_ex2.toFixed(1)}\\text{ }^\\circ\\text{C}}$</div>
+          `,
+          steps: [
+            {
+              key: '2a',
+              label: `Step 2a: Calculate the first-order rate constant \\(k_1\\) at $\\vartheta_1 = ${theta1_ex2.toFixed(1)}\\text{ }^\\circ\\text{C}$ (enter in units of $10^{-5}\\text{ s}^{-1}$, e.g. enter 5.78 for $5.78 \\times 10^{-5}\\text{ s}^{-1}$).`,
+              unit: '× 10⁻⁵ s⁻¹',
+              answer: k1_e5_s_ex2,
+              traps: [
+                {
+                  val: k1_s_ex2,
+                  msg: 'Scale notice: Multiply your raw k1 value (in s^-1) by 10^5 to enter the coefficient in units of 10^-5 s^-1!'
+                },
+                {
+                  val: k1_min_ex2 * 1e5,
+                  msg: 'Time unit trap! Convert the half-life from minutes to seconds (multiply by 60) before computing k1 = ln(2) / tau_1/2!'
+                }
+              ],
+              hint: 'Convert tau_1/2(T1) to seconds (tau_s = tau_min * 60), compute k1 = ln(2) / tau_s, and multiply by 10^5.'
+            },
+            {
+              key: '2b',
+              label: `Step 2b: Calculate the shortened half-life \\(\\tau_{1/2}(T_2)\\) when the temperature is raised to $\\vartheta_2 = ${theta2_ex2.toFixed(1)}\\text{ }^\\circ\\text{C}$ (in min).`,
+              unit: 'min',
+              answer: tau2_min_ex2,
+              traps: [
+                {
+                  val: tau1_min_ex2 * ratio_k2_k1,
+                  msg: 'Inverse relationship trap! At higher temperature, the reaction is FASTER (k2 > k1), so the half-life is SHORTER: tau_1/2(T2) = tau_1/2(T1) / (k2/k1)!'
+                },
+                {
+                  val: tau2_min_ex2 * 60,
+                  msg: 'Your value is in seconds. Divide by 60 to express the half-life in minutes (min)!'
+                }
+              ],
+              hint: 'Since tau_1/2 is inversely proportional to k: tau_1/2(T2) = tau_1/2(T1) * exp[ - (E_a / R) * (1/T1 - 1/T2) ] with E_a in J/mol and T in K.'
+            },
+            {
+              key: '2c',
+              label: 'Step 2c: At what Celsius temperature \\(\\vartheta_3\\) does the half-life drop to exactly \\(\\tau_{1/2}(T_3) = 15.0\\text{ min}\\) (in °C)?',
+              unit: '°C',
+              answer: theta3_C_ex2,
+              traps: [
+                {
+                  val: T3_K_ex2,
+                  msg: 'That is the absolute temperature T3 in Kelvin (K). Subtract 273.15 to convert to degrees Celsius (°C)!'
+                },
+                {
+                  val: (1 / ((1 / T1_ex2) + (R / Ea_J_ex2) * Math.log(tau1_min_ex2 / 15.0))) - 273.15,
+                  msg: 'Sign trap! For a shorter half-life (faster reaction), T3 must be HIGHER than T1, so 1/T3 = 1/T1 - (R/E_a)*ln(tau1/tau3).'
+                }
+              ],
+              hint: 'Solve 1/T3 = 1/T1 - (R / E_a) * ln(tau_1/2(T1) / 15.0) for T3 in Kelvin (using E_a in J/mol), then subtract 273.15.'
+            }
+          ]
+        },
+
+        // PROBLEM 3
+        {
+          id: 3,
+          title: 'Exercise 3: Dynamic (\\(\\eta\\)) vs. Kinematic Viscosity (\\(\\nu\\)) & CGS \\(\\leftrightarrow\\) SI Conversions',
+          theoryRef: '<strong>14_Viscosity.pdf</strong> (Slides 2–14: Newton\'s law of viscosity, dynamic viscosity $\\eta$ in Poise and $\\text{Pa s}$, kinematic viscosity $\\nu = \\eta / \\rho$ in Stokes and $\\text{m}^2\\text{ s}^{-1}$).',
+          examplesRef: '<strong>14_Viscosity.pdf</strong> (CGS to SI Viscosity Conversion Problems), <strong>T01_TryTests.pdf</strong> (Q18).',
+          statement: `A <strong>${oil3.name}</strong> has a measured dynamic viscosity of $\\eta = ${eta_P_ex3.toFixed(2)}\\text{ Poise (P)}$ and a density of $\\rho = ${oil3.rho.toFixed(3)}\\text{ g cm}^{-3}$ at $\\vartheta = 25.0\\text{ }&deg;\\text{C}$.`,
+          profExplanation: `
+            <div><strong>Step 3a:</strong> Since $1\\text{ P} = 0.1\\text{ Pa s} = 100\\text{ mPa s}$: $\\eta = ${eta_P_ex3.toFixed(2)}\\text{ P} \\cdot 0.1 = \\mathbf{${eta_Pa_s_ex3.toFixed(4)}\\text{ Pa s}}$ ($= ${eta_mPa_s_ex3.toFixed(1)}\\text{ mPa s}$).</div>
+            <div><strong>Step 3b:</strong> In CGS units ($[\\eta] = \\text{P} = \\text{g cm}^{-1}\\text{ s}^{-1}$, $[\\rho] = \\text{g cm}^{-3}$): $\\nu = \\frac{\\eta}{\\rho} = \\frac{${eta_P_ex3.toFixed(2)}\\text{ P}}{${oil3.rho.toFixed(3)}\\text{ g cm}^{-3}} = \\mathbf{${nu_St_ex3.toFixed(4)}\\text{ St}}$ ($\\text{cm}^2\\text{ s}^{-1}$).</div>
+            <div><strong>Step 3c:</strong> Since $1\\text{ St} = 10^{-4}\\text{ m}^2\\text{ s}^{-1} = 100\\text{ cSt}$: $\\nu = ${nu_St_ex3.toFixed(4)} \\times 10^{-4}\\text{ m}^2\\text{ s}^{-1} = \\mathbf{${nu_SI_e6_ex3.toFixed(2)}} \\times 10^{-6}\\text{ m}^2\\text{ s}^{-1}$ ($= ${nu_cSt_ex3.toFixed(2)}\\text{ cSt}$).</div>
+          `,
+          steps: [
+            {
+              key: '3a',
+              label: `Step 3a: Convert the dynamic viscosity $\\eta = ${eta_P_ex3.toFixed(2)}\\text{ P}$ into strict SI units ($\\text{Pa s} = \\text{kg m}^{-1}\\text{ s}^{-1}$).`,
+              unit: 'Pa s',
+              answer: eta_Pa_s_ex3,
+              traps: [
+                {
+                  val: eta_P_ex3 * 10,
+                  msg: 'Conversion direction trap! 1 Pa s = 10 Poise, so 1 Poise = 0.1 Pa s (divide by 10, do not multiply by 10)!'
+                },
+                {
+                  val: eta_mPa_s_ex3,
+                  msg: 'That is the viscosity in mPa s (= cP). Divide by 1000 to express it in strict SI units (Pa s)!'
+                }
+              ],
+              hint: 'Remember: 1 Poise (P) = 1 g cm^-1 s^-1 = 0.1 Pa s.'
+            },
+            {
+              key: '3b',
+              label: 'Step 3b: Calculate the kinematic viscosity \\(\\nu = \\eta / \\rho\\) in CGS units of Stokes (\\(\\text{St} = \\text{cm}^2\\text{ s}^{-1}\\)).',
+              unit: 'St (cm² s⁻¹)',
+              answer: nu_St_ex3,
+              traps: [
+                {
+                  val: eta_P_ex3 * oil3.rho,
+                  msg: 'Formula check: Kinematic viscosity is defined as nu = eta / rho (divide dynamic viscosity by density, do not multiply)!'
+                },
+                {
+                  val: nu_cSt_ex3,
+                  msg: 'That is the value in centistokes (cSt). Here Stokes (St = cm^2 s^-1) is requested: nu [St] = eta [P] / rho [g cm^-3]!'
+                }
+              ],
+              hint: 'Since 1 P = 1 g cm^-1 s^-1 and rho is in g cm^-3, simply divide: nu [St] = eta [P] / rho [g cm^-3].'
+            },
+            {
+              key: '3c',
+              label: 'Step 3c: Express the kinematic viscosity \\(\\nu\\) in strict SI units (enter in units of \\(10^{-6}\\text{ m}^2\\text{ s}^{-1}\\), which is numerically identical to \\(\\text{cSt} = \\text{mm}^2\\text{ s}^{-1}\\)).',
+              unit: '× 10⁻⁶ m² s⁻¹',
+              answer: nu_SI_e6_ex3,
+              traps: [
+                {
+                  val: nu_St_ex3 * 1e-4,
+                  msg: 'Scale notice: Please enter the coefficient in units of 10^-6 m^2 s^-1 (multiply your raw m^2 s^-1 value by 10^6, or multiply St by 100)!'
+                },
+                {
+                  val: nu_St_ex3,
+                  msg: 'Since 1 St = 10^-4 m^2 s^-1 = 100 * 10^-6 m^2 s^-1, multiply your value in Stokes by 100!'
+                }
+              ],
+              hint: '1 St = 100 cSt = 100 * 10^-6 m^2 s^-1. Multiply your result from Step 3b by 100.'
+            }
+          ]
+        },
+
+        // PROBLEM 4
+        {
+          id: 4,
+          title: 'Exercise 4: Ostwald Capillary Viscometer – Calibration & Sample Viscosity',
+          theoryRef: '<strong>14_Viscosity.pdf</strong> (Slides 15–26: Hagen–Poiseuille law, capillary viscometry, viscometer constant $K_{\\text{visc}}$, relative viscosity equation $\\frac{\\eta_x}{\\eta_w} = \\frac{\\rho_x \\cdot t_x}{\\rho_w \\cdot t_w}$).',
+          examplesRef: '<strong>14_Viscosity.pdf</strong> (Ostwald Viscometer Calculation), <strong>T01_TryTests.pdf</strong> (Q18).',
+          statement: `An Ostwald capillary viscometer is calibrated at $\\vartheta = 20.0\\text{ }&deg;\\text{C}$ using pure water ($\\rho_w = 0.9982\\text{ g cm}^{-3}$, $\\eta_w = 1.002\\text{ mPa s}$), giving an efflux time of $t_w = ${t_w_ex4.toFixed(1)}\\text{ s}$. Under identical conditions, an equal volume of <strong>${liq4.name}</strong> ($\\rho_x = ${liq4.rho.toFixed(3)}\\text{ g cm}^{-3}$) requires a flow time of $t_x = ${t_x_ex4.toFixed(1)}\\text{ s}$.`,
+          profExplanation: `
+            <div><strong>Step 4a:</strong> $\\nu_w = \\frac{\\eta_w}{\\rho_w} = \\frac{1.002}{0.9982} = 1.0038\\text{ mm}^2\\text{ s}^{-1} \\implies K_{\\text{visc}} = \\frac{\\nu_w}{t_w} = \\frac{1.0038}{${t_w_ex4.toFixed(1)}} = \\mathbf{${K_visc_ex4.toFixed(5)}\\text{ mm}^2\\text{ s}^{-2}}$</div>
+            <div><strong>Step 4b:</strong> $\\eta_x = \\eta_w \\cdot \\frac{\\rho_x \\cdot t_x}{\\rho_w \\cdot t_w} = 1.002 \\cdot \\frac{${liq4.rho.toFixed(3)} \\cdot ${t_x_ex4.toFixed(1)}}{0.9982 \\cdot ${t_w_ex4.toFixed(1)}} = \\mathbf{${eta_x_cP.toFixed(3)}\\text{ mPa s (cP)}}$</div>
+            <div><strong>Step 4c:</strong> $\\nu_x = \\frac{\\eta_x}{\\rho_x} = K_{\\text{visc}} \\cdot t_x = \\frac{${eta_x_cP.toFixed(3)}}{${liq4.rho.toFixed(3)}} = \\mathbf{${nu_x_cSt.toFixed(3)}\\text{ mm}^2\\text{ s}^{-1}\\text{ (cSt)}}$</div>
+          `,
+          steps: [
+            {
+              key: '4a',
+              label: 'Step 4a: Calculate the viscometer constant \\(K_{\\text{visc}} = \\frac{\\eta_w}{\\rho_w \\cdot t_w}\\) of this capillary (in \\(\\text{mm}^2\\text{ s}^{-2} = \\text{cSt s}^{-1}\\)).',
+              unit: 'mm² s⁻²',
+              answer: K_visc_ex4,
+              traps: [
+                {
+                  val: eta_w_cP / t_w_ex4,
+                  msg: 'Don\'t forget to divide by the density of water rho_w = 0.9982 g cm^-3: K_visc = nu_w / t_w = eta_w / (rho_w * t_w)!'
+                },
+                {
+                  val: K_visc_ex4 * 1e-6,
+                  msg: 'That is K_visc in m^2 s^-2. Multiply by 10^6 to express it in mm^2 s^-2 (= cSt s^-1)!'
+                }
+              ],
+              hint: 'Compute K_visc [mm^2 s^-2] = 1.002 / (0.9982 * t_w).'
+            },
+            {
+              key: '4b',
+              label: `Step 4b: Calculate the dynamic viscosity \\(\\eta_x\\) of the ${liq4.name} (in $\\text{mPa s} = \\text{cP}$).`,
+              unit: 'mPa s (cP)',
+              answer: eta_x_cP,
+              traps: [
+                {
+                  val: eta_w_cP * (t_x_ex4 / t_w_ex4),
+                  msg: 'Density ratio trap! You calculatedeta_x = eta_w * (t_x / t_w) and forgot the density ratio (rho_x / rho_w) driving the hydrostatic pressure!'
+                },
+                {
+                  val: eta_w_cP * (rho_w * t_x_ex4) / (liq4.rho * t_w_ex4),
+                  msg: 'Inverted density ratio! Make sure both sample quantities are in the numerator: eta_x = eta_w * (rho_x * t_x) / (rho_w * t_w).'
+                },
+                {
+                  val: eta_x_cP * 1e-3,
+                  msg: 'That is eta_x in Pa s. Multiply by 1000 to enter it in mPa s (= cP)!'
+                }
+              ],
+              hint: 'Use the Ostwald comparative equation: eta_x = 1.002 * (rho_x * t_x) / (0.9982 * t_w).'
+            },
+            {
+              key: '4c',
+              label: `Step 4c: Calculate the kinematic viscosity \\(\\nu_x\\) of the ${liq4.name} (in $\\text{mm}^2\\text{ s}^{-1} = \\text{cSt}$).`,
+              unit: 'mm² s⁻¹ (cSt)',
+              answer: nu_x_cSt,
+              traps: [
+                {
+                  val: eta_x_cP * liq4.rho,
+                  msg: 'Kinematic viscosity is nu_x = eta_x / rho_x (divide by density rho_x, do not multiply)!'
+                },
+                {
+                  val: nu_x_cSt / 100,
+                  msg: 'That is nu_x in Stokes (cm^2 s^-1). Multiply by 100 to express it in cSt (= mm^2 s^-1)!'
+                }
+              ],
+              hint: 'Either divide eta_x [mPa s] by rho_x [g cm^-3], or multiply K_visc [mm^2 s^-2] by t_x [s].'
+            }
+          ]
+        }
+      ];
+    }
+
+    // Render all 4 exercises into DOM
+    function renderExercises() {
+      const container = document.getElementById('exercises-container');
+      container.innerHTML = '';
+
+      currentProblems.forEach((prob) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';
+
+        let stepsHtml = '';
+        prob.steps.forEach((st) => {
+          const savedVal = userState.inputs[st.key] !== undefined ? userState.inputs[st.key] : '';
+          const isDone = !!userState.completed[st.key];
+          stepsHtml += `
+            <div id="step-card-${st.key}" class="step-card p-4 rounded-lg border ${isDone ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50 border-slate-200'} space-y-2">
+              <label class="block text-sm font-semibold text-slate-800" for="input-${st.key}">
+                ${st.label}
+              </label>
+              <div class="flex flex-wrap items-center gap-2">
+                <input
+                  id="input-${st.key}"
+                  type="text"
+                  value="${savedVal}"
+                  placeholder="Enter value..."
+                  onkeydown="if(event.key==='Enter') checkStep('${st.key}')"
+                  class="px-3 py-1.5 rounded border border-slate-300 bg-white text-sm font-mono w-44 focus:outline-none focus:border-indigo-500"
+                />
+                <span class="text-xs font-bold text-slate-600 bg-slate-200/80 px-2.5 py-1.5 rounded">${st.unit}</span>
+                <button
+                  onclick="checkStep('${st.key}')"
+                  class="px-3.5 py-1.5 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider transition"
+                >
+                  Check
+                </button>
+                <button
+                  onclick="toggleStepHint('${st.key}')"
+                  class="px-2.5 py-1.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold transition"
+                >
+                  💡 Hint
+                </button>
+              </div>
+              <div id="hint-${st.key}" class="hidden text-xs text-indigo-900 bg-indigo-50 border border-indigo-200 rounded p-2.5">
+                <strong>Formula / Hint:</strong> ${st.hint}
+              </div>
+              <div id="feedback-${st.key}" class="text-xs font-semibold ${isDone ? 'text-emerald-700' : 'hidden'}">
+                ${isDone ? '✅ Correct! Step verified and saved.' : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="px-6 py-4 bg-slate-800 text-white flex items-center justify-between">
+            <h3 class="font-bold text-base">${prob.title}</h3>
+            <span class="text-xs font-mono text-amber-400">3 Steps</span>
+          </div>
+
+          <div class="p-6 space-y-5">
+            <!-- Blue Reference Service Box -->
+            <div class="bg-sky-50 border-l-4 border-sky-500 rounded-r-lg p-3.5 text-xs text-sky-950 space-y-1">
+              <div>📖 <strong>Lecture Theory:</strong> ${prob.theoryRef}</div>
+              <div>🔍 <strong>Similar Worked Examples:</strong> ${prob.examplesRef}</div>
+            </div>
+
+            <!-- Problem Statement -->
+            <div class="text-sm text-slate-800 leading-relaxed bg-white p-1">
+              ${prob.statement}
+            </div>
+
+            <!-- Instructor Mode Solution Box -->
+            <div class="prof-box ${isProfMode ? '' : 'hidden'} rounded-lg p-4 text-xs text-slate-900 space-y-1.5 shadow-inner">
+              <div class="font-extrabold uppercase tracking-wider text-amber-900 flex items-center justify-between">
+                <span>👨‍🏫 [PROF SOLUTIONS] – Exact Key for Student ID: ${currentStudentId}</span>
+                <span class="font-mono">Tol: ±1.5%</span>
+              </div>
+              ${prob.profExplanation}
+            </div>
+
+            <!-- 3 Interactive Sub-Steps -->
+            <div class="space-y-3">
+              ${stepsHtml}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      renderMath();
+      updateProgressUI();
+    }
+
+    // Check individual step with Smart Traps
+    function checkStep(stepKey) {
+      let targetStep = null;
+      currentProblems.forEach((p) => {
+        p.steps.forEach((s) => {
+          if (s.key === stepKey) targetStep = s;
+        });
+      });
+      if (!targetStep) return;
+
+      const inputEl = document.getElementById(`input-${stepKey}`);
+      const fbEl = document.getElementById(`feedback-${stepKey}`);
+      const cardEl = document.getElementById(`step-card-${stepKey}`);
+
+      const raw = inputEl.value.trim().replace(',', '.');
+      userState.inputs[stepKey] = inputEl.value.trim();
+
+      const val = parseFloat(raw);
+      if (isNaN(val)) {
+        fbEl.className = 'text-xs font-semibold text-rose-600';
+        fbEl.textContent = '⚠️ Please enter a valid numerical value.';
+        saveState();
+        return;
+      }
+
+      const ans = targetStep.answer;
+      const relErr = Math.abs(val - ans) / (Math.abs(ans) || 1);
+
+      if (relErr <= 0.015) {
+        userState.completed[stepKey] = true;
+        fbEl.className = 'text-xs font-semibold text-emerald-700';
+        fbEl.innerHTML = `✅ Correct! (Exact reference value: <span class="font-mono">${ans.toPrecision(4)} ${targetStep.unit}</span>)`;
+        cardEl.className = 'step-card p-4 rounded-lg border bg-emerald-50/60 border-emerald-300 space-y-2';
+        saveState();
+        updateProgressUI();
+        return;
+      }
+
+      // Check Smart Traps
+      let trapMsg = null;
+      if (targetStep.traps) {
+        for (const trap of targetStep.traps) {
+          const tErr = Math.abs(val - trap.val) / (Math.abs(trap.val) || 1);
+          if (tErr <= 0.025) {
+            trapMsg = trap.msg;
+            break;
+          }
+        }
+      }
+
+      fbEl.className = 'text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 p-2 rounded';
+      if (trapMsg) {
+        fbEl.innerHTML = `❌ <strong>Smart Trap Detected:</strong> ${trapMsg}`;
+      } else {
+        fbEl.innerHTML = `❌ Not quite right yet. Check your formula and units (use the 💡 Hint button if needed).`;
+      }
+      saveState();
+      updateProgressUI();
+    }
+
+    function toggleStepHint(stepKey) {
+      const el = document.getElementById(`hint-${stepKey}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function updateProgressUI() {
+      const total = 12;
+      const done = Object.keys(userState.completed).filter((k) => userState.completed[k]).length;
+      document.getElementById('progress-counter').textContent = `${done} / ${total} Steps`;
+
+      // Compute deterministic verification checksum
+      const seedStr = `U06-${currentStudentId}-${done}`;
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        h ^= seedStr.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      const hex = (h >>> 0).toString(16).toUpperCase().padStart(8, '0').slice(0, 4);
+      const token = `PC1-U06-${currentStudentId}-${done}of12-CHK${hex}`;
+      document.getElementById('verification-token').textContent = token;
+    }
+
+    function copyVerificationToken() {
+      const token = document.getElementById('verification-token').textContent.trim();
+      navigator.clipboard.writeText(token).then(() => {
+        const fb = document.getElementById('copy-feedback');
+        fb.classList.remove('hidden');
+        setTimeout(() => fb.classList.add('hidden'), 2500);
+      });
+    }
+
+    // Guided Modeling Controls
+    function toggleFormulaSheet() {
+      const content = document.getElementById('formula-sheet-content');
+      const chev = document.getElementById('formula-chevron');
+      content.classList.toggle('hidden');
+      chev.textContent = content.classList.contains('hidden') ? '▶' : '▼';
+    }
+
+    function toggleSpokenHints() {
+      const hints = document.querySelectorAll('.spoken-hint');
+      const btn = document.getElementById('btn-spoken-hints');
+      let anyHidden = false;
+      hints.forEach((h) => {
+        if (h.classList.contains('hidden')) anyHidden = true;
+      });
+      hints.forEach((h) => {
+        if (anyHidden) h.classList.remove('hidden');
+        else h.classList.add('hidden');
+      });
+      btn.textContent = anyHidden ? '🎙️ Hide Spoken Explanation Hints' : '🎙️ Show Spoken Explanation Hints';
+    }
+
+    function toggleGuidedStep(exNum, stepChar) {
+      const el = document.getElementById(`guided-${exNum}-${stepChar}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function toggleAllGuided(exNum) {
+      const steps = ['a', 'b', 'c'];
+      const anyHidden = steps.some((ch) => document.getElementById(`guided-${exNum}-${ch}`).classList.contains('hidden'));
+      steps.forEach((ch) => {
+        const el = document.getElementById(`guided-${exNum}-${ch}`);
+        if (anyHidden) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+    }
+
+    // Student ID & LocalStorage Management
+    function parseStudentInput(rawInput) {
+      const trimmed = (rawInput || '').trim();
+      if (!trimmed) return { id: DEFAULT_ID, prof: false };
+      if (trimmed.toUpperCase().startsWith('PROF-')) {
+        const cleanId = trimmed.slice(5).trim() || DEFAULT_ID;
+        return { id: cleanId, prof: true };
+      }
+      if (trimmed.toUpperCase() === 'PROF') {
+        return { id: DEFAULT_ID, prof: true };
+      }
+      return { id: trimmed, prof: false };
+    }
+
+    function loadWorksheet() {
+      const raw = document.getElementById('student-id-input').value;
+      const parsed = parseStudentInput(raw);
+      const idChanged = parsed.id !== currentStudentId;
+
+      currentStudentId = parsed.id;
+      isProfMode = parsed.prof;
+
+      if (idChanged) {
+        userState = {
+          studentId: currentStudentId,
+          inputs: {},
+          completed: {}
+        };
+        saveState();
+      }
+
+      updateHeaderBadges();
+      currentProblems = buildUnit06Problems(currentStudentId);
+      renderExercises();
+    }
+
+    function resetWorksheet() {
+      if (!confirm('Reset all saved answers and progress for this worksheet?')) return;
+      userState = {
+        studentId: currentStudentId,
+        inputs: {},
+        completed: {}
+      };
+      saveState();
+      renderExercises();
+    }
+
+    function updateHeaderBadges() {
+      document.getElementById('active-id-badge').textContent = `Active ID: ${currentStudentId}`;
+      const profBadge = document.getElementById('prof-mode-badge');
+      if (isProfMode) profBadge.classList.remove('hidden');
+      else profBadge.classList.add('hidden');
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
+      } catch (e) {}
+    }
+
+    function loadStateFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.studentId) {
+            userState = parsed;
+            currentStudentId = parsed.studentId;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function renderMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '$', right: '$', display: false }
+          ],
+          output: 'html',
+          throwOnError: false
+        });
+      }
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStateFromStorage();
+      document.getElementById('student-id-input').value = currentStudentId;
+      updateHeaderBadges();
+      currentProblems = buildUnit06Problems(currentStudentId);
+      renderExercises();
+    });
+  </script>
+</body>
+</html>

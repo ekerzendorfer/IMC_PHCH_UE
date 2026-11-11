@@ -1,0 +1,1120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 07 – The Nucleus & The Electron Shell | Physical Chemistry IMC Krems</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- KaTeX CSS & JS (output: html only, no MathML duplication) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .katex-display {
+      margin: 0.65em 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .step-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .prof-box {
+      background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+      border-left: 5px solid #ca8a04;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- TOP HEADER & NAVIGATION -->
+  <header class="bg-slate-900 text-white shadow-lg border-b border-slate-700 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-600 transition">
+          <span>&larr;</span> Course Hub
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500 text-slate-950">Block 3 &bull; Unit 07</span>
+            <span class="text-xs text-slate-400 hidden sm:inline">FH IMC Krems &bull; Physical Chemistry Exercise</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">
+            The Nucleus &amp; The Electron Shell: Nuclear Chemistry &amp; Quantum Mechanics
+          </h1>
+        </div>
+      </div>
+
+      <div class="text-xs text-slate-300 text-right hidden md:block">
+        <div><strong>UE Lecturer:</strong> Mag. Erich Kerzendorfer</div>
+        <div><strong>Main Lecture:</strong> Prof. Manfred Kerschbaumer</div>
+      </div>
+    </div>
+
+    <!-- STUDENT ID & CONTROL BAR -->
+    <div class="bg-slate-800/90 border-t border-slate-700">
+      <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="student-id-input" class="text-xs font-semibold uppercase tracking-wider text-amber-400">
+            Student ID:
+          </label>
+          <input
+            id="student-id-input"
+            type="text"
+            placeholder="e.g. 2510456012"
+            class="px-3 py-1.5 rounded bg-slate-900 border border-slate-600 text-white text-sm font-mono focus:outline-none focus:border-amber-400 w-48"
+          />
+          <button
+            onclick="loadWorksheet()"
+            class="px-3.5 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition shadow-sm"
+          >
+            Load My Worksheet
+          </button>
+          <button
+            onclick="resetWorksheet()"
+            class="px-3 py-1.5 rounded bg-slate-700 hover:bg-rose-600 text-slate-200 hover:text-white text-xs font-semibold transition"
+          >
+            Reset Saved Inputs
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="active-id-badge" class="px-2.5 py-1 rounded bg-slate-900 border border-slate-600 text-xs font-mono text-emerald-400">
+            Active ID: 2510456012
+          </span>
+          <span id="prof-mode-badge" class="hidden px-2.5 py-1 rounded bg-yellow-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">
+            PROF SOLUTIONS ACTIVE
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 mt-6 space-y-8">
+
+    <!-- SECTION 1: COLLAPSIBLE FORMULA SHEET -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <button
+        onclick="toggleFormulaSheet()"
+        class="w-full px-6 py-4 bg-slate-100 hover:bg-slate-200/70 flex items-center justify-between text-left transition"
+      >
+        <div class="flex items-center gap-3">
+          <span class="text-xl">📐</span>
+          <div>
+            <h2 class="font-bold text-slate-800 text-base sm:text-lg">Section 1: Unit 07 Formula Sheet, Nuclear Constants &amp; Quantum Equations</h2>
+            <p class="text-xs text-slate-500">Click to expand/collapse reference equations for Mass Defect, Radioactive Decay, Bohr/Rydberg Spectra, De Broglie &amp; Particle in a Box</p>
+          </div>
+        </div>
+        <span id="formula-chevron" class="text-slate-600 font-bold text-lg transform transition-transform">▼</span>
+      </button>
+
+      <div id="formula-sheet-content" class="p-6 border-t border-slate-200 space-y-6">
+        <!-- 5 BY HEART FORMULAS -->
+        <div class="bg-rose-50 border border-rose-200 rounded-lg p-4">
+          <div class="text-xs font-bold uppercase tracking-wider text-rose-800 mb-2">
+            🧠 The 5 Fundamental "By Heart" Formulas (Required without Formula Sheet in Exams!)
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-sm bg-white p-3 rounded border border-rose-100">
+            <div>$$\rho = \frac{m}{V}$$</div>
+            <div>$$n = \frac{m}{M}$$</div>
+            <div>$$c = \frac{n}{V}$$</div>
+            <div>$$p \cdot V = n \cdot R \cdot T$$</div>
+            <div>$$x_i = \frac{n_i}{n_{\text{tot}}}$$</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Nuclear Chemistry -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              1. The Nucleus: Mass Defect &amp; Radioactive Decay (L21)
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Mass Defect $\Delta m$ &amp; Einstein's Mass–Energy Relation:</strong>
+            </p>
+            <div class="text-sm">
+              $$\Delta m = \left[Z \cdot m_p + (A - Z) \cdot m_n\right] - m_{\text{nuc}} \quad \text{or} \quad \Delta m = \sum m_{\text{react}} - \sum m_{\text{prod}}$$
+              $$\Delta E = \Delta m \cdot c^2, \qquad \Delta E_{\text{mol}} = \Delta E \cdot N_A, \qquad E_B\text{ per nucleon} = \frac{\Delta E}{A}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Radioactive Decay Law (First-Order Kinetics) &amp; Activity $A$:</strong>
+            </p>
+            <div class="text-sm">
+              $$A(t) = -\frac{\text{d}N}{\text{d}t} = \lambda \cdot N(t), \qquad \lambda = \frac{\ln 2}{\tau_{1/2}}, \qquad N_0 = \frac{m_0}{M} \cdot N_A$$
+              $$N(t) = N_0 \cdot e^{-\lambda t} \quad \Longleftrightarrow \quad \frac{A(t)}{A_0} = \frac{N(t)}{N_0} = e^{-\lambda t} = \left(\frac{1}{2}\right)^{t / \tau_{1/2}}$$
+            </div>
+          </div>
+
+          <!-- Electron Shell & Quantum Mechanics -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              2. The Shell: Photons, Matter Waves &amp; Confined Electrons (L22)
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Photon Energy, Bohr–Rydberg Transitions &amp; De Broglie Wavelength:</strong>
+            </p>
+            <div class="text-sm">
+              $$E_{\text{Ph}} = h \cdot \nu = \frac{h \cdot c}{\lambda} = h \cdot c \cdot \tilde{\nu}, \qquad \tilde{\nu} = \frac{1}{\lambda} = \tilde{R}_H \cdot Z^2 \left(\frac{1}{n_f^2} - \frac{1}{n_i^2}\right)$$
+              $$\lambda_{\text{de Broglie}} = \frac{h}{m \cdot v} = \frac{h}{\sqrt{2 \cdot m_e \cdot e \cdot U}}, \qquad \Delta x \cdot m \cdot \Delta v_x \ge \frac{h}{4\pi}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Particle in a 1D, 2D (Square) &amp; 3D Box:</strong>
+            </p>
+            <div class="text-sm">
+              $$E_n\text{ (1D)} = \frac{h^2 \cdot n^2}{8 \cdot m_e \cdot L^2}, \qquad E_{n_1,n_2}\text{ (2D)} = \frac{h^2}{8 \cdot m_e \cdot L^2}(n_1^2 + n_2^2)$$
+              $$E_{n_x,n_y,n_z}\text{ (3D)} = \frac{h^2}{8 \cdot m_e}\left(\frac{n_x^2}{L_x^2} + \frac{n_y^2}{L_y^2} + \frac{n_z^2}{L_z^2}\right)$$
+            </div>
+          </div>
+        </div>
+
+        <!-- Physical Constants & Unit Conversions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs bg-amber-50/70 border border-amber-200 p-4 rounded-lg">
+          <div>
+            <strong class="text-amber-900 uppercase tracking-wider block mb-1">Fundamental Constants (Lecture &amp; Exam Reference Values):</strong>
+            <ul class="space-y-1 text-slate-700 list-disc list-inside">
+              <li>Planck constant: $h = 6.6261 \times 10^{-34}\text{ J s}$; Speed of light: $c = 2.9979 \times 10^8\text{ m s}^{-1}$</li>
+              <li>Elementary charge: $e = 1.6022 \times 10^{-19}\text{ C}$; Avogadro constant: $N_A = 6.0221 \times 10^{23}\text{ mol}^{-1}$</li>
+              <li>Atomic mass unit: $1\text{ u} = 1.66054 \times 10^{-27}\text{ kg}$; Electron mass: $m_e = 9.1094 \times 10^{-31}\text{ kg}$</li>
+              <li>Nucleon rest masses: $m_p = 1.00728\text{ u}$, $m_n = 1.00866\text{ u}$</li>
+              <li>Rydberg constant for hydrogen: $\tilde{R}_H = 1.09737 \times 10^7\text{ m}^{-1} = 109737\text{ cm}^{-1}$</li>
+            </ul>
+          </div>
+          <div>
+            <strong class="text-amber-900 uppercase tracking-wider block mb-1">⚠️ Golden Unit Conversion Rules (Nuclear &amp; Quantum):</strong>
+            <ul class="space-y-1 text-slate-700 list-disc list-inside">
+              <li><strong>Electronvolt:</strong> $1\text{ eV} = 1.6022 \times 10^{-19}\text{ J}$, $1\text{ MeV} = 10^6\text{ eV} = 1.6022 \times 10^{-13}\text{ J}$</li>
+              <li><strong>Energy equivalent of $1\text{ u}$:</strong> $1\text{ u} \cdot c^2 = 1.4924 \times 10^{-10}\text{ J} = 149.24\text{ pJ} = 931.49\text{ MeV}$</li>
+              <li><strong>Activity (Becquerel):</strong> $1\text{ Bq} = 1\text{ decay s}^{-1}$ (always convert $\lambda$ to $\text{s}^{-1}$ before computing $A = \lambda \cdot N$ in $\text{Bq}$!)</li>
+              <li><strong>Length scales:</strong> $1\text{ nm} = 10^{-9}\text{ m}$, $1\text{ pm} = 10^{-12}\text{ m}$, $1\text{ \AA} = 10^{-10}\text{ m} = 100\text{ pm}$</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: IN-CLASS GUIDED MODELING -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-indigo-950 text-white flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-indigo-300">Section 2 &bull; 25-Min Board / Projector Walkthrough</span>
+          <h2 class="text-lg font-bold">👨‍🏫 Part 1: In-Class Guided Modeling</h2>
+        </div>
+        <button
+          onclick="toggleSpokenHints()"
+          id="btn-spoken-hints"
+          class="px-3.5 py-1.5 rounded-lg bg-indigo-800 hover:bg-indigo-700 text-indigo-100 text-xs font-semibold border border-indigo-600 transition"
+        >
+          🎙️ Show Spoken Explanation Hints
+        </button>
+      </div>
+
+      <div class="p-6 space-y-8">
+        <!-- GUIDED EXAMPLE 1 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 1 &bull; Ref: L21_The Nucleus.pdf &amp; Q02_Quizzes_Lecture2.pdf (1st Rep, Q2 &amp; Q4)</span>
+              <h3 class="text-base font-bold text-slate-900">Deuterium–Tritium Fusion Mass Defect ($^2_1\text{H} + {}^3_1\text{H} \rightarrow {}^4_2\text{He} + {}^1_0\text{n}$) &amp; $^{131}\text{I}$ Fallout Decay Kinetics</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(1, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(1, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(1, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(1)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong><br />
+            <strong>Part I (Nuclear Fusion, Quiz Q02 1st Rep Q2):</strong> In a fusion reactor, deuterium ($^2_1\text{H}$) and tritium ($^3_1\text{H}$) fuse according to $^2_1\text{H} + {}^3_1\text{H} \longrightarrow {}^4_2\text{He} + {}^1_0\text{n}$. The nuclide and particle masses are $m(^2_1\text{H}) = 2.01410\text{ u}$, $m(^3_1\text{H}) = 3.01605\text{ u}$, $m(^4_2\text{He}) = 4.00260\text{ u}$, and $m(^1_0\text{n}) = 1.00866\text{ u}$ ($1\text{ u} = 1.6605 \times 10^{-27}\text{ kg}$, $c = 2.9979 \times 10^8\text{ m s}^{-1}$).<br />
+            <strong>Part II (Radioactive Decay, Quiz Q02 1st Rep Q4):</strong> The fission product $^{131}\text{I}$ accumulates in the thyroid gland and decays by $\beta^-$ emission with a half-life of $\tau_{1/2} = 8.00\text{ d}$.<br />
+            <strong>(a)</strong> Calculate the mass defect $\Delta m$ (in $\text{u}$) and the energy $\Delta E$ released in a single fusion event (in $\text{J}$ and $\text{MeV}$).<br />
+            <strong>(b)</strong> Calculate the molar energy $\Delta E_{\text{mol}}$ released when $1.00\text{ mol}$ of $^2_1\text{H}$ fuses with $1.00\text{ mol}$ of $^3_1\text{H}$ (in $\text{GJ mol}^{-1}$), and compare it to typical chemical combustion ($\sim 10^2\text{–}10^3\text{ kJ mol}^{-1}$).<br />
+            <strong>(c)</strong> Calculate the decay constant $\lambda$ (in $\text{d}^{-1}$) of $^{131}\text{I}$ and the percentage of initial activity $A(t)/A_0$ remaining after $t = 20.0\text{ d}$.
+          </p>
+
+          <!-- Spoken Hint 1 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 1):</strong>
+            <p>"Emphasize why we keep all 5 decimal places when subtracting nuclear masses: the mass defect $\Delta m = 0.01889\text{ u}$ is less than $0.4\%$ of the total mass, yet multiplying by $c^2 \approx 9 \times 10^{16}\text{ m}^2\text{ s}^{-2}$ turns this tiny mass loss into $1.70\text{ billion kJ mol}^{-1}$ — roughly six orders of magnitude larger than chemical bond energies!"</p>
+            <p>"In step (c), remind students that as long as $t$ and $\tau_{1/2}$ have the SAME time unit (both in days), $\lambda \cdot t$ is dimensionless and we do not need to convert days to seconds for $A(t)/A_0$ — we only need seconds when calculating absolute activity in Becquerel ($\text{Bq} = \text{s}^{-1}$)."</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-1-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Mass Defect $\Delta m$ &amp; Single-Event Fusion Energy $\Delta E$:</div>
+              $$\Delta m = m(^2_1\text{H}) + m(^3_1\text{H}) - \left[m(^4_2\text{He}) + m(^1_0\text{n})\right] = (2.01410 + 3.01605) - (4.00260 + 1.00866) = \mathbf{0.01889\text{ u}}$$
+              $$\Delta E = \Delta m \cdot c^2 = 0.01889\text{ u} \cdot 1.6605 \times 10^{-27}\text{ kg u}^{-1} \cdot (2.9979 \times 10^8\text{ m s}^{-1})^2 = \mathbf{2.818 \times 10^{-12}\text{ J}} = \mathbf{2.818\text{ pJ}}$$
+              $$\Delta E\text{ [MeV]} = \frac{2.8182 \times 10^{-12}\text{ J}}{1.6022 \times 10^{-13}\text{ J MeV}^{-1}} = \mathbf{17.59\text{ MeV}}$$
+            </div>
+
+            <div id="guided-1-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Molar Fusion Energy $\Delta E_{\text{mol}}$:</div>
+              $$\Delta E_{\text{mol}} = \Delta E \cdot N_A = 2.8182 \times 10^{-12}\text{ J} \cdot 6.0221 \times 10^{23}\text{ mol}^{-1} = 1.697 \times 10^{12}\text{ J mol}^{-1} = \mathbf{1697\text{ GJ mol}^{-1}}$$
+            </div>
+
+            <div id="guided-1-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – $^{131}\text{I}$ Decay Constant $\lambda$ &amp; Remaining Activity after $20.0\text{ d}$:</div>
+              $$\lambda = \frac{\ln 2}{\tau_{1/2}} = \frac{0.69315}{8.00\text{ d}} = \mathbf{0.08664\text{ d}^{-1}}$$
+              $$\frac{A(20\text{ d})}{A_0} = e^{-\lambda \cdot t} = \exp\left(-0.08664\text{ d}^{-1} \cdot 20.0\text{ d}\right) = e^{-1.7329} = 0.1768 \implies \mathbf{17.7\%}$$
+            </div>
+          </div>
+        </div>
+
+        <!-- GUIDED EXAMPLE 2 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 2 &bull; Ref: L22_The Shell.pdf (Ex. 4 &amp; 6) &amp; Q02_Quizzes_Lecture2.pdf (1st Rep Q6, 3rd Rep Q1)</span>
+              <h3 class="text-base font-bold text-slate-900">Hydrogen Balmer Line ($n=5 \rightarrow n=2$), 2D Square Box Degeneracy &amp; $\beta$-Carotene 1D Box</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(2, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(2, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(2, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(2)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong><br />
+            <strong>(a)</strong> The blue Balmer line in the atomic hydrogen emission spectrum has a wavelength of $\lambda = 434.0\text{ nm}$ and originates from the transition $n_i = 5 \rightarrow n_f = 2$ (Quiz Q02, 3rd Rep Q1). Calculate the photon energy $\Delta E$ in $\text{eV}$ and determine the Rydberg constant $\tilde{R}_H$ (in $\text{cm}^{-1}$) from this measurement.<br />
+            <strong>(b)</strong> For electrons confined in a 2D square box of side length $L$ (Quiz Q02, 1st Rep Q6), express the energy levels for all combinations of $n_1, n_2 \in \{1, 2\}$ as multiples of $E_0 = \dfrac{h^2}{8 m_e L^2}$.<br />
+            <strong>(c)</strong> $\beta$-Carotene has $N_{\pi} = 22$ conjugated $\pi$-electrons delocalized along a chain of length $L = 2.94\text{ nm}$ (`L22_The Shell.pdf`, Ex. 6). Identify the quantum numbers of the HOMO and LUMO and calculate the theoretical HOMO $\rightarrow$ LUMO absorption wavelength $\lambda$ (in $\text{nm}$).
+          </p>
+
+          <!-- Spoken Hint 2 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 2):</strong>
+            <p>"In Step (b), highlight how symmetry creates degeneracy: in a square 2D box ($L_x = L_y = L$), the states $(n_1=1, n_2=2)$ and $(n_1=2, n_2=1)$ both have the exact same energy $5\,E_0$!"</p>
+            <p>"In Step (c), show how Pauli's exclusion principle connects quantum mechanics to the orange color of carrots: $22$ $\pi$-electrons fill the lowest $11$ levels in pairs ($n_{\text{HOMO}} = 11$, $n_{\text{LUMO}} = 12$), and the energy gap $\Delta E \propto (12^2 - 11^2)/L^2 = 23/L^2$ falls right into the visible blue-green region!"</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-2-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Balmer Transition $n=5 \rightarrow n=2$ ($\lambda = 434.0\text{ nm}$):</div>
+              $$\Delta E = \frac{h \cdot c}{\lambda} = \frac{6.6261 \times 10^{-34}\text{ J s} \cdot 2.9979 \times 10^8\text{ m s}^{-1}}{434.0 \times 10^{-9}\text{ m}} = 4.577 \times 10^{-19}\text{ J} = \mathbf{2.857\text{ eV}}$$
+              $$\tilde{\nu} = \frac{1}{\lambda} = \tilde{R}_H \left(\frac{1}{2^2} - \frac{1}{5^2}\right) = \tilde{R}_H \cdot \frac{21}{100} \implies \tilde{R}_H = \frac{100}{21 \cdot 434.0 \times 10^{-7}\text{ cm}} = \mathbf{109721\text{ cm}^{-1}}$$
+            </div>
+
+            <div id="guided-2-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – 2D Square Box Energy Levels ($E_{n_1,n_2} = (n_1^2 + n_2^2) E_0$):</div>
+              $$E_{1,1} = (1^2 + 1^2) E_0 = \mathbf{2\,E_0} \quad (\text{non-degenerate zero-point energy})$$
+              $$E_{1,2} = (1^2 + 2^2) E_0 = \mathbf{5\,E_0} = E_{2,1} \quad (\text{two-fold degenerate level!})$$
+              $$E_{2,2} = (2^2 + 2^2) E_0 = \mathbf{8\,E_0}$$
+            </div>
+
+            <div id="guided-2-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – $\beta$-Carotene 1D Box ($22$ $\pi$-Electrons, $L = 2.94\text{ nm}$):</div>
+              <p>By the Pauli principle ($2$ electrons per level): $n_{\text{HOMO}} = \frac{22}{2} = \mathbf{11}$ and $n_{\text{LUMO}} = \mathbf{12}$.</p>
+              $$\Delta E = \frac{h^2}{8 m_e L^2}\left(12^2 - 11^2\right) = \frac{(6.6261 \times 10^{-34})^2 \cdot 23}{8 \cdot 9.1094 \times 10^{-31} \cdot (2.94 \times 10^{-9})^2} = 1.603 \times 10^{-19}\text{ J}$$
+              $$\lambda = \frac{h \cdot c}{\Delta E} = \frac{6.6261 \times 10^{-34} \cdot 2.9979 \times 10^8}{1.603 \times 10^{-19}\text{ J}} = 1.239 \times 10^{-6}\text{ m} = \mathbf{1239\text{ nm}}$$
+              <p class="text-xs text-slate-600">(Note from Lecture Slide/Solutions: The simple free-electron box without bond-length alternation underestimates $\Delta E$ compared to the experimental $497\text{ nm}$ because single/double bond alternation creates an additional Peierls energy gap.)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INDIVIDUALIZED EXERCISE WORKSHEET -->
+    <section class="space-y-6">
+      <div class="bg-slate-900 text-white rounded-xl px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-amber-400">Section 3 &bull; Individualized Student Worksheet</span>
+          <h2 class="text-lg font-bold">📝 Part 2: 4 Exercises (12 Graded Steps with Smart Error Diagnosis)</h2>
+          <p class="text-xs text-slate-300">Enter your calculated values (tolerance $\pm 1.5\%$). Use dot (`.`) or comma (`,`) as decimal separator.</p>
+        </div>
+        <div class="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 text-right">
+          <div class="text-xs text-slate-400">Overall Progress</div>
+          <div id="progress-counter" class="text-lg font-extrabold text-emerald-400 font-mono">0 / 12 Steps</div>
+        </div>
+      </div>
+
+      <!-- DYNAMIC EXERCISES CONTAINER -->
+      <div id="exercises-container" class="space-y-8"></div>
+
+      <!-- SUBMISSION VERIFICATION TOKEN BOX -->
+      <div class="bg-slate-900 text-white rounded-xl p-6 shadow-lg border border-slate-700 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">MS Forms / Moodle Verification</span>
+            <h3 class="text-base font-bold">🔐 Submission Verification Token</h3>
+            <p class="text-xs text-slate-300">Copy this token into the MS Forms submission field at the end of the exercise unit.</p>
+          </div>
+          <button
+            onclick="copyVerificationToken()"
+            class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow"
+          >
+            📋 Copy Token
+          </button>
+        </div>
+        <div class="bg-slate-950 border border-slate-700 rounded-lg p-3.5 flex items-center justify-between">
+          <code id="verification-token" class="text-sm sm:text-base font-mono text-emerald-400 font-bold select-all">
+            PC2-U07-2510456012-0of12-CHK0000
+          </code>
+          <span id="copy-feedback" class="text-xs text-amber-400 font-semibold hidden">Copied to clipboard!</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    const STORAGE_KEY = 'PC_IMC_UNIT07_STATE_V1';
+    const DEFAULT_ID = '2510456012';
+
+    let currentStudentId = DEFAULT_ID;
+    let isProfMode = false;
+    let currentProblems = [];
+    let userState = {
+      studentId: DEFAULT_ID,
+      inputs: {},
+      completed: {}
+    };
+
+    // Deterministic Seeded PRNG (FNV-1a hash h = 2166136261 + Mulberry32)
+    function createSeededRNG(str) {
+      let h = 2166136261 >>> 0;
+      const clean = String(str).trim();
+      for (let i = 0; i < clean.length; i++) {
+        h ^= clean.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return function() {
+        h += 0x6D2B79F5;
+        let t = Math.imul(h ^ (h >>> 15), 1 | h);
+        t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function randStep(rng, min, max, step) {
+      const steps = Math.round((max - min) / step);
+      const idx = Math.floor(rng() * (steps + 1));
+      return Number((min + idx * step).toFixed(6));
+    }
+
+    // Generate all 4 problems deterministically from Student ID
+    function buildUnit07Problems(studentId) {
+      const rng = createSeededRNG(studentId);
+
+      // Physical Constants (matching lecture & quiz formula sheets)
+      const c_light = 2.9979e8;     // m s^-1
+      const h_planck = 6.6261e-34;  // J s
+      const e_charge = 1.6022e-19;  // C (or J eV^-1)
+      const u_kg = 1.66054e-27;     // kg u^-1
+      const m_e = 9.1094e-31;       // kg
+      const N_A = 6.0221e23;        // mol^-1
+      const R_H_m = 1.09737e7;      // m^-1
+      const m_p_u = 1.00728;        // u (proton rest mass)
+      const m_n_u = 1.00866;        // u (neutron rest mass)
+
+      // =========================================================================
+      // EXERCISE 1: Mass Defect, Nuclear Binding Energy & Binding Energy/Nucleon
+      // =========================================================================
+      const nuclidesEx1 = [
+        { symbol: '<sup>12</sup><sub>6</sub>C', name: 'carbon-12', Z: 6, A: 12, m_nuc: 11.99671 },
+        { symbol: '<sup>16</sup><sub>8</sub>O', name: 'oxygen-16', Z: 8, A: 16, m_nuc: 15.99053 },
+        { symbol: '<sup>4</sup><sub>2</sub>He', name: 'helium-4', Z: 2, A: 4, m_nuc: 4.00151 },
+        { symbol: '<sup>56</sup><sub>26</sub>Fe', name: 'iron-56', Z: 26, A: 56, m_nuc: 55.92067 },
+        { symbol: '<sup>14</sup><sub>7</sub>N', name: 'nitrogen-14', Z: 7, A: 14, m_nuc: 13.99923 }
+      ];
+      const nuc1 = nuclidesEx1[Math.floor(rng() * nuclidesEx1.length)];
+      const N1 = nuc1.A - nuc1.Z;
+
+      const dm_u_ex1 = Number(((nuc1.Z * m_p_u + N1 * m_n_u) - nuc1.m_nuc).toFixed(5));
+      const dE_J_ex1 = dm_u_ex1 * u_kg * c_light * c_light; // J per nucleus
+      const dE_pJ_ex1 = dE_J_ex1 * 1e12; // pJ (10^-12 J) per nucleus
+      const dE_MeV_ex1 = dE_J_ex1 / (e_charge * 1e6); // total MeV
+      const EB_per_A_MeV = dE_MeV_ex1 / nuc1.A; // MeV per nucleon
+
+      // =========================================================================
+      // EXERCISE 2: Radioactive Decay Kinetics & Absolute Activity (Bq / GBq)
+      // =========================================================================
+      const isotopesEx2 = [
+        { symbol: '<sup>131</sup><sub>53</sub>I', name: 'iodine-131', M: 131.0, tau_d: 8.00 },
+        { symbol: '<sup>32</sup><sub>15</sub>P', name: 'phosphorus-32', M: 32.0, tau_d: 14.30 },
+        { symbol: '<sup>198</sup><sub>79</sub>Au', name: 'gold-198', M: 198.0, tau_d: 2.70 },
+        { symbol: '<sup>222</sup><sub>86</sub>Rn', name: 'radon-222', M: 222.0, tau_d: 3.82 }
+      ];
+      const iso2 = isotopesEx2[Math.floor(rng() * isotopesEx2.length)];
+      const t_days_ex2 = randStep(rng, 10.0, 28.0, 2.0); // days
+      const m0_ug_ex2 = randStep(rng, 1.5, 6.5, 0.5); // ug (10^-6 g)
+
+      const lambda_d_ex2 = Math.LN2 / iso2.tau_d; // d^-1
+      const rem_pct_ex2 = Math.exp(-lambda_d_ex2 * t_days_ex2) * 100.0; // %
+      const N0_ex2 = ((m0_ug_ex2 * 1e-6) / iso2.M) * N_A; // number of nuclei
+      const lambda_s_ex2 = lambda_d_ex2 / 86400.0; // s^-1
+      const A0_Bq_ex2 = lambda_s_ex2 * N0_ex2; // Bq (s^-1)
+      const A0_GBq_ex2 = A0_Bq_ex2 * 1e-9; // GBq (10^9 Bq)
+
+      // =========================================================================
+      // EXERCISE 3: Laser Photon Pulses & Hydrogen Atomic Line Spectrum
+      // =========================================================================
+      const nu_e14_ex3 = randStep(rng, 3.80, 6.80, 0.15); // in 10^14 s^-1
+      const nu_ex3 = nu_e14_ex3 * 1e14; // s^-1
+      const E_pulse_mJ_ex3 = randStep(rng, 12.0, 48.0, 3.0); // mJ
+      const E_pulse_J_ex3 = E_pulse_mJ_ex3 * 1e-3; // J
+
+      const transitionsEx3 = [
+        { series: 'Balmer', nf: 2, ni: 3 },
+        { series: 'Balmer', nf: 2, ni: 4 },
+        { series: 'Balmer', nf: 2, ni: 6 },
+        { series: 'Paschen', nf: 3, ni: 4 },
+        { series: 'Paschen', nf: 3, ni: 5 },
+        { series: 'Lyman', nf: 1, ni: 2 }
+      ];
+      const tr3 = transitionsEx3[Math.floor(rng() * transitionsEx3.length)];
+
+      const E_ph_J_ex3 = h_planck * nu_ex3; // J
+      const E_ph_e19_ex3 = E_ph_J_ex3 * 1e19; // in 10^-19 J
+      const N_ph_ex3 = E_pulse_J_ex3 / E_ph_J_ex3;
+      const N_ph_e16_ex3 = N_ph_ex3 * 1e-16; // in 10^16 photons
+
+      const nu_bar_m_ex3 = R_H_m * ((1.0 / (tr3.nf * tr3.nf)) - (1.0 / (tr3.ni * tr3.ni))); // m^-1
+      const lambda_nm_ex3 = (1.0 / nu_bar_m_ex3) * 1e9; // nm
+
+      // =========================================================================
+      // EXERCISE 4: De Broglie Wavelength & Particle in a 3D / 1D Box
+      // =========================================================================
+      const U_volt_ex4 = randStep(rng, 120, 600, 40); // V acceleration voltage
+      const L_cube_nm_ex4 = randStep(rng, 1.20, 2.60, 0.20); // nm cubic quantum dot edge
+
+      const polyenesEx4 = [
+        { name: '1,3,5-hexatriene', N_pi: 6, L_nm: 0.73 },
+        { name: '1,3,5,7-octatetraene', N_pi: 8, L_nm: 0.98 },
+        { name: '1,3,5,7,9-decapentaene', N_pi: 10, L_nm: 1.22 },
+        { name: 'vitamin A (retinol, 5 conjugated double bonds)', N_pi: 10, L_nm: 1.18 },
+        { name: 'dodecahexaene', N_pi: 12, L_nm: 1.46 }
+      ];
+      const poly4 = polyenesEx4[Math.floor(rng() * polyenesEx4.length)];
+      const n_HOMO_ex4 = poly4.N_pi / 2;
+      const n_LUMO_ex4 = n_HOMO_ex4 + 1;
+
+      const lambda_dB_m = h_planck / Math.sqrt(2.0 * m_e * e_charge * U_volt_ex4); // m
+      const lambda_dB_pm = lambda_dB_m * 1e12; // pm
+
+      const L_cube_m = L_cube_nm_ex4 * 1e-9;
+      const E_111_J = (3.0 * h_planck * h_planck) / (8.0 * m_e * L_cube_m * L_cube_m); // J
+      const E_111_eV = E_111_J / e_charge; // eV
+
+      const L_poly_m = poly4.L_nm * 1e-9;
+      const dE_poly_J = ((h_planck * h_planck) / (8.0 * m_e * L_poly_m * L_poly_m)) * (n_LUMO_ex4 * n_LUMO_ex4 - n_HOMO_ex4 * n_HOMO_ex4);
+      const lambda_poly_nm = ((h_planck * c_light) / dE_poly_J) * 1e9; // nm
+
+      return [
+        // PROBLEM 1
+        {
+          id: 1,
+          title: 'Exercise 1: Mass Defect (\\(\\Delta m\\)), Nuclear Binding Energy & Binding Energy per Nucleon',
+          theoryRef: '<strong>L21_The Nucleus.pdf</strong> (Slides 8–12 & Exercise 2: Mass number $A = Z + N$, mass defect $\\Delta m$, Einstein\'s mass–energy relation $\\Delta E = \\Delta m \\cdot c^2$, binding energy per nucleon $E_B/A$).',
+          examplesRef: '<strong>L21_The Nucleus.pdf</strong> (Slide 12 Exercise 2), <strong>Q02_Quizzes_Lecture2.pdf</strong> (1st Rep, Q2).',
+          statement: `A bare <strong>${nuc1.name}</strong> nucleus (${nuc1.symbol}, atomic number $Z = ${nuc1.Z}$, mass number $A = ${nuc1.A}$) has an experimentally measured nuclear mass of $m_{\\text{nuc}} = ${nuc1.m_nuc.toFixed(5)}\\text{ u}$. Use the nucleon rest masses $m_p = 1.00728\\text{ u}$ and $m_n = 1.00866\\text{ u}$, along with $1\\text{ u} = 1.66054 \\times 10^{-27}\\text{ kg}$, $c = 2.9979 \\times 10^8\\text{ m s}^{-1}$, and $1\\text{ MeV} = 1.6022 \\times 10^{-13}\\text{ J}$.`,
+          profExplanation: `
+            <div><strong>Step 1a:</strong>With $Z = ${nuc1.Z}$ protons and $N = A - Z = ${N1}$ neutrons: $\\Delta m = (${nuc1.Z} \\cdot 1.00728 + ${N1} \\cdot 1.00866) - ${nuc1.m_nuc.toFixed(5)} = \\mathbf{${dm_u_ex1.toFixed(5)}\\text{ u}}$</div>
+            <div><strong>Step 1b:</strong> $\\Delta E = \\Delta m \\cdot u \\cdot c^2 = ${dm_u_ex1.toFixed(5)} \\cdot 1.66054 \\times 10^{-27}\\text{ kg} \\cdot (2.9979 \\times 10^8\\text{ m s}^{-1})^2 = ${dE_J_ex1.toExponential(4)}\\text{ J} = \\mathbf{${dE_pJ_ex1.toFixed(3)}\\text{ pJ}}$ ($10^{-12}\\text{ J}$)</div>
+            <div><strong>Step 1c:</strong> Total binding energy in MeV: $\\Delta E = \\frac{${dE_J_ex1.toExponential(4)}\\text{ J}}{1.6022 \\times 10^{-13}\\text{ J MeV}^{-1}} = ${dE_MeV_ex1.toFixed(2)}\\text{ MeV} \\implies \\frac{E_B}{A} = \\frac{${dE_MeV_ex1.toFixed(2)}\\text{ MeV}}{${nuc1.A}} = \\mathbf{${EB_per_A_MeV.toFixed(3)}\\text{ MeV}}$</div>
+          `,
+          steps: [
+            {
+              key: '1a',
+              label: `Step 1a: Calculate the mass defect \\(\\Delta m = [Z \\cdot m_p + (A - Z) \\cdot m_n] - m_{\\text{nuc}}\\) of a single ${nuc1.symbol} nucleus (in u).`,
+              unit: 'u',
+              answer: dm_u_ex1,
+              traps: [
+                {
+                  val: nuc1.A * m_p_u - nuc1.m_nuc,
+                  msg: 'Nucleon count check: Only Z nucleons are protons (m_p = 1.00728 u), while N = A - Z nucleons are neutrons (m_n = 1.00866 u)!'
+                },
+                {
+                  val: -dm_u_ex1,
+                  msg: 'Sign convention: Mass defect Delta m is defined as a positive quantity (sum of free nucleon masses minus the bound nuclear mass).'
+                }
+              ],
+              hint: 'Count Z protons and N = A - Z neutrons, then compute Delta m = Z * 1.00728 + (A - Z) * 1.00866 - m_nuc.'
+            },
+            {
+              key: '1b',
+              label: `Step 1b: Calculate the nuclear binding energy \\(\\Delta E = \\Delta m \\cdot c^2\\) of one ${nuc1.symbol} nucleus (in $\\text{pJ} = 10^{-12}\\text{ J}$).`,
+              unit: 'pJ (10⁻¹² J)',
+              answer: dE_pJ_ex1,
+              traps: [
+                {
+                  val: dE_J_ex1,
+                  msg: 'Scale notice: Your value is in Joules (J). Multiply by 10^12 to express the single-nucleus binding energy in picojoules (pJ = 10^-12 J)!'
+                },
+                {
+                  val: (dm_u_ex1 * u_kg * c_light) * 1e12,
+                  msg: 'Don\'t forget to SQUARE the speed of light c in Einstein\'s equation Delta E = Delta m * c^2!'
+                }
+              ],
+              hint: 'Convert Delta m from u to kg (multiply by 1.66054 * 10^-27 kg/u), multiply by c^2 = (2.9979 * 10^8 m/s)^2, and multiply by 10^12 for pJ.'
+            },
+            {
+              key: '1c',
+              label: `Step 1c: Calculate the nuclear binding energy per nucleon \\(E_B / A\\) for ${nuc1.symbol} (in MeV).`,
+              unit: 'MeV / nucleon',
+              answer: EB_per_A_MeV,
+              traps: [
+                {
+                  val: dE_MeV_ex1,
+                  msg: 'That is the total binding energy Delta E of the entire nucleus in MeV. Divide by the mass number A to get the binding energy PER NUCLEON!'
+                },
+                {
+                  val: EB_per_A_MeV * 1e6,
+                  msg: 'Your value is in eV per nucleon. Divide by 10^6 to express it in MeV per nucleon!'
+                }
+              ],
+              hint: 'Convert Delta E [J] to MeV by dividing by 1.6022 * 10^-13 J/MeV (or use 1 u * c^2 = 931.49 MeV), then divide by A.'
+            }
+          ]
+        },
+
+        // PROBLEM 2
+        {
+          id: 2,
+          title: 'Exercise 2: First-Order Radioactive Decay Kinetics & Specific Activity (\\(A_0\\))',
+          theoryRef: '<strong>L21_The Nucleus.pdf</strong> (Slides 22–38: Decay constant $\\lambda = \\ln 2 / \\tau_{1/2}$, exponential decay law $N(t) = N_0 e^{-\\lambda t}$, absolute activity $A = \\lambda N$ in Becquerel $\\text{Bq} = \\text{s}^{-1}$).',
+          examplesRef: '<strong>L21_The Nucleus.pdf</strong> (Exercises 3–5), <strong>Q02_Quizzes_Lecture2.pdf</strong> (1st Rep, Q4).',
+          statement: `The radioactive nuclide <strong>${iso2.name}</strong> (${iso2.symbol}, molar mass $M = ${iso2.M.toFixed(1)}\\text{ g mol}^{-1}$) decays with a half-life of $\\tau_{1/2} = ${iso2.tau_d.toFixed(2)}\\text{ d}$ ($N_A = 6.0221 \\times 10^{23}\\text{ mol}^{-1}$, $1\\text{ d} = 86400\\text{ s}$). A radiochemical laboratory receives a fresh sample containing $m_0 = ${m0_ug_ex2.toFixed(1)}\\text{ }&mu;\\text{g}$ ($${m0_ug_ex2.toFixed(1)} \\times 10^{-6}\\text{ g}$) of pure ${iso2.symbol}.`,
+          profExplanation: `
+            <div><strong>Step 2a:</strong> $\\lambda = \\frac{\\ln 2}{\\tau_{1/2}} = \\frac{0.69315}{${iso2.tau_d.toFixed(2)}\\text{ d}} = \\mathbf{${lambda_d_ex2.toFixed(4)}\\text{ d}^{-1}}$</div>
+            <div><strong>Step 2b:</strong> After $t = ${t_days_ex2.toFixed(1)}\\text{ d}$: $\\frac{N(t)}{N_0} = e^{-\\lambda \\cdot t} = \\exp\\left(-${lambda_d_ex2.toFixed(5)} \\cdot ${t_days_ex2.toFixed(1)}\\right) \\cdot 100 = \\mathbf{${rem_pct_ex2.toFixed(2)}\\%}$</div>
+            <div><strong>Step 2c:</strong> $N_0 = \\frac{${m0_ug_ex2.toFixed(1)} \\times 10^{-6}\\text{ g}}{${iso2.M.toFixed(1)}\\text{ g mol}^{-1}} \\cdot 6.0221 \\times 10^{23}\\text{ mol}^{-1} = ${N0_ex2.toExponential(4)}$, $\\lambda_{\\text{s}} = \\frac{${lambda_d_ex2.toFixed(5)}}{86400\\text{ s d}^{-1}} = ${lambda_s_ex2.toExponential(4)}\\text{ s}^{-1} \\implies A_0 = \\lambda_{\\text{s}} \\cdot N_0 = ${A0_Bq_ex2.toExponential(4)}\\text{ Bq} = \\mathbf{${A0_GBq_ex2.toFixed(2)}\\text{ GBq}}$</div>
+          `,
+          steps: [
+            {
+              key: '2a',
+              label: `Step 2a: Calculate the radioactive decay constant \\(\\lambda\\) of ${iso2.symbol} (in $\\text{d}^{-1}$).`,
+              unit: 'd⁻¹',
+              answer: lambda_d_ex2,
+              traps: [
+                {
+                  val: 1.0 / iso2.tau_d,
+                  msg: 'Don\'t forget the factor ln(2) ≈ 0.69315 in the numerator: lambda = ln(2) / tau_1/2!'
+                },
+                {
+                  val: lambda_s_ex2,
+                  msg: 'You converted lambda to s^-1. Here the decay constant in inverse days (d^-1) is requested!'
+                }
+              ],
+              hint: 'Use lambda [d^-1] = ln(2) / tau_1/2 [d] = 0.69315 / tau_1/2.'
+            },
+            {
+              key: '2b',
+              label: `Step 2b: Calculate the percentage of the initial ${iso2.symbol} nuclei remaining after $t = ${t_days_ex2.toFixed(1)}\\text{ d}$ (in %).`,
+              unit: '%',
+              answer: rem_pct_ex2,
+              traps: [
+                {
+                  val: rem_pct_ex2 / 100.0,
+                  msg: 'That is the decimal fraction N(t)/N0. Multiply by 100 to express the remaining amount in percent (%)!'
+                },
+                {
+                  val: 100.0 - rem_pct_ex2,
+                  msg: 'You calculated the percentage of DECAYED nuclei (100% - remaining). Enter the percentage of REMAINING nuclei!'
+                }
+              ],
+              hint: 'Compute (N(t) / N_0) * 100 = exp(-lambda [d^-1] * t [d]) * 100.'
+            },
+            {
+              key: '2c',
+              label: `Step 2c: Calculate the initial absolute activity \\(A_0 = \\lambda_{\\text{s}} \\cdot N_0\\) of the $m_0 = ${m0_ug_ex2.toFixed(1)}\\text{ }\\mu\\text{g}$ sample (in $\\text{GBq} = 10^9\\text{ Bq}$).`,
+              unit: 'GBq (10⁹ s⁻¹)',
+              answer: A0_GBq_ex2,
+              traps: [
+                {
+                  val: A0_GBq_ex2 * 86400.0,
+                  msg: 'Time unit trap! 1 Becquerel (Bq) is 1 decay per SECOND (s^-1). You must divide lambda [d^-1] by 86400 s/d before multiplying by N_0!'
+                },
+                {
+                  val: A0_Bq_ex2,
+                  msg: 'Scale notice: Your value is in Bq (s^-1). Divide by 10^9 to express the activity in gigabecquerels (GBq)!'
+                },
+                {
+                  val: A0_GBq_ex2 * 1e6,
+                  msg: 'Mass unit check: The sample mass m_0 is given in micrograms (1 ug = 10^-6 g), not grams!'
+                }
+              ],
+              hint: 'First find N_0 = (m_0 [g] / M) * N_A with m_0 [g] = m_0 [ug] * 10^-6. Convert lambda to s^-1 (divide d^-1 by 86400), compute A_0 [Bq] = lambda [s^-1] * N_0, and divide by 10^9 for GBq.'
+            }
+          ]
+        },
+
+        // PROBLEM 3
+        {
+          id: 3,
+          title: 'Exercise 3: Laser Photon Pulses & Hydrogen Atomic Emission Spectrum (Bohr / Rydberg)',
+          theoryRef: '<strong>L22_The Shell.pdf</strong> (Slides 3–10: Planck–Einstein photon energy $E_{\\text{Ph}} = h \\nu = hc/\\lambda$, Bohr model of hydrogen, Rydberg wavenumber equation $\\tilde{\\nu} = \\tilde{R}_H (1/n_f^2 - 1/n_i^2)$).',
+          examplesRef: '<strong>L22_The Shell.pdf</strong> (Exercises 1 & 4), <strong>Q02_Quizzes_Lecture2.pdf</strong> (1st Rep Q5 & 3rd Rep Q1).',
+          statement: `A pulsed dye laser emits monochromatic light of frequency $\\nu = ${nu_e14_ex3.toFixed(2)} \\times 10^{14}\\text{ s}^{-1}$, delivering a total pulse energy of $E_{\\text{pulse}} = ${E_pulse_mJ_ex3.toFixed(1)}\\text{ mJ}$ per pulse ($h = 6.6261 \\times 10^{-34}\\text{ J s}$, $c = 2.9979 \\times 10^8\\text{ m s}^{-1}$). In a separate spectroscopic experiment on atomic hydrogen ($\tilde{R}_H = 1.09737 \\times 10^7\\text{ m}^{-1}$), the emission line for the electronic transition from $n_i = ${tr3.ni}$ down to $n_f = ${tr3.nf}$ (${tr3.series} series) is recorded.`,
+          profExplanation: `
+            <div><strong>Step 3a:</strong> $E_{\\text{Ph}} = h \\cdot \\nu = 6.6261 \\times 10^{-34}\\text{ J s} \\cdot ${nu_e14_ex3.toFixed(2)} \\times 10^{14}\\text{ s}^{-1} = ${E_ph_J_ex3.toExponential(4)}\\text{ J} = \\mathbf{${E_ph_e19_ex3.toFixed(3)}} \\times 10^{-19}\\text{ J}$</div>
+            <div><strong>Step 3b:</strong> $N_{\\text{Ph}} = \\frac{E_{\\text{pulse}}}{E_{\\text{Ph}}} = \\frac{${E_pulse_mJ_ex3.toFixed(1)} \\times 10^{-3}\\text{ J}}{${E_ph_J_ex3.toExponential(4)}\\text{ J}} = ${N_ph_ex3.toExponential(4)} = \\mathbf{${N_ph_e16_ex3.toFixed(3)}} \\times 10^{16}\\text{ photons}$</div>
+            <div><strong>Step 3c:</strong> $\\tilde{\\nu} = \\frac{1}{\\lambda} = 1.09737 \\times 10^7\\text{ m}^{-1} \\cdot \\left(\\frac{1}{${tr3.nf}^2} - \\frac{1}{${tr3.ni}^2}\\right) = ${nu_bar_m_ex3.toExponential(4)}\\text{ m}^{-1} \\implies \\lambda = \\mathbf{${lambda_nm_ex3.toFixed(1)}\\text{ nm}}$</div>
+          `,
+          steps: [
+            {
+              key: '3a',
+              label: 'Step 3a: Calculate the energy \\(E_{\\text{Ph}} = h \\cdot \\nu\\) of a single laser photon (enter in units of \\(10^{-19}\\text{ J}\\), e.g. enter 3.11 for \\(3.11 \\times 10^{-19}\\text{ J}\\)).',
+              unit: '× 10⁻¹⁹ J',
+              answer: E_ph_e19_ex3,
+              traps: [
+                {
+                  val: E_ph_J_ex3,
+                  msg: 'Scale notice: Multiply your raw photon energy in Joules by 10^19 to enter the coefficient in units of 10^-19 J!'
+                },
+                {
+                  val: E_ph_J_ex3 / e_charge,
+                  msg: 'You converted the photon energy to eV. Here the value in 10^-19 J is requested!'
+                }
+              ],
+              hint: 'Multiply h = 6.6261 * 10^-34 J s by nu [s^-1], then multiply the result in Joules by 10^19.'
+            },
+            {
+              key: '3b',
+              label: `Step 3b: Calculate the total number of photons \\(N_{\\text{Ph}}\\) emitted in one pulse of energy $E_{\\text{pulse}} = ${E_pulse_mJ_ex3.toFixed(1)}\\text{ mJ}$ (enter in units of $10^{16}$ photons).`,
+              unit: '× 10¹⁶ photons',
+              answer: N_ph_e16_ex3,
+              traps: [
+                {
+                  val: N_ph_e16_ex3 * 1000.0,
+                  msg: 'Unit prefix trap! Convert the pulse energy from millijoules (mJ) to Joules (1 mJ = 10^-3 J) before dividing by E_Ph!'
+                },
+                {
+                  val: N_ph_ex3,
+                  msg: 'Scale notice: Divide your total photon count by 10^16 to enter the coefficient in units of 10^16 photons!'
+                }
+              ],
+              hint: 'Convert E_pulse to Joules (multiply mJ by 10^-3), divide by E_Ph [J], and divide by 10^16.'
+            },
+            {
+              key: '3c',
+              label: `Step 3c: Calculate the wavelength \\(\\lambda\\) of the hydrogen emission line for the transition $n_i = ${tr3.ni} \\rightarrow n_f = ${tr3.nf}$ (in nm).`,
+              unit: 'nm',
+              answer: lambda_nm_ex3,
+              traps: [
+                {
+                  val: nu_bar_m_ex3,
+                  msg: 'That is the wavenumber 1/lambda in m^-1. Take the reciprocal 1 / nu_bar to get the wavelength in meters, then multiply by 10^9 for nm!'
+                },
+                {
+                  val: (1.0 / (R_H_m * ((1.0 / tr3.nf) - (1.0 / tr3.ni)))) * 1e9,
+                  msg: 'Formula check: Don\'t forget to SQUARE the principal quantum numbers n_f^2 and n_i^2 in the Rydberg equation!'
+                }
+              ],
+              hint: 'Compute 1/lambda [m^-1] = 1.09737 * 10^7 * (1/n_f^2 - 1/n_i^2), take the reciprocal to obtain lambda in meters, and multiply by 10^9 for nanometers (nm).'
+            }
+          ]
+        },
+
+        // PROBLEM 4
+        {
+          id: 4,
+          title: 'Exercise 4: De Broglie Matter Wavelength & Confined Electrons in a 3D / 1D Box',
+          theoryRef: '<strong>L22_The Shell.pdf</strong> (Slides 11–22: De Broglie wavelength $\\lambda = h / \\sqrt{2 m_e e U}$ of accelerated electrons, particle in a 1D/2D/3D box, HOMO–LUMO excitation of conjugated polyenes).',
+          examplesRef: '<strong>L22_The Shell.pdf</strong> (Slide 11 Ex. 2, Slide 21 Ex. 4, End-of-Chapter Ex. 6 & 7), <strong>Q02_Quizzes_Lecture2.pdf</strong> (1st Rep, Q1 & Q6).',
+          statement: `<strong>Part A:</strong> An electron ($m_e = 9.1094 \\times 10^{-31}\\text{ kg}$, $e = 1.6022 \\times 10^{-19}\\text{ C}$) in an electron microscope is accelerated from rest by an electrostatic voltage of $U = ${U_volt_ex4.toFixed(0)}\\text{ V}$.<br />
+            <strong>Part B:</strong> Another electron is confined inside a three-dimensional cubic quantum box with side lengths $L_x = L_y = L_z = ${L_cube_nm_ex4.toFixed(2)}\\text{ nm}$.<br />
+            <strong>Part C:</strong> The conjugated linear polyene <strong>${poly4.name}</strong> contains $N_{\\pi} = ${poly4.N_pi}$ delocalized $\\pi$-electrons confined along a 1D chain of length $L_{\\text{poly}} = ${poly4.L_nm.toFixed(2)}\\text{ nm}$.`,
+          profExplanation: `
+            <div><strong>Step 4a:</strong> $\\lambda_{\\text{dB}} = \\frac{h}{\\sqrt{2 m_e e U}} = \\frac{6.6261 \\times 10^{-34}}{\\sqrt{2 \\cdot 9.1094 \\times 10^{-31} \\cdot 1.6022 \\times 10^{-19} \\cdot ${U_volt_ex4.toFixed(0)}}} = ${lambda_dB_m.toExponential(4)}\\text{ m} = \\mathbf{${lambda_dB_pm.toFixed(2)}\\text{ pm}}$</div>
+            <div><strong>Step 4b:</strong> In a 3D cube ($n_x=n_y=n_z=1$): $E_{1,1,1} = \\frac{3 \\cdot h^2}{8 m_e L^2} = \\frac{3 \\cdot (6.6261 \\times 10^{-34})^2}{8 \\cdot 9.1094 \\times 10^{-31} \\cdot (${L_cube_nm_ex4.toFixed(2)} \\times 10^{-9})^2} = ${E_111_J.toExponential(4)}\\text{ J} = \\mathbf{${E_111_eV.toFixed(4)}\\text{ eV}}$</div>
+            <div><strong>Step 4c:</strong> With $n_{\\text{HOMO}} = ${n_HOMO_ex4}$ and $n_{\\text{LUMO}} = ${n_LUMO_ex4}$ ($n_{\\text{LUMO}}^2 - n_{\\text{HOMO}}^2 = ${n_LUMO_ex4 * n_LUMO_ex4 - n_HOMO_ex4 * n_HOMO_ex4}$): $\\Delta E = \\frac{h^2 (${n_LUMO_ex4}^2 - ${n_HOMO_ex4}^2)}{8 m_e L_{\\text{poly}}^2} = ${dE_poly_J.toExponential(4)}\\text{ J} \\implies \\lambda = \\frac{h c}{\\Delta E} = \\mathbf{${lambda_poly_nm.toFixed(1)}\\text{ nm}}$</div>
+          `,
+          steps: [
+            {
+              key: '4a',
+              label: `Step 4a: Calculate the de Broglie wavelength \\(\\lambda = \\frac{h}{\\sqrt{2 m_e e U}}\\) of the electron accelerated by $U = ${U_volt_ex4.toFixed(0)}\\text{ V}$ (in $\\text{pm} = 10^{-12}\\text{ m}$).`,
+              unit: 'pm (10⁻¹² m)',
+              answer: lambda_dB_pm,
+              traps: [
+                {
+                  val: lambda_dB_pm * 1e-3,
+                  msg: 'Your value is in nanometers (nm = 10^-9 m). Multiply by 1000 to express the wavelength in picometers (pm = 10^-12 m)!'
+                },
+                {
+                  val: (h_planck / (2.0 * m_e * e_charge * U_volt_ex4)) * 1e12,
+                  msg: 'Don\'t forget the SQUARE ROOT in the denominator: p = sqrt(2 * m_e * e * U)!'
+                }
+              ],
+              hint: 'Compute lambda [m] = 6.6261e-34 / sqrt(2 * 9.1094e-31 * 1.6022e-19 * U), then multiply by 10^12 to convert meters to picometers (pm).'
+            },
+            {
+              key: '4b',
+              label: `Step 4b: Calculate the zero-point energy \\(E_{1,1,1} = \\frac{3 h^2}{8 m_e L^2}\\) of the electron in the 3D cubic box of side length $L = ${L_cube_nm_ex4.toFixed(2)}\\text{ nm}$ (in eV).`,
+              unit: 'eV',
+              answer: E_111_eV,
+              traps: [
+                {
+                  val: E_111_eV / 3.0,
+                  msg: 'Dimension trap! You calculated the 1D zero-point energy E_1 = h^2 / (8 m_e L^2). In a 3D cube (n_x = n_y = n_z = 1), multiply by 3!'
+                },
+                {
+                  val: E_111_J,
+                  msg: 'Your result is in Joules (J). Divide by 1.6022 * 10^-19 J/eV to express the zero-point energy in electronvolts (eV)!'
+                }
+              ],
+              hint: 'Convert L from nm to m (multiply by 10^-9), compute E_{1,1,1} [J] = 3 * h^2 / (8 * m_e * L^2), and divide by 1.6022 * 10^-19 J/eV.'
+            },
+            {
+              key: '4c',
+              label: `Step 4c: For ${poly4.name} ($N_{\\pi} = ${poly4.N_pi}$, $L_{\\text{poly}} = ${poly4.L_nm.toFixed(2)}\\text{ nm}$), calculate the HOMO $\\rightarrow$ LUMO transition wavelength $\\lambda$ (in nm).`,
+              unit: 'nm',
+              answer: lambda_poly_nm,
+              traps: [
+                {
+                  val: ((8.0 * m_e * c_light * L_poly_m * L_poly_m) / (h_planck * ( (poly4.N_pi + 1)*(poly4.N_pi + 1) - poly4.N_pi*poly4.N_pi ))) * 1e9,
+                  msg: 'Pauli exclusion trap! Each energy level holds TWO electrons (spin up & down), so n_HOMO = N_pi / 2 (not N_pi)!'
+                },
+                {
+                  val: dE_poly_J,
+                  msg: 'That is the transition energy Delta E in Joules. Now use lambda = h * c / Delta E and multiply by 10^9 to get the wavelength in nm!'
+                }
+              ],
+              hint: `With ${poly4.N_pi} pi-electrons, n_HOMO = ${n_HOMO_ex4} and n_LUMO = ${n_LUMO_ex4}. Compute Delta E = h^2 * (${n_LUMO_ex4}^2 - ${n_HOMO_ex4}^2) / (8 * m_e * L_poly^2), then lambda [nm] = (h * c / Delta E) * 10^9.`
+            }
+          ]
+        }
+      ];
+    }
+
+    // Render all 4 exercises into DOM
+    function renderExercises() {
+      const container = document.getElementById('exercises-container');
+      container.innerHTML = '';
+
+      currentProblems.forEach((prob) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';
+
+        let stepsHtml = '';
+        prob.steps.forEach((st) => {
+          const savedVal = userState.inputs[st.key] !== undefined ? userState.inputs[st.key] : '';
+          const isDone = !!userState.completed[st.key];
+          stepsHtml += `
+            <div id="step-card-${st.key}" class="step-card p-4 rounded-lg border ${isDone ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50 border-slate-200'} space-y-2">
+              <label class="block text-sm font-semibold text-slate-800" for="input-${st.key}">
+                ${st.label}
+              </label>
+              <div class="flex flex-wrap items-center gap-2">
+                <input
+                  id="input-${st.key}"
+                  type="text"
+                  value="${savedVal}"
+                  placeholder="Enter value..."
+                  onkeydown="if(event.key==='Enter') checkStep('${st.key}')"
+                  class="px-3 py-1.5 rounded border border-slate-300 bg-white text-sm font-mono w-44 focus:outline-none focus:border-indigo-500"
+                />
+                <span class="text-xs font-bold text-slate-600 bg-slate-200/80 px-2.5 py-1.5 rounded">${st.unit}</span>
+                <button
+                  onclick="checkStep('${st.key}')"
+                  class="px-3.5 py-1.5 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider transition"
+                >
+                  Check
+                </button>
+                <button
+                  onclick="toggleStepHint('${st.key}')"
+                  class="px-2.5 py-1.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold transition"
+                >
+                  💡 Hint
+                </button>
+              </div>
+              <div id="hint-${st.key}" class="hidden text-xs text-indigo-900 bg-indigo-50 border border-indigo-200 rounded p-2.5">
+                <strong>Formula / Hint:</strong> ${st.hint}
+              </div>
+              <div id="feedback-${st.key}" class="text-xs font-semibold ${isDone ? 'text-emerald-700' : 'hidden'}">
+                ${isDone ? '✅ Correct! Step verified and saved.' : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="px-6 py-4 bg-slate-800 text-white flex items-center justify-between">
+            <h3 class="font-bold text-base">${prob.title}</h3>
+            <span class="text-xs font-mono text-amber-400">3 Steps</span>
+          </div>
+
+          <div class="p-6 space-y-5">
+            <!-- Blue Reference Service Box -->
+            <div class="bg-sky-50 border-l-4 border-sky-500 rounded-r-lg p-3.5 text-xs text-sky-950 space-y-1">
+              <div>📖 <strong>Lecture Theory:</strong> ${prob.theoryRef}</div>
+              <div>🔍 <strong>Similar Worked Examples:</strong> ${prob.examplesRef}</div>
+            </div>
+
+            <!-- Problem Statement -->
+            <div class="text-sm text-slate-800 leading-relaxed bg-white p-1">
+              ${prob.statement}
+            </div>
+
+            <!-- Instructor Mode Solution Box -->
+            <div class="prof-box ${isProfMode ? '' : 'hidden'} rounded-lg p-4 text-xs text-slate-900 space-y-1.5 shadow-inner">
+              <div class="font-extrabold uppercase tracking-wider text-amber-900 flex items-center justify-between">
+                <span>👨‍🏫 [PROF SOLUTIONS] – Exact Key for Student ID: ${currentStudentId}</span>
+                <span class="font-mono">Tol: ±1.5%</span>
+              </div>
+              ${prob.profExplanation}
+            </div>
+
+            <!-- 3 Interactive Sub-Steps -->
+            <div class="space-y-3">
+              ${stepsHtml}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      renderMath();
+      updateProgressUI();
+    }
+
+    // Check individual step with Smart Traps (resets completion state if modified to wrong value)
+    function checkStep(stepKey) {
+      let targetStep = null;
+      currentProblems.forEach((p) => {
+        p.steps.forEach((s) => {
+          if (s.key === stepKey) targetStep = s;
+        });
+      });
+      if (!targetStep) return;
+
+      const inputEl = document.getElementById(`input-${stepKey}`);
+      const fbEl = document.getElementById(`feedback-${stepKey}`);
+      const cardEl = document.getElementById(`step-card-${stepKey}`);
+
+      const raw = inputEl.value.trim().replace(',', '.');
+      userState.inputs[stepKey] = inputEl.value.trim();
+
+      const val = parseFloat(raw);
+      if (isNaN(val)) {
+        delete userState.completed[stepKey];
+        cardEl.className = 'step-card p-4 rounded-lg border bg-slate-50 border-slate-200 space-y-2';
+        fbEl.className = 'text-xs font-semibold text-rose-600';
+        fbEl.textContent = '⚠️ Please enter a valid numerical value.';
+        saveState();
+        updateProgressUI();
+        return;
+      }
+
+      const ans = targetStep.answer;
+      const relErr = Math.abs(val - ans) / (Math.abs(ans) || 1);
+
+      if (relErr <= 0.015) {
+        userState.completed[stepKey] = true;
+        fbEl.className = 'text-xs font-semibold text-emerald-700';
+        fbEl.innerHTML = `✅ Correct! (Exact reference value: <span class="font-mono">${ans.toPrecision(4)} ${targetStep.unit}</span>)`;
+        cardEl.className = 'step-card p-4 rounded-lg border bg-emerald-50/60 border-emerald-300 space-y-2';
+        saveState();
+        updateProgressUI();
+        return;
+      }
+
+      // If previously completed and now changed to an incorrect value, revoke completion
+      delete userState.completed[stepKey];
+      cardEl.className = 'step-card p-4 rounded-lg border bg-rose-50/40 border-rose-300 space-y-2';
+
+      // Check Smart Traps
+      let trapMsg = null;
+      if (targetStep.traps) {
+        for (const trap of targetStep.traps) {
+          const tErr = Math.abs(val - trap.val) / (Math.abs(trap.val) || 1);
+          if (tErr <= 0.025) {
+            trapMsg = trap.msg;
+            break;
+          }
+        }
+      }
+
+      fbEl.className = 'text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 p-2 rounded';
+      if (trapMsg) {
+        fbEl.innerHTML = `❌ <strong>Smart Trap Detected:</strong> ${trapMsg}`;
+      } else {
+        fbEl.innerHTML = `❌ Not quite right yet. Check your formula and units (use the 💡 Hint button if needed).`;
+      }
+      saveState();
+      updateProgressUI();
+    }
+
+    function toggleStepHint(stepKey) {
+      const el = document.getElementById(`hint-${stepKey}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function updateProgressUI() {
+      const total = 12;
+      const done = Object.keys(userState.completed).filter((k) => userState.completed[k]).length;
+      document.getElementById('progress-counter').textContent = `${done} / ${total} Steps`;
+
+      // Compute deterministic verification checksum
+      const seedStr = `U07-${currentStudentId}-${done}`;
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        h ^= seedStr.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      const hex = (h >>> 0).toString(16).toUpperCase().padStart(8, '0').slice(0, 4);
+      const token = `PC2-U07-${currentStudentId}-${done}of12-CHK${hex}`;
+      document.getElementById('verification-token').textContent = token;
+    }
+
+    function copyVerificationToken() {
+      const token = document.getElementById('verification-token').textContent.trim();
+      navigator.clipboard.writeText(token).then(() => {
+        const fb = document.getElementById('copy-feedback');
+        fb.classList.remove('hidden');
+        setTimeout(() => fb.classList.add('hidden'), 2500);
+      });
+    }
+
+    // Guided Modeling Controls
+    function toggleFormulaSheet() {
+      const content = document.getElementById('formula-sheet-content');
+      const chev = document.getElementById('formula-chevron');
+      content.classList.toggle('hidden');
+      chev.textContent = content.classList.contains('hidden') ? '▶' : '▼';
+    }
+
+    function toggleSpokenHints() {
+      const hints = document.querySelectorAll('.spoken-hint');
+      const btn = document.getElementById('btn-spoken-hints');
+      let anyHidden = false;
+      hints.forEach((h) => {
+        if (h.classList.contains('hidden')) anyHidden = true;
+      });
+      hints.forEach((h) => {
+        if (anyHidden) h.classList.remove('hidden');
+        else h.classList.add('hidden');
+      });
+      btn.textContent = anyHidden ? '🎙️ Hide Spoken Explanation Hints' : '🎙️ Show Spoken Explanation Hints';
+    }
+
+    function toggleGuidedStep(exNum, stepChar) {
+      const el = document.getElementById(`guided-${exNum}-${stepChar}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function toggleAllGuided(exNum) {
+      const steps = ['a', 'b', 'c'];
+      const anyHidden = steps.some((ch) => document.getElementById(`guided-${exNum}-${ch}`).classList.contains('hidden'));
+      steps.forEach((ch) => {
+        const el = document.getElementById(`guided-${exNum}-${ch}`);
+        if (anyHidden) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+    }
+
+    // Student ID & LocalStorage Management
+    function parseStudentInput(rawInput) {
+      const trimmed = (rawInput || '').trim();
+      if (!trimmed) return { id: DEFAULT_ID, prof: false };
+      if (trimmed.toUpperCase().startsWith('PROF-')) {
+        const cleanId = trimmed.slice(5).trim() || DEFAULT_ID;
+        return { id: cleanId, prof: true };
+      }
+      if (trimmed.toUpperCase() === 'PROF') {
+        return { id: DEFAULT_ID, prof: true };
+      }
+      return { id: trimmed, prof: false };
+    }
+
+    function loadWorksheet() {
+      const raw = document.getElementById('student-id-input').value;
+      const parsed = parseStudentInput(raw);
+      const idChanged = parsed.id !== currentStudentId;
+
+      currentStudentId = parsed.id;
+      isProfMode = parsed.prof;
+
+      if (idChanged) {
+        userState = {
+          studentId: currentStudentId,
+          inputs: {},
+          completed: {}
+        };
+        saveState();
+      }
+
+      updateHeaderBadges();
+      currentProblems = buildUnit07Problems(currentStudentId);
+      renderExercises();
+    }
+
+    function resetWorksheet() {
+      if (!confirm('Reset all saved answers and progress for this worksheet?')) return;
+      userState = {
+        studentId: currentStudentId,
+        inputs: {},
+        completed: {}
+      };
+      saveState();
+      renderExercises();
+    }
+
+    function updateHeaderBadges() {
+      document.getElementById('active-id-badge').textContent = `Active ID: ${currentStudentId}`;
+      const profBadge = document.getElementById('prof-mode-badge');
+      if (isProfMode) profBadge.classList.remove('hidden');
+      else profBadge.classList.add('hidden');
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
+      } catch (e) {}
+    }
+
+    function loadStateFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.studentId) {
+            userState = parsed;
+            currentStudentId = parsed.studentId;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function renderMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '$', right: '$', display: false }
+          ],
+          output: 'html',
+          throwOnError: false
+        });
+      }
+    }
+
+    // Initialize on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStateFromStorage();
+      document.getElementById('student-id-input').value = currentStudentId;
+      updateHeaderBadges();
+      currentProblems = buildUnit07Problems(currentStudentId);
+      renderExercises();
+    });
+  </script>
+</body>
+</html>

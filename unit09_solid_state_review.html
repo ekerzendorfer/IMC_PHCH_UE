@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unit 09 – Solid State Crystallography, X-Ray Diffraction & NMR | Physical Chemistry IMC Krems</title>
+  
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- KaTeX CSS & JS (output: html only, no MathML duplication) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+    }
+    .katex-display {
+      margin: 0.65em 0 !important;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+    .step-card {
+      transition: all 0.2s ease-in-out;
+    }
+    .prof-box {
+      background: linear-gradient(135deg, #fefce8 0%, #fef08a 100%);
+      border-left: 5px solid #ca8a04;
+    }
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white; }
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-16">
+
+  <!-- TOP HEADER & NAVIGATION -->
+  <header class="bg-slate-900 text-white shadow-lg border-b border-slate-700 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <a href="index.html" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium border border-slate-600 transition">
+          <span>&larr;</span> Course Hub
+        </a>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider bg-amber-500 text-slate-950">Block 3 &bull; Unit 09</span>
+            <span class="text-xs text-slate-400 hidden sm:inline">FH IMC Krems &bull; Physical Chemistry Exercise</span>
+          </div>
+          <h1 class="text-lg sm:text-xl font-bold tracking-tight text-white">
+            Solid State Crystallography, Bragg X-Ray Diffraction &amp; NMR Spectroscopy
+          </h1>
+        </div>
+      </div>
+
+      <div class="text-xs text-slate-300 text-right hidden md:block">
+        <div><strong>UE Lecturer:</strong> Mag. Erich Kerzendorfer</div>
+        <div><strong>Main Lecture:</strong> Prof. Manfred Kerschbaumer</div>
+      </div>
+    </div>
+
+    <!-- STUDENT ID & CONTROL BAR -->
+    <div class="bg-slate-800/90 border-t border-slate-700">
+      <div class="max-w-6xl mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex flex-wrap items-center gap-2">
+          <label for="student-id-input" class="text-xs font-semibold uppercase tracking-wider text-amber-400">
+            Student ID:
+          </label>
+          <input
+            id="student-id-input"
+            type="text"
+            placeholder="e.g. 2510456012"
+            class="px-3 py-1.5 rounded bg-slate-900 border border-slate-600 text-white text-sm font-mono focus:outline-none focus:border-amber-400 w-48"
+          />
+          <button
+            onclick="loadWorksheet()"
+            class="px-3.5 py-1.5 rounded bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-sm transition shadow-sm"
+          >
+            Load My Worksheet
+          </button>
+          <button
+            onclick="resetWorksheet()"
+            class="px-3 py-1.5 rounded bg-slate-700 hover:bg-rose-600 text-slate-200 hover:text-white text-xs font-semibold transition"
+          >
+            Reset Saved Inputs
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <span id="active-id-badge" class="px-2.5 py-1 rounded bg-slate-900 border border-slate-600 text-xs font-mono text-emerald-400">
+            Active ID: 2510456012
+          </span>
+          <span id="prof-mode-badge" class="hidden px-2.5 py-1 rounded bg-yellow-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">
+            PROF SOLUTIONS ACTIVE
+          </span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="max-w-6xl mx-auto px-4 mt-6 space-y-8">
+
+    <!-- SECTION 1: COLLAPSIBLE FORMULA SHEET -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <button
+        onclick="toggleFormulaSheet()"
+        class="w-full px-6 py-4 bg-slate-100 hover:bg-slate-200/70 flex items-center justify-between text-left transition"
+      >
+        <div class="flex items-center gap-3">
+          <span class="text-xl">📐</span>
+          <div>
+            <h2 class="font-bold text-slate-800 text-base sm:text-lg">Section 1: Unit 09 Formula Sheet, Unit Cells, Bragg's Law &amp; NMR Spectroscopy</h2>
+            <p class="text-xs text-slate-500">Click to expand/collapse reference equations for Cubic Packing, Crystal Density, Miller Planes $d_{hkl}$, Bragg Diffraction &amp; Larmor/Chemical Shift</p>
+          </div>
+        </div>
+        <span id="formula-chevron" class="text-slate-600 font-bold text-lg transform transition-transform">▼</span>
+      </button>
+
+      <div id="formula-sheet-content" class="p-6 border-t border-slate-200 space-y-6">
+        <!-- 5 BY HEART FORMULAS -->
+        <div class="bg-rose-50 border border-rose-200 rounded-lg p-4">
+          <div class="text-xs font-bold uppercase tracking-wider text-rose-800 mb-2">
+            🧠 The 5 Fundamental "By Heart" Formulas (Required without Formula Sheet in Exams!)
+          </div>
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-sm bg-white p-3 rounded border border-rose-100">
+            <div>$$\rho = \frac{m}{V}$$</div>
+            <div>$$n = \frac{m}{M}$$</div>
+            <div>$$c = \frac{n}{V}$$</div>
+            <div>$$p \cdot V = n \cdot R \cdot T$$</div>
+            <div>$$x_i = \frac{n_i}{n_{\text{tot}}}$$</div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Solid State & X-Ray Diffraction -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              1. Unit Cells, Miller Indices &amp; Bragg's Law (L26)
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Cubic Unit Cell Geometry (Atomic Radius $r$, Lattice Parameter $a$, Multiplicity $Z$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\text{sc } (Z=1): \; a = 2r, \qquad \text{bcc } (Z=2): \; \sqrt{3}\,a = 4r \implies a = \frac{4r}{\sqrt{3}}$$
+              $$\text{fcc } (Z=4): \; \sqrt{2}\,a = 4r \implies a = \frac{4r}{\sqrt{2}} = 2\sqrt{2}\,r$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Crystal Mass Density $\rho$ &amp; Protein Molar Mass $M$:</strong>
+            </p>
+            <div class="text-sm">
+              $$\rho = \frac{Z \cdot M}{N_A \cdot V_{\text{cell}}} = \frac{Z \cdot M}{N_A \cdot a^3} \quad \Longleftrightarrow \quad M = \frac{\rho \cdot N_A \cdot a^3}{Z}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Interplanar Spacing $d_{hkl}$ &amp; Bragg's Diffraction Law ($n = 1, 2, \dots$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\text{Cubic: } d_{hkl} = \frac{a}{\sqrt{h^2 + k^2 + l^2}}, \qquad \text{Orthorhombic: } \frac{1}{d_{hkl}^2} = \frac{h^2}{a^2} + \frac{k^2}{b^2} + \frac{l^2}{c^2}$$
+              $$n \cdot \lambda = 2 \cdot d_{hkl} \cdot \sin\theta \quad \Longleftrightarrow \quad \sin\theta = \frac{n \cdot \lambda}{2 \cdot d_{hkl}}$$
+            </div>
+          </div>
+
+          <!-- NMR & Rotational/Vibrational Review -->
+          <div class="bg-slate-50 p-4 rounded-lg border border-slate-200 space-y-2">
+            <h3 class="font-bold text-slate-800 text-sm uppercase tracking-wider border-b pb-1 border-slate-300">
+              2. NMR Spectroscopy &amp; Molecular Modes (L25)
+            </h3>
+            <p class="text-xs text-slate-600">
+              <strong>Nuclear Magnetic Resonance (Larmor Frequency $\nu_L$ &amp; Shielding $\sigma$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\nu_L = \frac{\gamma_N \cdot |B_0|}{2\pi}, \qquad B_{\text{eff}} = B_0(1 - \sigma), \qquad \frac{\nu_{L,2}}{\nu_{L,1}} = \frac{B_{0,2}}{B_{0,1}}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>NMR Chemical Shift $\delta$ (in $\text{ppm}$) &amp; Spin–Spin Splitting ($M = 2 n_{\text{eq}} I + 1$):</strong>
+            </p>
+            <div class="text-sm">
+              $$\delta\text{ [ppm]} = \frac{\nu_{\text{sample}} - \nu_{\text{ref}}}{\nu_{\text{spec}}} \times 10^6 = \frac{\Delta\nu\text{ [Hz]}}{\nu_{\text{spec}}\text{ [MHz]}}$$
+              $$\Delta\nu_{12}\text{ [Hz]} = |\delta_1 - \delta_2|\text{ [ppm]} \cdot \nu_{\text{spec}}\text{ [MHz]}$$
+            </div>
+            <p class="text-xs text-slate-600 pt-1">
+              <strong>Vibrational Normal Modes ($N$ Atoms):</strong> Linear: $N_{\text{vib}} = 3N - 5$; Non-linear: $N_{\text{vib}} = 3N - 6$.
+            </p>
+          </div>
+        </div>
+
+        <!-- Summary Reference Table for Cubic Lattices & Unit Conversions -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs bg-amber-50/70 border border-amber-200 p-4 rounded-lg">
+          <div>
+            <strong class="text-amber-900 uppercase tracking-wider block mb-1">📊 Cubic Crystal Systems Quick Reference:</strong>
+            <ul class="space-y-1 text-slate-700 list-disc list-inside">
+              <li><strong>Simple Cubic (sc, e.g. $\alpha$-Po):</strong> $Z = 1$, Coordination $= 6$, Packing efficiency $= 52.4\%$</li>
+              <li><strong>Body-Centered Cubic (bcc, e.g. Na, K, Fe, W):</strong> $Z = 2$, Coordination $= 8$, Packing $= 68.0\%$</li>
+              <li><strong>Face-Centered Cubic (fcc / ccp, e.g. Cu, Ag, Au, Al):</strong> $Z = 4$, Coordination $= 12$, Packing $= 74.0\%$</li>
+              <li><strong>Miller Indices $(hkl)$:</strong> Take reciprocals of axis intercepts $(p, q, r) \rightarrow (1/p, 1/q, 1/r)$ and multiply by the least common denominator to clear fractions ($-1$ is written $\bar{1}$).</li>
+            </ul>
+          </div>
+          <div>
+            <strong class="text-amber-900 uppercase tracking-wider block mb-1">⚠️ Golden Unit Conversion Rules (Crystallography &amp; NMR):</strong>
+            <ul class="space-y-1 text-slate-700 list-disc list-inside">
+              <li><strong>Picometers to Centimeters:</strong> $1\text{ pm} = 10^{-12}\text{ m} = 10^{-10}\text{ cm} \implies 1\text{ pm}^3 = 10^{-30}\text{ cm}^3$</li>
+              <li><strong>Nanometers to Centimeters:</strong> $1\text{ nm} = 10^{-9}\text{ m} = 10^{-7}\text{ cm} \implies 1\text{ nm}^3 = 10^{-21}\text{ cm}^3$</li>
+              <li><strong>Protein Mass:</strong> $1\text{ kDa} = 1\text{ kg mol}^{-1} = 1000\text{ g mol}^{-1}$</li>
+              <li><strong>Proton ($^1\text{H}$) Larmor Anchor:</strong> $\nu_L(^1\text{H}) = 42.576\text{ MHz}$ at $B_0 = 1.000\text{ T}$ (Lecture quiz value: $42.6\text{ MHz T}^{-1}$)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 2: IN-CLASS GUIDED MODELING -->
+    <section class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="px-6 py-4 bg-indigo-950 text-white flex flex-wrap items-center justify-between gap-3">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-indigo-300">Section 2 &bull; 25-Min Board / Projector Walkthrough</span>
+          <h2 class="text-lg font-bold">👨‍🏫 Part 1: In-Class Guided Modeling</h2>
+        </div>
+        <button
+          onclick="toggleSpokenHints()"
+          id="btn-spoken-hints"
+          class="px-3.5 py-1.5 rounded-lg bg-indigo-800 hover:bg-indigo-700 text-indigo-100 text-xs font-semibold border border-indigo-600 transition"
+        >
+          🎙️ Show Spoken Explanation Hints
+        </button>
+      </div>
+
+      <div class="p-6 space-y-8">
+        <!-- GUIDED EXAMPLE 1 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 1 &bull; Ref: L26_Exercises - Solid State.pdf (Exercises 3 &amp; 5)</span>
+              <h3 class="text-base font-bold text-slate-900">Bragg Diffraction &amp; Crystal Density of Polonium (Ex. 3) + Protein Molar Mass of Tobacco Seed Globulin (Ex. 5)</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(1, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(1, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(1, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(1)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong><br />
+            <strong>Part I (`L26` Ex. 3 – Polonium):</strong> Polonium ($M = 209.0\text{ g mol}^{-1}$) crystallizes in a <em>primitive cubic</em> lattice ($Z = 1$). First-order ($n = 1$) Bragg diffraction of X-rays with wavelength $\lambda = 150.0\text{ pm}$ from the $\{111\}$ planes occurs at a glancing angle of $\theta = 23.45^\circ$.<br />
+            <strong>Part II (`L26` Ex. 5 – Tobacco Seed Globulin):</strong> The protein tobacco seed globulin forms <em>face-centered cubic</em> (fcc, $Z = 4$) crystals with unit cell edge length $a = 12.3\text{ nm}$ and a crystal density of $\rho = 1.287\text{ g cm}^{-3}$ ($N_A = 6.0221 \times 10^{23}\text{ mol}^{-1}$).<br />
+            <strong>(a)</strong> Calculate the interplanar spacing $d_{111}$ (in $\text{pm}$) and the cubic lattice constant $a$ (in $\text{pm}$ and $\text{cm}$) of polonium.<br />
+            <strong>(b)</strong> Calculate the mass density $\rho$ of crystalline polonium (in $\text{g cm}^{-3}$).<br />
+            <strong>(c)</strong> Determine the molar mass $M$ of the tobacco seed globulin protein (in $\text{g mol}^{-1}$ and $\text{kDa}$), assuming one protein molecule per fcc lattice point.
+          </p>
+
+          <!-- Spoken Hint 1 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 1):</strong>
+            <p>"Show the two-step bridge from X-ray diffraction to macroscopic density: Bragg's law ($n\lambda = 2 d_{111}\sin\theta$) gives the spacing between diagonal $\{111\}$ planes ($d_{111} = 188.45\text{ pm}$), and cubic geometry ($a = d_{111}\sqrt{1^2+1^2+1^2} = d_{111}\sqrt{3}$) gives the unit cell edge $a = 326.4\text{ pm}$!"</p>
+            <p>"Warn students about the #1 cubic volume unit trap: since $1\text{ pm} = 10^{-10}\text{ cm}$ and $1\text{ nm} = 10^{-7}\text{ cm}$, it is MUCH safer to convert $a$ into $\text{cm}$ BEFORE cubing ($a^3$) than trying to convert $\text{pm}^3$ or $\text{nm}^3$ afterwards!"</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-1-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Interplanar Spacing $d_{111}$ &amp; Unit Cell Edge $a$ of Polonium:</div>
+              $$d_{111} = \frac{\lambda}{2 \cdot \sin\theta} = \frac{150.0\text{ pm}}{2 \cdot \sin(23.45^\circ)} = \frac{150.0\text{ pm}}{2 \cdot 0.39795} = \mathbf{188.47\text{ pm}}$$
+              $$a = d_{111} \cdot \sqrt{1^2 + 1^2 + 1^2} = 188.47\text{ pm} \cdot \sqrt{3} = \mathbf{326.4\text{ pm}} = \mathbf{3.264 \times 10^{-8}\text{ cm}}$$
+            </div>
+
+            <div id="guided-1-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Crystal Density $\rho$ of Primitive Cubic Polonium ($Z = 1$):</div>
+              $$V_{\text{cell}} = a^3 = (3.2644 \times 10^{-8}\text{ cm})^3 = 3.4786 \times 10^{-23}\text{ cm}^3$$
+              $$\rho = \frac{Z \cdot M}{N_A \cdot a^3} = \frac{1 \cdot 209.0\text{ g mol}^{-1}}{6.0221 \times 10^{23}\text{ mol}^{-1} \cdot 3.4786 \times 10^{-23}\text{ cm}^3} = \mathbf{9.98\text{ g cm}^{-3}}$$
+            </div>
+
+            <div id="guided-1-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – Molar Mass $M$ of Tobacco Seed Globulin (fcc, $Z = 4$):</div>
+              <p>Convert $a = 12.3\text{ nm} = 1.23 \times 10^{-6}\text{ cm} \implies V_{\text{cell}} = a^3 = (1.23 \times 10^{-6}\text{ cm})^3 = 1.8609 \times 10^{-18}\text{ cm}^3$:</p>
+              $$M = \frac{\rho \cdot N_A \cdot a^3}{Z} = \frac{1.287\text{ g cm}^{-3} \cdot 6.0221 \times 10^{23}\text{ mol}^{-1} \cdot 1.8609 \times 10^{-18}\text{ cm}^3}{4} = \mathbf{3.606 \times 10^5\text{ g mol}^{-1}} = \mathbf{360.6\text{ kDa}}$$
+            </div>
+          </div>
+        </div>
+
+        <!-- GUIDED EXAMPLE 2 -->
+        <div class="border border-slate-200 rounded-xl p-5 bg-slate-50/60 space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-indigo-600">Guided Example 2 &bull; Ref: L26_Exercises - Solid State.pdf (Ex. 6 &amp; 7.2) &amp; T02_Try_Tests_Lecture2.pdf</span>
+              <h3 class="text-base font-bold text-slate-900">Orthorhombic Aragonite ($\text{CaCO}_3$) Bragg Diffraction (Ex. 7.2) &amp; High-Field $^1\text{H}$-NMR Spectroscopy</h3>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              <button onclick="toggleGuidedStep(2, 'a')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step a</button>
+              <button onclick="toggleGuidedStep(2, 'b')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step b</button>
+              <button onclick="toggleGuidedStep(2, 'c')" class="px-2.5 py-1 rounded bg-indigo-100 hover:bg-indigo-200 text-indigo-900 text-xs font-semibold">Step c</button>
+              <button onclick="toggleAllGuided(2)" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold">Show / Hide All</button>
+            </div>
+          </div>
+
+          <p class="text-sm text-slate-700 leading-relaxed">
+            <strong>Problem Statement:</strong><br />
+            <strong>Part I (`L26` Ex. 7.2 – Orthorhombic Aragonite):</strong> Calcium carbonate in the form of aragonite has an <em>orthorhombic</em> unit cell with lattice parameters $a = 574.1\text{ pm}$, $b = 796.8\text{ pm}$, and $c = 495.9\text{ pm}$.<br />
+            <strong>Part II (`T02` – $^1\text{H}$-NMR &amp; Normal Modes):</strong> The Larmor frequency of a "naked" proton ($^1\text{H}$) at $B_0 = 1.00\text{ T}$ is $42.6\text{ MHz}$. On a $600\text{ MHz}$ $^1\text{H}$-NMR spectrometer, the $\text{CH}_2$ protons of ethyl ethanoate ($\text{CH}_3\text{COOCH}_2\text{CH}_3$) appear as a quartet at $\delta = 4.12\text{ ppm}$.<br />
+            <strong>(a)</strong> Calculate the interplanar spacing $d_{111}$ (in $\text{pm}$) of orthorhombic aragonite.<br />
+            <strong>(b)</strong> Calculate the glancing angle $\theta$ (in $^\circ$) for the $\{111\}$ reflection of aragonite using X-rays of wavelength $\lambda = 83.42\text{ pm}$.<br />
+            <strong>(c)</strong> Calculate the magnetic field $B_0$ (in $\text{T}$) of the $600\text{ MHz}$ NMR magnet and the frequency shift $\Delta\nu = \nu_{\text{sample}} - \nu_{\text{TMS}}$ (in $\text{Hz}$) of the $\text{CH}_2$ quartet at $\delta = 4.12\text{ ppm}$.
+          </p>
+
+          <!-- Spoken Hint 2 -->
+          <div class="spoken-hint hidden bg-amber-50 border-l-4 border-amber-500 p-3 text-xs text-amber-950 space-y-1">
+            <strong>🎙️ Lecturer Board Moderation (Guided Example 2):</strong>
+            <p>"Contrast cubic vs. orthorhombic crystals on the board: in an orthorhombic crystal ($a \neq b \neq c$, all angles $90^\circ$), we CANNOT pull $a$ out of the square root! We must compute $\frac{1}{d_{hkl}^2} = \frac{h^2}{a^2} + \frac{k^2}{b^2} + \frac{l^2}{c^2}$ term by term and take the inverse square root at the end."</p>
+            <p>"In Step (c), remind students why chemical shift $\delta$ is defined in $\text{ppm}$ ($\text{Hz}/\text{MHz}$): $\delta = 4.12\text{ ppm}$ is identical on every NMR instrument worldwide, whereas the frequency shift in $\text{Hz}$ ($\Delta\nu = 4.12 \times 600 = 2472\text{ Hz}$) scales linearly with the magnet strength!"</p>
+          </div>
+
+          <div class="space-y-3">
+            <div id="guided-2-a" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (a) – Orthorhombic Spacing $d_{111}$ of Aragonite:</div>
+              $$\frac{1}{d_{111}^2} = \frac{1^2}{(574.1\text{ pm})^2} + \frac{1^2}{(796.8\text{ pm})^2} + \frac{1^2}{(495.9\text{ pm})^2} = (3.0341 + 1.5751 + 4.0664) \times 10^{-6}\text{ pm}^{-2} = 8.6756 \times 10^{-6}\text{ pm}^{-2}$$
+              $$d_{111} = \frac{1}{\sqrt{8.6756 \times 10^{-6}\text{ pm}^{-2}}} = \mathbf{339.5\text{ pm}}$$
+            </div>
+
+            <div id="guided-2-b" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (b) – Bragg Diffraction Angle $\theta$ for $\{111\}$ ($\lambda = 83.42\text{ pm}$):</div>
+              $$\sin\theta = \frac{\lambda}{2 \cdot d_{111}} = \frac{83.42\text{ pm}}{2 \cdot 339.5\text{ pm}} = 0.12285 \implies \theta = \arcsin(0.12285) = \mathbf{7.06^\circ}$$
+            </div>
+
+            <div id="guided-2-c" class="hidden bg-white p-4 rounded-lg border border-indigo-200 text-sm space-y-1">
+              <div class="font-bold text-indigo-900">Step (c) – $600\text{ MHz}$ NMR Magnetic Induction $B_0$ &amp; Shift $\Delta\nu$:</div>
+              $$B_0 = \frac{600\text{ MHz}}{42.6\text{ MHz T}^{-1}} = \mathbf{14.08\text{ T}}$$
+              $$\Delta\nu = \delta\text{ [ppm]} \cdot \nu_{\text{spec}}\text{ [MHz]} = 4.12\text{ ppm} \cdot 600\text{ MHz} = \mathbf{2472\text{ Hz}}$$
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION 3: INDIVIDUALIZED EXERCISE WORKSHEET -->
+    <section class="space-y-6">
+      <div class="bg-slate-900 text-white rounded-xl px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow">
+        <div>
+          <span class="text-xs uppercase font-bold tracking-wider text-amber-400">Section 3 &bull; Individualized Student Worksheet</span>
+          <h2 class="text-lg font-bold">📝 Part 2: 4 Exercises (12 Graded Steps with Smart Error Diagnosis)</h2>
+          <p class="text-xs text-slate-300">Enter your calculated values (tolerance $\pm 1.5\%$). Use dot (`.`) or comma (`,`) as decimal separator.</p>
+        </div>
+        <div class="bg-slate-800 px-4 py-2 rounded-lg border border-slate-700 text-right">
+          <div class="text-xs text-slate-400">Overall Progress</div>
+          <div id="progress-counter" class="text-lg font-extrabold text-emerald-400 font-mono">0 / 12 Steps</div>
+        </div>
+      </div>
+
+      <!-- DYNAMIC EXERCISES CONTAINER -->
+      <div id="exercises-container" class="space-y-8"></div>
+
+      <!-- SUBMISSION VERIFICATION TOKEN BOX -->
+      <div class="bg-slate-900 text-white rounded-xl p-6 shadow-lg border border-slate-700 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">MS Forms / Moodle Verification</span>
+            <h3 class="text-base font-bold">🔐 Submission Verification Token</h3>
+            <p class="text-xs text-slate-300">Copy this token into the MS Forms submission field at the end of the exercise unit.</p>
+          </div>
+          <button
+            onclick="copyVerificationToken()"
+            class="px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold text-xs uppercase tracking-wider transition shadow"
+          >
+            📋 Copy Token
+          </button>
+        </div>
+        <div class="bg-slate-950 border border-slate-700 rounded-lg p-3.5 flex items-center justify-between">
+          <code id="verification-token" class="text-sm sm:text-base font-mono text-emerald-400 font-bold select-all">
+            PC2-U09-2510456012-0of12-CHK0000
+          </code>
+          <span id="copy-feedback" class="text-xs text-amber-400 font-semibold hidden">Copied to clipboard!</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- JAVASCRIPT ENGINE -->
+  <script>
+    const STORAGE_KEY = 'PC_IMC_UNIT09_STATE_V1';
+    const DEFAULT_ID = '2510456012';
+
+    let currentStudentId = DEFAULT_ID;
+    let isProfMode = false;
+    let currentProblems = [];
+    let userState = {
+      studentId: DEFAULT_ID,
+      inputs: {},
+      completed: {}
+    };
+
+    // Deterministic Seeded PRNG (FNV-1a hash h = 2166136261 + Mulberry32)
+    function createSeededRNG(str) {
+      let h = 2166136261 >>> 0;
+      const clean = String(str).trim();
+      for (let i = 0; i < clean.length; i++) {
+        h ^= clean.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      return function() {
+        h += 0x6D2B79F5;
+        let t = Math.imul(h ^ (h >>> 15), 1 | h);
+        t ^= t + Math.imul(t ^ (t >>> 7), 61 | t);
+        return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+      };
+    }
+
+    function randStep(rng, min, max, step) {
+      const steps = Math.round((max - min) / step);
+      const idx = Math.floor(rng() * (steps + 1));
+      return Number((min + idx * step).toFixed(6));
+    }
+
+    // Generate all 4 problems deterministically from Student ID
+    function buildUnit09Problems(studentId) {
+      const rng = createSeededRNG(studentId);
+      const N_A = 6.0221e23;
+
+      // =========================================================================
+      // EXERCISE 1: Metallic Unit Cell Packing (bcc/fcc) & Protein Crystallography
+      // =========================================================================
+      const metalsEx1 = [
+        { name: 'iron (&alpha;-Fe, body-centered cubic, bcc)', type: 'bcc', Z: 2, M: 55.845, r_pm: 124.1 },
+        { name: 'tungsten (W, body-centered cubic, bcc)', type: 'bcc', Z: 2, M: 183.84, r_pm: 137.0 },
+        { name: 'copper (Cu, face-centered cubic, fcc)', type: 'fcc', Z: 4, M: 63.546, r_pm: 127.8 },
+        { name: 'gold (Au, face-centered cubic, fcc)', type: 'fcc', Z: 4, M: 196.97, r_pm: 144.2 }
+      ];
+      const met1 = metalsEx1[Math.floor(rng() * metalsEx1.length)];
+      const a_prot_nm = randStep(rng, 10.5, 13.5, 0.5); // nm protein fcc lattice edge
+      const rho_prot = randStep(rng, 1.220, 1.340, 0.015); // g cm^-3 protein crystal density
+
+      const a_metal_pm = (met1.Z === 2)
+        ? (4.0 * met1.r_pm) / Math.sqrt(3.0)
+        : (4.0 * met1.r_pm) / Math.sqrt(2.0);
+      const a_metal_cm = a_metal_pm * 1e-10;
+      const rho_metal = (met1.Z * met1.M) / (N_A * Math.pow(a_metal_cm, 3)); // g cm^-3
+
+      const a_prot_cm = a_prot_nm * 1e-7; // cm
+      const M_prot_g_mol = (rho_prot * N_A * Math.pow(a_prot_cm, 3)) / 4.0; // g mol^-1 (Z = 4 for fcc)
+      const M_prot_kDa = M_prot_g_mol / 1000.0; // kDa (= kg mol^-1)
+
+      // =========================================================================
+      // EXERCISE 2: Cubic & Orthorhombic Interplanar Spacing d_hkl & Bragg Angle
+      // =========================================================================
+      const a_cub_ex2 = randStep(rng, 640.0, 780.0, 20.0); // pm (cf. L26 Ex 6.2: 712 pm)
+      const cubPlanes = [
+        { label: '{222}', h: 2, k: 2, l: 2, sqSum: 12 },
+        { label: '{246}', h: 2, k: 4, l: 6, sqSum: 56 },
+        { label: '{123}', h: 1, k: 2, l: 3, sqSum: 14 }
+      ];
+      const cp2 = cubPlanes[Math.floor(rng() * cubPlanes.length)];
+
+      const a_ortho_ex2 = randStep(rng, 560.0, 780.0, 20.0); // pm (cf. L26 Ex 6.3 / 7.2)
+      const b_ortho_ex2 = randStep(rng, 800.0, 940.0, 20.0); // pm
+      const c_ortho_ex2 = randStep(rng, 480.0, 680.0, 20.0); // pm
+      const lambda_ex2 = randStep(rng, 75.0, 125.0, 5.0); // pm X-ray wavelength
+
+      const d_cub_pm = a_cub_ex2 / Math.sqrt(cp2.sqSum); // pm
+      const inv_d2_ortho = (9.0 / (a_ortho_ex2 * a_ortho_ex2)) + (1.0 / (b_ortho_ex2 * b_ortho_ex2)) + (4.0 / (c_ortho_ex2 * c_ortho_ex2)); // for {312}
+      const d_ortho_312_pm = 1.0 / Math.sqrt(inv_d2_ortho); // pm
+      const sin_theta_ex2 = lambda_ex2 / (2.0 * d_ortho_312_pm);
+      const theta_deg_ex2 = (Math.asin(sin_theta_ex2) * 180.0) / Math.PI; // degrees
+
+      // =========================================================================
+      // EXERCISE 3: X-Ray Diffraction Calibration & Unknown Crystal Density (L26 Ex 3 & 7.1)
+      // =========================================================================
+      const d_cal_pm = randStep(rng, 120.0, 160.0, 4.0); // pm reference spacing (cf. L26 Ex 7.1: 128.2 pm)
+      const theta_cal_deg = randStep(rng, 17.5, 22.5, 0.5); // deg (cf. L26 Ex 7.1: 19.76 deg)
+
+      const samplesEx3 = [
+        { name: 'polonium (&alpha;-Po, primitive cubic, Z = 1)', Z: 1, M: 209.0, theta111: 15.20 },
+        { name: 'silver (Ag, face-centered cubic, Z = 4)', Z: 4, M: 107.87, theta111: 11.85 },
+        { name: 'palladium (Pd, face-centered cubic, Z = 4)', Z: 4, M: 106.42, theta111: 12.40 },
+        { name: 'niobium (Nb, body-centered cubic, Z = 2)', Z: 2, M: 92.906, theta111: 14.60 }
+      ];
+      const smp3 = samplesEx3[Math.floor(rng() * samplesEx3.length)];
+
+      const lambda_cal_pm = 2.0 * d_cal_pm * Math.sin((theta_cal_deg * Math.PI) / 180.0); // pm
+      const d_111_smp_pm = lambda_cal_pm / (2.0 * Math.sin((smp3.theta111 * Math.PI) / 180.0)); // pm
+      const a_smp_pm = d_111_smp_pm * Math.sqrt(3.0); // pm
+      const a_smp_cm = a_smp_pm * 1e-10; // cm
+      const rho_smp = (smp3.Z * smp3.M) / (N_A * Math.pow(a_smp_cm, 3)); // g cm^-3
+
+      // =========================================================================
+      // EXERCISE 4: High-Field 1H-NMR Spectroscopy & Vibrational Normal Modes
+      // =========================================================================
+      const gamma_H_MHz_T = 42.576; // MHz T^-1 for naked 1H
+      const freqListMHz = [300, 400, 500, 600, 700, 800];
+      const nu_spec_MHz = freqListMHz[Math.floor(rng() * freqListMHz.length)];
+      const delta_ppm_ex4 = randStep(rng, 2.10, 7.60, 0.25); // ppm chemical shift
+      const delta_nu_Hz_ex4 = Number((delta_ppm_ex4 * nu_spec_MHz).toFixed(1)); // Hz shift from TMS
+
+      const moleculesEx4 = [
+        { name: 'ethyl ethanoate (CH<sub>3</sub>COOCH<sub>2</sub>CH<sub>3</sub>, non-linear, N = 14 atoms)', N: 14, linear: false },
+        { name: 'benzene (C<sub>6</sub>H<sub>6</sub>, non-linear, N = 12 atoms)', N: 12, linear: false },
+        { name: 'ethanol (CH<sub>3</sub>CH<sub>2</sub>OH, non-linear, N = 9 atoms)', N: 9, linear: false },
+        { name: 'ethyne (acetylene, HC&equiv;CH, linear, N = 4 atoms)', N: 4, linear: true },
+        { name: 'cyanogen (N&equiv;C&ndash;C&equiv;N, linear, N = 4 atoms)', N: 4, linear: true }
+      ];
+      const mol4 = moleculesEx4[Math.floor(rng() * moleculesEx4.length)];
+
+      const B0_tesla_ex4 = nu_spec_MHz / gamma_H_MHz_T; // T
+      const delta_calc_ppm = delta_nu_Hz_ex4 / nu_spec_MHz; // ppm
+      const N_vib_ex4 = mol4.linear ? (3 * mol4.N - 5) : (3 * mol4.N - 6);
+
+      return [
+        // PROBLEM 1
+        {
+          id: 1,
+          title: 'Exercise 1: Cubic Unit Cell Geometry, Metal Density & Protein Crystal Molar Mass',
+          theoryRef: '<strong>L26_Exercises - Solid State.pdf</strong> (Exercises 3 & 5: Primitive, body-centered and face-centered cubic unit cells, relation between atomic radius $r$ and edge length $a$, crystal density $\\rho = Z M / (N_A a^3)$).',
+          examplesRef: '<strong>L26_Exercises - Solid State.pdf</strong> (Ex. 3 Polonium & Ex. 5 Tobacco Seed Globulin), <strong>T02_Try_Tests_Lecture2.pdf</strong>.',
+          statement: `<strong>Part A (Metallic Crystal):</strong> Crystalline <strong>${met1.name}</strong> ($Z = ${met1.Z}$, molar mass $M = ${met1.M.toFixed(2)}\\text{ g mol}^{-1}$) has a metallic atomic radius of $r = ${met1.r_pm.toFixed(1)}\\text{ pm}$.<br />
+            <strong>Part B (Protein Crystallography, cf. L26 Ex. 5):</strong> A globular seed storage protein forms <em>face-centered cubic</em> (fcc, $Z = 4$) crystals with unit cell edge length $a_{\\text{prot}} = ${a_prot_nm.toFixed(1)}\\text{ nm}$ and a measured crystal mass density of $\\rho_{\\text{prot}} = ${rho_prot.toFixed(3)}\\text{ g cm}^{-3}$ ($N_A = 6.0221 \\times 10^{23}\\text{ mol}^{-1}$).`,
+          profExplanation: `
+            <div><strong>Step 1a:</strong> For ${met1.type} ($Z = ${met1.Z}$), $a = \\frac{4r}{\\sqrt{${met1.Z === 2 ? '3' : '2'}}} = \\frac{4 \\cdot ${met1.r_pm.toFixed(1)}}{\\sqrt{${met1.Z === 2 ? '3' : '2'}}} = \\mathbf{${a_metal_pm.toFixed(2)}\\text{ pm}}$ ($= ${a_metal_cm.toExponential(4)}\\text{ cm}$)</div>
+            <div><strong>Step 1b:</strong> $\\rho_{\\text{metal}} = \\frac{Z \\cdot M}{N_A \\cdot a^3} = \\frac{${met1.Z} \\cdot ${met1.M.toFixed(2)}}{6.0221 \\times 10^{23} \\cdot (${a_metal_cm.toExponential(4)})^3} = \\mathbf{${rho_metal.toFixed(2)}\\text{ g cm}^{-3}}$</div>
+            <div><strong>Step 1c:</strong> With $a_{\\text{prot}} = ${a_prot_nm.toFixed(1)}\\text{ nm} = ${a_prot_cm.toExponential(3)}\\text{ cm}$ and $Z = 4$: $M_{\\text{prot}} = \\frac{\\rho_{\\text{prot}} \\cdot N_A \\cdot a_{\\text{prot}}^3}{4} = ${M_prot_g_mol.toExponential(4)}\\text{ g mol}^{-1} = \\mathbf{${M_prot_kDa.toFixed(1)}\\text{ kDa}}$ ($\\text{kg mol}^{-1}$)</div>
+          `,
+          steps: [
+            {
+              key: '1a',
+              label: `Step 1a: Calculate the cubic unit cell edge length \\(a\\) of ${met1.name} from its atomic radius $r = ${met1.r_pm.toFixed(1)}\\text{ pm}$ (in pm).`,
+              unit: 'pm',
+              answer: a_metal_pm,
+              traps: [
+                {
+                  val: 2.0 * met1.r_pm,
+                  msg: 'Simple-cubic trap! a = 2r only holds for primitive cubic (sc). For bcc (body diagonal = 4r), use a = 4r / sqrt(3); for fcc (face diagonal = 4r), use a = 4r / sqrt(2)!'
+                },
+                {
+                  val: (met1.Z === 2) ? (4.0 * met1.r_pm) / Math.sqrt(2.0) : (4.0 * met1.r_pm) / Math.sqrt(3.0),
+                  msg: 'bcc vs. fcc geometry swap! In bcc atoms touch along the body diagonal (sqrt(3)*a = 4r); in fcc atoms touch along the face diagonal (sqrt(2)*a = 4r).'
+                }
+              ],
+              hint: (met1.Z === 2)
+                ? 'For a bcc lattice, atoms touch along the body diagonal: sqrt(3) * a = 4 * r => a = (4 * r) / sqrt(3).'
+                : 'For an fcc lattice, atoms touch along the face diagonal: sqrt(2) * a = 4 * r => a = (4 * r) / sqrt(2).'
+            },
+            {
+              key: '1b',
+              label: `Step 1b: Calculate the theoretical crystal density \\(\\rho = \\frac{Z \\cdot M}{N_A \\cdot a^3}\\) of ${met1.name} (in $\\text{g cm}^{-3}$).`,
+              unit: 'g cm⁻³',
+              answer: rho_metal,
+              traps: [
+                {
+                  val: rho_metal / met1.Z,
+                  msg: `Multiplicity trap! A ${met1.type} unit cell contains Z = ${met1.Z} atoms per unit cell. Multiply by Z = ${met1.Z} in the numerator!`
+                },
+                {
+                  val: rho_metal * 1e-6,
+                  msg: 'Volume conversion check: Convert a from pm to cm FIRST (a [cm] = a [pm] * 10^-10) before cubing to get V in cm^3!'
+                }
+              ],
+              hint: `Convert a from pm to cm (multiply by 10^-10), cube it to get V_cell in cm^3, and compute rho = (${met1.Z} * ${met1.M}) / (6.0221e23 * a_cm^3).`
+            },
+            {
+              key: '1c',
+              label: `Step 1c: Calculate the molar mass \\(M_{\\text{prot}}\\) of the fcc protein crystal ($Z = 4$, $a_{\\text{prot}} = ${a_prot_nm.toFixed(1)}\\text{ nm}$, $\\rho_{\\text{prot}} = ${rho_prot.toFixed(3)}\\text{ g cm}^{-3}$) in $\\text{kDa}$ ($= \\text{kg mol}^{-1} = 10^3\\text{ g mol}^{-1}$).`,
+              unit: 'kDa (kg mol⁻¹)',
+              answer: M_prot_kDa,
+              traps: [
+                {
+                  val: M_prot_g_mol,
+                  msg: 'Unit scale notice: That is M in g mol^-1 (Da). Divide by 1000 to express the protein molar mass in kDa (kg mol^-1)!'
+                },
+                {
+                  val: M_prot_kDa * 4.0,
+                  msg: 'fcc multiplicity trap! Because an fcc unit cell contains Z = 4 protein molecules, divide the total unit cell molar mass by Z = 4!'
+                }
+              ],
+              hint: 'Convert a_prot from nm to cm (multiply by 10^-7), compute M [g/mol] = (rho_prot * 6.0221e23 * a_cm^3) / 4, and divide by 1000 for kDa.'
+            }
+          ]
+        },
+
+        // PROBLEM 2
+        {
+          id: 2,
+          title: 'Exercise 2: Interplanar Spacing \\(d_{hkl}\\) in Cubic & Orthorhombic Crystals + Bragg Angle',
+          theoryRef: '<strong>L26_Exercises - Solid State.pdf</strong> (Exercises 6.2, 6.3 & 7.2: Cubic spacing $d_{hkl} = a / \\sqrt{h^2+k^2+l^2}$, orthorhombic spacing $1/d_{hkl}^2 = h^2/a^2 + k^2/b^2 + l^2/c^2$, Bragg\'s law $n\\lambda = 2 d_{hkl}\\sin\\theta$).',
+          examplesRef: '<strong>L26_Exercises - Solid State.pdf</strong> (Ex. 6.2, Ex. 6.3 & Ex. 7.2 Aragonite), <strong>T02_Try_Tests_Lecture2.pdf</strong>.',
+          statement: `<strong>Part A (Cubic Crystal, cf. L26 Ex. 6.2):</strong> A cubic crystal has a unit cell edge length of $a_{\\text{cub}} = ${a_cub_ex2.toFixed(1)}\\text{ pm}$.<br />
+            <strong>Part B (Orthorhombic Crystal, cf. L26 Ex. 6.3 &amp; 7.2):</strong> An orthorhombic mineral crystal has unit cell dimensions $a = ${a_ortho_ex2.toFixed(1)}\\text{ pm}$, $b = ${b_ortho_ex2.toFixed(1)}\\text{ pm}$, and $c = ${c_ortho_ex2.toFixed(1)}\\text{ pm}$. Its $\{312\}$ crystal planes are investigated by first-order ($n = 1$) X-ray diffraction using radiation of wavelength $\\lambda = ${lambda_ex2.toFixed(1)}\\text{ pm}$.`,
+          profExplanation: `
+            <div><strong>Step 2a:</strong> For the cubic ${cp2.label} planes ($h^2+k^2+l^2 = ${cp2.sqSum}$): $d_{\\text{cub}} = \\frac{${a_cub_ex2.toFixed(1)}}{\\sqrt{${cp2.sqSum}}} = \\mathbf{${d_cub_pm.toFixed(2)}\\text{ pm}}$</div>
+            <div><strong>Step 2b:</strong> For orthorhombic $\{312\}$: $\\frac{1}{d_{312}^2} = \\frac{3^2}{${a_ortho_ex2.toFixed(1)}^2} + \\frac{1^2}{${b_ortho_ex2.toFixed(1)}^2} + \\frac{2^2}{${c_ortho_ex2.toFixed(1)}^2} = ${inv_d2_ortho.toExponential(4)}\\text{ pm}^{-2} \\implies d_{312} = \\mathbf{${d_ortho_312_pm.toFixed(2)}\\text{ pm}}$</div>
+            <div><strong>Step 2c:</strong> $\\sin\\theta = \\frac{\\lambda}{2 \\cdot d_{312}} = \\frac{${lambda_ex2.toFixed(1)}}{2 \\cdot ${d_ortho_312_pm.toFixed(2)}} = ${sin_theta_ex2.toFixed(5)} \\implies \\theta = \\arcsin(${sin_theta_ex2.toFixed(5)}) = \\mathbf{${theta_deg_ex2.toFixed(2)}^\\circ}$</div>
+          `,
+          steps: [
+            {
+              key: '2a',
+              label: `Step 2a: Calculate the interplanar spacing \\(d_{hkl}\\) of the ${cp2.label} planes in the cubic crystal with $a_{\\text{cub}} = ${a_cub_ex2.toFixed(1)}\\text{ pm}$ (in pm).`,
+              unit: 'pm',
+              answer: d_cub_pm,
+              traps: [
+                {
+                  val: a_cub_ex2 / cp2.sqSum,
+                  msg: 'Square root trap! Don\'t forget to take the square root of (h^2 + k^2 + l^2) in d_hkl = a / sqrt(h^2 + k^2 + l^2)!'
+                },
+                {
+                  val: a_cub_ex2 / (cp2.h + cp2.k + cp2.l),
+                  msg: 'Formula check: Sum the SQUARES of the Miller indices: sqrt(h^2 + k^2 + l^2), not (h + k + l)!'
+                }
+              ],
+              hint: `Use d = a_cub / sqrt(${cp2.h}^2 + ${cp2.k}^2 + ${cp2.l}^2) = ${a_cub_ex2} / sqrt(${cp2.sqSum}).`
+            },
+            {
+              key: '2b',
+              label: 'Step 2b: Calculate the interplanar spacing \\(d_{312}\\) of the \\(\\{312\\}\\) planes in the orthorhombic crystal (in pm).',
+              unit: 'pm',
+              answer: d_ortho_312_pm,
+              traps: [
+                {
+                  val: Math.sqrt(inv_d2_ortho),
+                  msg: 'Reciprocal trap! Taking the square root of (h^2/a^2 + k^2/b^2 + l^2/c^2) gives 1/d. Take the reciprocal 1 / (1/d) to obtain d in pm!'
+                },
+                {
+                  val: 1.0 / Math.sqrt((3.0 / a_ortho_ex2) + (1.0 / b_ortho_ex2) + (2.0 / c_ortho_ex2)),
+                  msg: 'Don\'t forget to SQUARE each ratio: (3/a)^2 + (1/b)^2 + (2/c)^2!'
+                }
+              ],
+              hint: 'Compute 1/d^2 = (3/a)^2 + (1/b)^2 + (2/c)^2, then take d = 1 / sqrt(1/d^2).'
+            },
+            {
+              key: '2c',
+              label: `Step 2c: Calculate the first-order ($n = 1$) Bragg reflection angle \\(\\theta\\) for the orthorhombic $\\{312\\}$ planes using X-rays of wavelength $\\lambda = ${lambda_ex2.toFixed(1)}\\text{ pm}$ (in degrees, °).`,
+              unit: '° (degrees)',
+              answer: theta_deg_ex2,
+              traps: [
+                {
+                  val: sin_theta_ex2,
+                  msg: 'That is sin(theta). Apply the inverse sine (arcsin) in degree mode to find the angle theta in degrees!'
+                },
+                {
+                  val: theta_deg_ex2 * 2.0,
+                  msg: 'Watch the factor of 2 in Bragg\'s law: sin(theta) = lambda / (2 * d_312), and enter the glancing angle theta (not 2*theta)!'
+                },
+                {
+                  val: (theta_deg_ex2 * Math.PI) / 180.0,
+                  msg: 'Radian mode trap! Your angle is in radians. Convert to degrees (multiply by 180 / pi)!'
+                }
+              ],
+              hint: 'Compute sin(theta) = lambda / (2 * d_312), then take arcsin in degree mode.'
+            }
+          ]
+        },
+
+        // PROBLEM 3
+        {
+          id: 3,
+          title: 'Exercise 3: X-Ray Diffractometer Calibration & Crystal Density from Bragg Data',
+          theoryRef: '<strong>L26_Exercises - Solid State.pdf</strong> (Exercises 3 & 7.1: Determining X-ray wavelength $\\lambda = 2 d \\sin\\theta$ from a reference reflection, then finding lattice parameter $a$ and density $\\rho$ of a cubic element).',
+          examplesRef: '<strong>L26_Exercises - Solid State.pdf</strong> (Ex. 7.1 Wavelength Calibration & Ex. 3 Polonium Density from $\\{111\\}$ Reflection).',
+          statement: `In an X-ray diffraction experiment (cf. L26 Ex. 7.1), a first-order ($n = 1$) Bragg reflection from a calibration crystal with interplanar spacing $d_{\\text{cal}} = ${d_cal_pm.toFixed(1)}\\text{ pm}$ is observed at a glancing angle of $\\theta_{\\text{cal}} = ${theta_cal_deg.toFixed(2)}^\\circ$. Using this same X-ray source, the $\\{111\\}$ reflection of <strong>${smp3.name}</strong> ($M = ${smp3.M.toFixed(2)}\\text{ g mol}^{-1}$) occurs at $\\theta_{111} = ${smp3.theta111.toFixed(2)}^\\circ$ ($N_A = 6.0221 \\times 10^{23}\\text{ mol}^{-1}$).`,
+          profExplanation: `
+            <div><strong>Step 3a:</strong> $\\lambda = 2 \\cdot d_{\\text{cal}} \\cdot \\sin\\theta_{\\text{cal}} = 2 \\cdot ${d_cal_pm.toFixed(1)}\\text{ pm} \\cdot \\sin(${theta_cal_deg.toFixed(2)}^\\circ) = \\mathbf{${lambda_cal_pm.toFixed(2)}\\text{ pm}}$</div>
+            <div><strong>Step 3b:</strong> $d_{111} = \\frac{\\lambda}{2 \\cdot \\sin\\theta_{111}} = ${d_111_smp_pm.toFixed(2)}\\text{ pm} \\implies a = d_{111} \\cdot \\sqrt{3} = \\mathbf{${a_smp_pm.toFixed(2)}\\text{ pm}}$</div>
+            <div><strong>Step 3c:</strong> With $a = ${a_smp_cm.toExponential(4)}\\text{ cm}$ and $Z = ${smp3.Z}$: $\\rho = \\frac{Z \\cdot M}{N_A \\cdot a^3} = \\mathbf{${rho_smp.toFixed(2)}\\text{ g cm}^{-3}}$</div>
+          `,
+          steps: [
+            {
+              key: '3a',
+              label: `Step 3a: Calculate the X-ray wavelength \\(\\lambda\\) from the calibration reflection ($d_{\\text{cal}} = ${d_cal_pm.toFixed(1)}\\text{ pm}$, $\\theta_{\\text{cal}} = ${theta_cal_deg.toFixed(2)}^\\circ$) (in pm).`,
+              unit: 'pm',
+              answer: lambda_cal_pm,
+              traps: [
+                {
+                  val: lambda_cal_pm / 2.0,
+                  msg: 'Bragg factor-of-2 trap! Remember n * lambda = 2 * d * sin(theta) (multiply by 2)!'
+                },
+                {
+                  val: 2.0 * d_cal_pm * Math.sin(theta_cal_deg),
+                  msg: 'Calculator angle mode trap! Make sure your calculator is in DEGREES (not radians) when computing sin(theta)!'
+                }
+              ],
+              hint: 'Use Bragg\'s law with n = 1: lambda [pm] = 2 * d_cal * sin(theta_cal).'
+            },
+            {
+              key: '3b',
+              label: `Step 3b: Using $\\lambda$ from Step 3a, calculate the cubic lattice constant \\(a = d_{111}\\sqrt{3}\\) of ${smp3.name} from its $\\{111\\}$ reflection at $\\theta_{111} = ${smp3.theta111.toFixed(2)}^\\circ$ (in pm).`,
+              unit: 'pm',
+              answer: a_smp_pm,
+              traps: [
+                {
+                  val: d_111_smp_pm,
+                  msg: 'That is the interplanar spacing d_111. For the {111} planes in a cubic crystal, multiply d_111 by sqrt(1^2 + 1^2 + 1^2) = sqrt(3) to obtain the unit cell edge a!'
+                }
+              ],
+              hint: 'First find d_111 = lambda / (2 * sin(theta_111)), then multiply d_111 by sqrt(3) ≈ 1.73205 to get a.'
+            },
+            {
+              key: '3c',
+              label: `Step 3c: Calculate the crystal density \\(\\rho\\) of ${smp3.name} ($Z = ${smp3.Z}$, $M = ${smp3.M.toFixed(2)}\\text{ g mol}^{-1}$) from the X-ray lattice parameter $a$ (in $\\text{g cm}^{-3}$).`,
+              unit: 'g cm⁻³',
+              answer: rho_smp,
+              traps: [
+                {
+                  val: (smp3.Z * smp3.M) / (N_A * Math.pow(d_111_smp_pm * 1e-10, 3)),
+                  msg: 'You cubed d_111 instead of the unit cell edge length a = d_111 * sqrt(3)!'
+                },
+                {
+                  val: rho_smp / smp3.Z,
+                  msg: `Don't forget to multiply by the unit cell multiplicity Z = ${smp3.Z} in rho = (Z * M) / (N_A * a^3)!`
+                }
+              ],
+              hint: `Convert a [pm] to cm (multiply by 10^-10), then compute rho = (${smp3.Z} * ${smp3.M}) / (6.0221e23 * a_cm^3).`
+            }
+          ]
+        },
+
+        // PROBLEM 4
+        {
+          id: 4,
+          title: 'Exercise 4: High-Field \\(^1\\text{H}\\)-NMR Spectroscopy & Molecular Normal Modes',
+          theoryRef: '<strong>L25_Matter and Radiation.pdf</strong> (Slide 80: Larmor frequency $\\nu_L = \\gamma_N B_0 / (2\\pi)$, chemical shift $\\delta = \\frac{\\nu_{\\text{sample}} - \\nu_{\\text{standard}}}{\\nu_{\\text{spec}}} \\times 10^6\\text{ ppm}$, vibrational normal modes $3N-5$ vs. $3N-6$).',
+          examplesRef: '<strong>T02_Try_Tests_Lecture2.pdf</strong> (Questions 20–22: Normal Modes, Ethyl Ethanoate $^1\\text{H}$-NMR & $600\\text{ MHz}$ Larmor Induction).',
+          statement: `A high-resolution $^1\\text{H}$-NMR spectrometer operates at a proton Larmor frequency of $\\nu_{\\text{spec}} = ${nu_spec_MHz}\\text{ MHz}$ (the Larmor frequency of a naked proton at $B_0 = 1.000\\text{ T}$ is $42.576\\text{ MHz}$). In the $^1\\text{H}$-NMR spectrum recorded on this instrument, a proton signal resonates at $\\Delta\\nu = \\nu_{\\text{sample}} - \\nu_{\\text{TMS}} = ${delta_nu_Hz_ex4.toFixed(1)}\\text{ Hz}$ downfield from the tetramethylsilane (TMS) standard. In a complementary IR/Raman study, the fundamental vibrational normal modes of <strong>${mol4.name}</strong> are analyzed.`,
+          profExplanation: `
+            <div><strong>Step 4a:</strong> $B_0 = \\frac{\\nu_{\\text{spec}}}{42.576\\text{ MHz T}^{-1}} = \\frac{${nu_spec_MHz}}{42.576} = \\mathbf{${B0_tesla_ex4.toFixed(2)}\\text{ T}}$</div>
+            <div><strong>Step 4b:</strong> $\\delta = \\frac{\\Delta\\nu\\text{ [Hz]}}{\\nu_{\\text{spec}}\\text{ [MHz]}} = \\frac{${delta_nu_Hz_ex4.toFixed(1)}\\text{ Hz}}{${nu_spec_MHz}\\text{ MHz}} = \\mathbf{${delta_calc_ppm.toFixed(2)}\\text{ ppm}}$</div>
+            <div><strong>Step 4c:</strong> For ${mol4.name}, $N_{\\text{vib}} = 3N - ${mol4.linear ? '5' : '6'} = 3(${mol4.N}) - ${mol4.linear ? '5' : '6'} = \\mathbf{${N_vib_ex4}}$ normal modes.</div>
+          `,
+          steps: [
+            {
+              key: '4a',
+              label: `Step 4a: Calculate the magnetic induction \\(B_0\\) of the superconducting magnet required for a proton Larmor frequency of $\\nu_{\\text{spec}} = ${nu_spec_MHz}\\text{ MHz}$ (in T).`,
+              unit: 'T',
+              answer: B0_tesla_ex4,
+              traps: [
+                {
+                  val: 42.576 / nu_spec_MHz,
+                  msg: 'Inverted ratio! Since nu_L is proportional to B_0, divide nu_spec [MHz] by 42.576 MHz T^-1!'
+                }
+              ],
+              hint: 'Divide the spectrometer frequency nu_spec [MHz] by 42.576 MHz T^-1 (or 42.6 MHz T^-1; both are accepted within tolerance).'
+            },
+            {
+              key: '4b',
+              label: `Step 4b: Calculate the chemical shift \\(\\delta\\) of the proton signal at $\\Delta\\nu = ${delta_nu_Hz_ex4.toFixed(1)}\\text{ Hz}$ on this ${nu_spec_MHz}\\text{ MHz} spectrometer (in ppm).`,
+              unit: 'ppm',
+              answer: delta_calc_ppm,
+              traps: [
+                {
+                  val: delta_calc_ppm * 1e-6,
+                  msg: 'Because Delta nu is in Hz and nu_spec is in MHz (10^6 Hz), the factor 10^6 cancels out automatically: delta [ppm] = Delta nu [Hz] / nu_spec [MHz]!'
+                },
+                {
+                  val: delta_nu_Hz_ex4 * nu_spec_MHz,
+                  msg: 'Divide the frequency difference Delta nu [Hz] by the spectrometer frequency nu_spec [MHz]!'
+                }
+              ],
+              hint: 'Use delta [ppm] = (nu_sample - nu_TMS) [Hz] / nu_spec [MHz].'
+            },
+            {
+              key: '4c',
+              label: `Step 4c: Calculate the number of fundamental vibrational normal modes \\(N_{\\text{vib}}\\) of ${mol4.name}.`,
+              unit: 'modes',
+              answer: N_vib_ex4,
+              traps: [
+                {
+                  val: mol4.linear ? (3 * mol4.N - 6) : (3 * mol4.N - 5),
+                  msg: mol4.linear
+                    ? 'Linearity trap! A linear molecule has only 2 rotational degrees of freedom, so N_vib = 3N - 5 (not 3N - 6)!'
+                    : 'Non-linear molecule check! A non-linear molecule has 3 rotational degrees of freedom, so N_vib = 3N - 6 (not 3N - 5)!'
+                },
+                {
+                  val: 3 * mol4.N,
+                  msg: 'That is the total number of degrees of freedom 3N. Subtract translational (3) and rotational (2 for linear, 3 for non-linear) degrees of freedom!'
+                }
+              ],
+              hint: mol4.linear
+                ? `For a linear molecule with N = ${mol4.N} atoms, compute N_vib = 3*N - 5.`
+                : `For a non-linear molecule with N = ${mol4.N} atoms, compute N_vib = 3*N - 6.`
+            }
+          ]
+        }
+      ];
+    }
+
+    // Render all 4 exercises into DOM
+    function renderExercises() {
+      const container = document.getElementById('exercises-container');
+      container.innerHTML = '';
+
+      currentProblems.forEach((prob) => {
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden';
+
+        let stepsHtml = '';
+        prob.steps.forEach((st) => {
+          const savedVal = userState.inputs[st.key] !== undefined ? userState.inputs[st.key] : '';
+          const isDone = !!userState.completed[st.key];
+          stepsHtml += `
+            <div id="step-card-${st.key}" class="step-card p-4 rounded-lg border ${isDone ? 'bg-emerald-50/60 border-emerald-300' : 'bg-slate-50 border-slate-200'} space-y-2">
+              <label class="block text-sm font-semibold text-slate-800" for="input-${st.key}">
+                ${st.label}
+              </label>
+              <div class="flex flex-wrap items-center gap-2">
+                <input
+                  id="input-${st.key}"
+                  type="text"
+                  value="${savedVal}"
+                  placeholder="Enter value..."
+                  onkeydown="if(event.key==='Enter') checkStep('${st.key}')"
+                  class="px-3 py-1.5 rounded border border-slate-300 bg-white text-sm font-mono w-44 focus:outline-none focus:border-indigo-500"
+                />
+                <span class="text-xs font-bold text-slate-600 bg-slate-200/80 px-2.5 py-1.5 rounded">${st.unit}</span>
+                <button
+                  onclick="checkStep('${st.key}')"
+                  class="px-3.5 py-1.5 rounded bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold uppercase tracking-wider transition"
+                >
+                  Check
+                </button>
+                <button
+                  onclick="toggleStepHint('${st.key}')"
+                  class="px-2.5 py-1.5 rounded bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold transition"
+                >
+                  💡 Hint
+                </button>
+              </div>
+              <div id="hint-${st.key}" class="hidden text-xs text-indigo-900 bg-indigo-50 border border-indigo-200 rounded p-2.5">
+                <strong>Formula / Hint:</strong> ${st.hint}
+              </div>
+              <div id="feedback-${st.key}" class="text-xs font-semibold ${isDone ? 'text-emerald-700' : 'hidden'}">
+                ${isDone ? '✅ Correct! Step verified and saved.' : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="px-6 py-4 bg-slate-800 text-white flex items-center justify-between">
+            <h3 class="font-bold text-base">${prob.title}</h3>
+            <span class="text-xs font-mono text-amber-400">3 Steps</span>
+          </div>
+
+          <div class="p-6 space-y-5">
+            <!-- Blue Reference Service Box -->
+            <div class="bg-sky-50 border-l-4 border-sky-500 rounded-r-lg p-3.5 text-xs text-sky-950 space-y-1">
+              <div>📖 <strong>Lecture Theory:</strong> ${prob.theoryRef}</div>
+              <div>🔍 <strong>Similar Worked Examples:</strong> ${prob.examplesRef}</div>
+            </div>
+
+            <!-- Problem Statement -->
+            <div class="text-sm text-slate-800 leading-relaxed bg-white p-1">
+              ${prob.statement}
+            </div>
+
+            <!-- Instructor Mode Solution Box -->
+            <div class="prof-box ${isProfMode ? '' : 'hidden'} rounded-lg p-4 text-xs text-slate-900 space-y-1.5 shadow-inner">
+              <div class="font-extrabold uppercase tracking-wider text-amber-900 flex items-center justify-between">
+                <span>👨‍🏫 [PROF SOLUTIONS] – Exact Key for Student ID: ${currentStudentId}</span>
+                <span class="font-mono">Tol: ±1.5%</span>
+              </div>
+              ${prob.profExplanation}
+            </div>
+
+            <!-- 3 Interactive Sub-Steps -->
+            <div class="space-y-3">
+              ${stepsHtml}
+            </div>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+
+      renderMath();
+      updateProgressUI();
+    }
+
+    // Check individual step with Smart Traps (revokes completion if changed to wrong answer)
+    function checkStep(stepKey) {
+      let targetStep = null;
+      currentProblems.forEach((p) => {
+        p.steps.forEach((s) => {
+          if (s.key === stepKey) targetStep = s;
+        });
+      });
+      if (!targetStep) return;
+
+      const inputEl = document.getElementById(`input-${stepKey}`);
+      const fbEl = document.getElementById(`feedback-${stepKey}`);
+      const cardEl = document.getElementById(`step-card-${stepKey}`);
+
+      const raw = inputEl.value.trim().replace(',', '.');
+      userState.inputs[stepKey] = inputEl.value.trim();
+
+      const val = parseFloat(raw);
+      if (isNaN(val)) {
+        delete userState.completed[stepKey];
+        cardEl.className = 'step-card p-4 rounded-lg border bg-slate-50 border-slate-200 space-y-2';
+        fbEl.className = 'text-xs font-semibold text-rose-600';
+        fbEl.textContent = '⚠️ Please enter a valid numerical value.';
+        saveState();
+        updateProgressUI();
+        return;
+      }
+
+      const ans = targetStep.answer;
+      const relErr = Math.abs(val - ans) / (Math.abs(ans) || 1);
+
+      if (relErr <= 0.015) {
+        userState.completed[stepKey] = true;
+        fbEl.className = 'text-xs font-semibold text-emerald-700';
+        fbEl.innerHTML = `✅ Correct! (Exact reference value: <span class="font-mono">${ans.toPrecision(4)} ${targetStep.unit}</span>)`;
+        cardEl.className = 'step-card p-4 rounded-lg border bg-emerald-50/60 border-emerald-300 space-y-2';
+        saveState();
+        updateProgressUI();
+        return;
+      }
+
+      delete userState.completed[stepKey];
+      cardEl.className = 'step-card p-4 rounded-lg border bg-rose-50/40 border-rose-300 space-y-2';
+
+      let trapMsg = null;
+      if (targetStep.traps) {
+        for (const trap of targetStep.traps) {
+          const tErr = Math.abs(val - trap.val) / (Math.abs(trap.val) || 1);
+          if (tErr <= 0.025) {
+            trapMsg = trap.msg;
+            break;
+          }
+        }
+      }
+
+      fbEl.className = 'text-xs font-semibold text-rose-700 bg-rose-50 border border-rose-200 p-2 rounded';
+      if (trapMsg) {
+        fbEl.innerHTML = `❌ <strong>Smart Trap Detected:</strong> ${trapMsg}`;
+      } else {
+        fbEl.innerHTML = `❌ Not quite right yet. Check your formula and units (use the 💡 Hint button if needed).`;
+      }
+      saveState();
+      updateProgressUI();
+    }
+
+    function toggleStepHint(stepKey) {
+      const el = document.getElementById(`hint-${stepKey}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function updateProgressUI() {
+      const total = 12;
+      const done = Object.keys(userState.completed).filter((k) => userState.completed[k]).length;
+      document.getElementById('progress-counter').textContent = `${done} / ${total} Steps`;
+
+      const seedStr = `U09-${currentStudentId}-${done}`;
+      let h = 2166136261 >>> 0;
+      for (let i = 0; i < seedStr.length; i++) {
+        h ^= seedStr.charCodeAt(i);
+        h = Math.imul(h, 16777619);
+      }
+      const hex = (h >>> 0).toString(16).toUpperCase().padStart(8, '0').slice(0, 4);
+      const token = `PC2-U09-${currentStudentId}-${done}of12-CHK${hex}`;
+      document.getElementById('verification-token').textContent = token;
+    }
+
+    function copyVerificationToken() {
+      const token = document.getElementById('verification-token').textContent.trim();
+      navigator.clipboard.writeText(token).then(() => {
+        const fb = document.getElementById('copy-feedback');
+        fb.classList.remove('hidden');
+        setTimeout(() => fb.classList.add('hidden'), 2500);
+      });
+    }
+
+    function toggleFormulaSheet() {
+      const content = document.getElementById('formula-sheet-content');
+      const chev = document.getElementById('formula-chevron');
+      content.classList.toggle('hidden');
+      chev.textContent = content.classList.contains('hidden') ? '▶' : '▼';
+    }
+
+    function toggleSpokenHints() {
+      const hints = document.querySelectorAll('.spoken-hint');
+      const btn = document.getElementById('btn-spoken-hints');
+      let anyHidden = false;
+      hints.forEach((h) => {
+        if (h.classList.contains('hidden')) anyHidden = true;
+      });
+      hints.forEach((h) => {
+        if (anyHidden) h.classList.remove('hidden');
+        else h.classList.add('hidden');
+      });
+      btn.textContent = anyHidden ? '🎙️ Hide Spoken Explanation Hints' : '🎙️ Show Spoken Explanation Hints';
+    }
+
+    function toggleGuidedStep(exNum, stepChar) {
+      const el = document.getElementById(`guided-${exNum}-${stepChar}`);
+      if (el) el.classList.toggle('hidden');
+    }
+
+    function toggleAllGuided(exNum) {
+      const steps = ['a', 'b', 'c'];
+      const anyHidden = steps.some((ch) => document.getElementById(`guided-${exNum}-${ch}`).classList.contains('hidden'));
+      steps.forEach((ch) => {
+        const el = document.getElementById(`guided-${exNum}-${ch}`);
+        if (anyHidden) el.classList.remove('hidden');
+        else el.classList.add('hidden');
+      });
+    }
+
+    function parseStudentInput(rawInput) {
+      const trimmed = (rawInput || '').trim();
+      if (!trimmed) return { id: DEFAULT_ID, prof: false };
+      if (trimmed.toUpperCase().startsWith('PROF-')) {
+        const cleanId = trimmed.slice(5).trim() || DEFAULT_ID;
+        return { id: cleanId, prof: true };
+      }
+      if (trimmed.toUpperCase() === 'PROF') {
+        return { id: DEFAULT_ID, prof: true };
+      }
+      return { id: trimmed, prof: false };
+    }
+
+    function loadWorksheet() {
+      const raw = document.getElementById('student-id-input').value;
+      const parsed = parseStudentInput(raw);
+      const idChanged = parsed.id !== currentStudentId;
+
+      currentStudentId = parsed.id;
+      isProfMode = parsed.prof;
+
+      if (idChanged) {
+        userState = {
+          studentId: currentStudentId,
+          inputs: {},
+          completed: {}
+        };
+        saveState();
+      }
+
+      updateHeaderBadges();
+      currentProblems = buildUnit09Problems(currentStudentId);
+      renderExercises();
+    }
+
+    function resetWorksheet() {
+      if (!confirm('Reset all saved answers and progress for this worksheet?')) return;
+      userState = {
+        studentId: currentStudentId,
+        inputs: {},
+        completed: {}
+      };
+      saveState();
+      renderExercises();
+    }
+
+    function updateHeaderBadges() {
+      document.getElementById('active-id-badge').textContent = `Active ID: ${currentStudentId}`;
+      const profBadge = document.getElementById('prof-mode-badge');
+      if (isProfMode) profBadge.classList.remove('hidden');
+      else profBadge.classList.add('hidden');
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(userState));
+      } catch (e) {}
+    }
+
+    function loadStateFromStorage() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (parsed && parsed.studentId) {
+            userState = parsed;
+            currentStudentId = parsed.studentId;
+          }
+        }
+      } catch (e) {}
+    }
+
+    function renderMath() {
+      if (window.renderMathInElement) {
+        renderMathInElement(document.body, {
+          delimiters: [
+            { left: '$$', right: '$$', display: true },
+            { left: '\\(', right: '\\)', display: false },
+            { left: '$', right: '$', display: false }
+          ],
+          output: 'html',
+          throwOnError: false
+        });
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStateFromStorage();
+      document.getElementById('student-id-input').value = currentStudentId;
+      updateHeaderBadges();
+      currentProblems = buildUnit09Problems(currentStudentId);
+      renderExercises();
+    });
+  </script>
+</body>
+</html>
